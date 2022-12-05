@@ -76,11 +76,11 @@ vim.keymap.set('n', 'ga', '<Plug>(EasyAlign)')
 vim.keymap.set('x', 'ga', '<Plug>(EasyAlign)')
 
 -- floaterm
-vim.keymap.set('n', '<F5>', '<cmd>FloatermToggle<CR>')
+vim.keymap.set('n', '<F4>', '<cmd>FloatermToggle<CR>')
 vim.keymap.set('t', '<C-n>', termcodes '<C-\\><C-N>:FloatermNew<CR>')
 vim.keymap.set('t', '<C-k>', termcodes '<C-\\><C-N>:FloatermPrev<CR>')
 vim.keymap.set('t', '<C-j>', termcodes '<C-\\><C-N>:FloatermNext<CR>')
-vim.keymap.set('t', '<F5>', termcodes '<C-\\><C-N>:FloatermToggle<CR>')
+vim.keymap.set('t', '<F4>', termcodes '<C-\\><C-N>:FloatermToggle<CR>')
 vim.keymap.set('t', '<C-d>', termcodes '<C-\\><C-N>:FloatermKill<CR>')
 
 -- asynctask
@@ -104,9 +104,9 @@ vim.keymap.set('n', '<Leader>hd', function() require('gitsigns').diffthis() end)
 vim.keymap.set('n', '<Leader>mp', '<cmd>MarkdownPreview<CR>')
 
 -- telescope {{{
-vim.keymap.set('n', '<Leader>ff', "<cmd>Telescope find_files<CR>")
-vim.keymap.set('n', '<Leader>ag', "<cmd>Telescope live_grep<CR>")
-vim.keymap.set('n', '<Leader>Ag', "<cmd>Telescope grep_string<CR>")
+vim.keymap.set('n', '<F5>', "<cmd>Telescope find_files<CR>")
+vim.keymap.set('n', '<F6>', "<cmd>Telescope live_grep<CR>")
+vim.keymap.set('n', '<F7>', "<cmd>Telescope grep_string<CR>")
 vim.keymap.set('n', '<Leader>bb', "<cmd>Telescope buffers<CR>")
 vim.keymap.set('n', '<Leader>fc', "<cmd>Telescope command<CR>")
 vim.keymap.set('n', '<Leader>ts', "<cmd>Telescope tasks<CR>")
