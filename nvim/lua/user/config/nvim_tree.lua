@@ -28,7 +28,7 @@ nvim_tree.setup {
   },
   actions = {
     open_file = {
-      resize_window = true,
+      resize_window = false,
     },
   },
   renderer = {
@@ -63,8 +63,11 @@ nvim_tree.setup {
   view = {
     width = 35,
     side = 'left',
-    adaptive_size = true,
+    adaptive_size = false,
     hide_root_folder = false,
+    float = {
+      quit_on_focus_loss = false,
+    },
     mappings = {
       custom_only = true,
       list = {
