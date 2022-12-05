@@ -14,13 +14,6 @@ vim.diagnostic.config {
   },
 }
 
--- local signs = {
---   Error = '',
---   Warn = '',
---   Info = '',
---   Hint = '',
--- }
-
 local signs = {
   Error = '',
   Warn = '',

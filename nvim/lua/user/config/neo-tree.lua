@@ -20,7 +20,7 @@ require('neo-tree').setup {
     follow_current_file = true,
     use_libuv_file_watcher = false,
     hijack_netrw_behavior = 'open_default',
-    group_empty_dirs = true,
+    group_empty_dirs = false,
     filtered_items = {
       visible = false,
       hide_dotfiles = false,
