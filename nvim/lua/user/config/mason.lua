@@ -2,9 +2,9 @@ vim.cmd.packadd 'mason.nvim'
 vim.cmd.packadd 'mason-lspconfig.nvim'
 
 require('mason').setup {
-    github = {
---        download_url_template="https://ghproxy.com/https://github.com/%s/releases/download/%s/%s"
-    },
+  github = {
+    --        download_url_template="https://ghproxy.com/https://github.com/%s/releases/download/%s/%s"
+  },
   ui = {
     border = 'single',
     icons = {
@@ -37,13 +37,14 @@ require('mason').setup {
 }
 
 require('mason-lspconfig').setup {
-    github = {
---        download_url_template="https://ghproxy.com/https://github.com/%s/releases/download/%s/%s"
-        -- download_url_template="https://download.fastgit.org/%s/releases/download/%s/%s"
-    },
+  github = {
+    download_url_template = 'https://ghproxy.com/https://github.com/%s/releases/download/%s/%s',
+    -- download_url_template="https://download.fastgit.org/%s/releases/download/%s/%s"
+  },
   ensure_installed = {
     'clangd',
     'gopls',
+    'python',
     'sumneko_lua',
     'rust_analyzer',
   },
