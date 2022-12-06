@@ -31,23 +31,23 @@ vim.opt.linespace = 0
 vim.opt.pumheight = 20
 vim.opt.winminheight = 0
 vim.opt.backspace = 'eol,start,indent'
-vim.opt.whichwrap:append("h,l")
+vim.opt.whichwrap:append 'h,l'
 vim.opt.fileformats = 'unix,mac,dos'
 vim.opt.autoread = true
 vim.opt.errorbells = false
 vim.opt.visualbell = false
 vim.opt.list = false
 vim.opt.listchars = {
-  tab             = '»·',
-  nbsp            = '+',
-  trail           = '·',
-  extends         = '→',
-  precedes        = '←',
+  tab = '»·',
+  nbsp = '+',
+  trail = '·',
+  extends = '→',
+  precedes = '←',
 }
 vim.opt.title = true
 vim.opt.switchbuf = 'useopen,uselast'
 vim.opt.autochdir = false
-vim.opt.viewoptions:append("localoptions")
+vim.opt.viewoptions:append 'localoptions'
 vim.opt.sessionoptions = 'curdir,help,tabpages,winsize'
 vim.opt.splitright = true
 vim.opt.splitbelow = true
@@ -91,10 +91,10 @@ vim.opt.wildignorecase = true
 vim.opt.wildcharm = vim.fn.char2nr '	' -- tab
 vim.opt.shada = '!,\'10000,<1000,s100,h,f1,:100000,@10000,/1000'
 vim.opt.inccommand = 'nosplit'
-vim.opt.diffopt:append("indent-heuristic")
-vim.opt.diffopt:append("algorithm:patience")
-vim.opt.diffopt:append("context:3")
-vim.opt.diffopt:append("foldcolumn:1")
+vim.opt.diffopt:append 'indent-heuristic'
+vim.opt.diffopt:append 'algorithm:patience'
+vim.opt.diffopt:append 'context:3'
+vim.opt.diffopt:append 'foldcolumn:1'
 vim.opt.fillchars = {
   vert = '│',
   fold = '·',
