@@ -63,6 +63,9 @@ keymap("n", "<F7>", "<cmd>Telescope grep_string<CR>", opts)
 --keymap("n", "<F7>", ":Telescope projects<CR>", opts)
 keymap("n", "<leader>fb", ":Telescope buffers<CR>", opts)
 
+-- toggleterm
+keymap("n", "<F4>", "<cmd>ToggleTerm<CR>", opts)
+
 -- Git
 keymap("n", "<leader>gg", "<cmd>lua _LAZYGIT_TOGGLE()<CR>", opts)
 
