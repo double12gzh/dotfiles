@@ -93,3 +93,9 @@ require('nvim-treesitter.configs').setup {
       },
     }, --}}}
 }
+
+
+-- setup proxy for the fucking China GFW
+require("nvim-treesitter.install").command_extra_args = {
+  curl = { "--proxy", "http://agent.baidu.com:8118" },
+}
