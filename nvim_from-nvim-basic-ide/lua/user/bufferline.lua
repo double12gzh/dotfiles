@@ -5,8 +5,6 @@ end
 
 bufferline.setup {
   options = {
-    right_mouse_command = "Bdelete! %d", -- can be a string | function, see "Mouse actions"
-    separator_style = "thin", -- | "thick" | "thin" | { 'any', 'any' },
     view = 'multiwindow',
     mode = 'buffers',
     numbers = 'ordinal',
@@ -64,7 +62,7 @@ bufferline.setup {
       fg = { attribute = "fg", highlight = "TabLine" },
       bg = { attribute = "bg", highlight = "TabLine" },
     },
-   
+
     tab_selected = {
       fg = { attribute = "fg", highlight = "Normal" },
       bg = { attribute = "bg", highlight = "Normal" },

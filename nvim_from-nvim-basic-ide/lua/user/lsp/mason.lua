@@ -43,18 +43,18 @@ local settings = {
     },
 	log_level = vim.log.levels.INFO,
 	max_concurrent_installers = 4,
-    -- github = {
-    --   download_url_template="https://ghproxy.com/https://github.com/%s/releases/download/%s/%s",
-    -- },
+    github = {
+      download_url_template="https://ghproxy.com/https://github.com/%s/releases/download/%s/%s",
+    },
 }
 
 require("mason").setup(settings)
 require("mason-lspconfig").setup({
 	ensure_installed = servers,
 	automatic_installation = true,
-    -- github = {
-    --   download_url_template="https://ghproxy.com/https://github.com/%s/releases/download/%s/%s",
-    -- },
+    github = {
+      download_url_template="https://ghproxy.com/https://github.com/%s/releases/download/%s/%s",
+    },
 })
 
 local lspconfig_status_ok, lspconfig = pcall(require, "lspconfig")
