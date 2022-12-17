@@ -1,0 +1,13 @@
+[http]
+    proxy = "http://xxx.com:8118"
+    sslVerify = false
+[https]
+    proxy = "https://xxx:8118"
+    
+[user]
+        email = double12gzh@163.com
+        name = JeffreyGuan
+#[http "https://github.com"]
+#       proxy = https://ghproxy.com
+#[https "https://github.com"]
+#       proxy = https://ghproxy.com
