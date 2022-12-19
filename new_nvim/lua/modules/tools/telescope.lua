@@ -1,7 +1,7 @@
 local cmd = vim.api.nvim_command
 cmd([[packadd sqlite.lua]])
+cmd([[packadd project.nvim]])
 cmd([[packadd telescope-fzf-native.nvim]])
-cmd([[packadd telescope-project.nvim]])
 cmd([[packadd telescope-frecency.nvim]])
 cmd([[packadd telescope-zoxide]])
 cmd([[packadd telescope-env.nvim]])
@@ -34,6 +34,7 @@ require("telescope").setup({
 		selection_caret = icons.ui.ChevronRight,
 		entry_prefix = " ",
 		scroll_strategy = "limit",
+		set_env = { ["COLORTERM"] = "truecolor" },
 		results_title = false,
 		borderchars = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
 		layout_strategy = "horizontal",
@@ -63,6 +64,30 @@ require("telescope").setup({
 		qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
 		file_sorter = require("telescope.sorters").get_fuzzy_file,
 		generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
+		mappings = {
+			i = {
+				["<C-x>"] = false,
+				["<C-u>"] = false,
+				["<C-d>"] = false,
+				["<Esc>"] = require("telescope.actions").close,
+				["<C-c>"] = require("telescope.actions").close,
+				["<C-s>"] = require("telescope.actions").select_horizontal,
+				["<C-v>"] = require("telescope.actions").select_vertical,
+				["<C-t>"] = require("telescope.actions").select_tab,
+				["<C-j>"] = require("telescope.actions").move_selection_next,
+				["<C-k>"] = require("telescope.actions").move_selection_previous,
+				["<C-/>"] = "which_key",
+			},
+			n = {
+				["<Esc>"] = require("telescope.actions").close,
+				["j"] = require("telescope.actions").move_selection_next,
+				["k"] = require("telescope.actions").move_selection_previous,
+				["H"] = require("telescope.actions").move_to_top,
+				["M"] = require("telescope.actions").move_to_middle,
+				["L"] = require("telescope.actions").move_to_bottom,
+				["?"] = require("telescope.actions").which_key,
+			},
+		},
 	},
 	extensions = {
 		-- conda = {
@@ -95,15 +120,6 @@ require("telescope").setup({
 					["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
 				},
 			},
-		},
-		project = {
-			base_dirs = {
-				{ "~", max_depth = 1 },
-				{ "~/Workspace", max_depth = 1 },
-			},
-			hidden_files = true, -- default: false
-			theme = "dropdown",
-			order_by = "asc",
 		},
 	},
 	pickers = {
@@ -166,7 +182,7 @@ require("dir-telescope").setup({
 require("telescope").load_extension("env")
 require("telescope").load_extension("frecency")
 require("telescope").load_extension("fzf")
-require("telescope").load_extension("project")
+require("telescope").load_extension("projects")
 require("telescope").load_extension("zoxide")
 require("telescope").load_extension("dir")
 require("telescope").load_extension("notify")

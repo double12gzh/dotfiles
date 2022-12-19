@@ -2,285 +2,279 @@ local tools = {}
 local cmd = vim.api.nvim_command
 
 tools["nvim-lua/plenary.nvim"] = {
-    opt = true,
-    module = "plenary",
+	opt = true,
+	module = "plenary",
 }
 tools["dstein64/vim-startuptime"] = {
-    opt = true,
-    cmd = "StartupTime",
+	opt = true,
+	cmd = "StartupTime",
 }
 tools["kkharji/sqlite.lua"] = {
-    opt = true,
-    module = "sqlite",
+	opt = true,
+	module = "sqlite",
 }
 tools["sudormrfbin/cheatsheet.nvim"] = {
-    opt = true,
-    cmd = "Cheatsheet",
-    requires = {
-        { "nvim-telescope/telescope.nvim" },
-        { "nvim-lua/plenary.nvim" },
-        { "nvim-lua/popup.nvim" },
-    },
-    config = function()
-        require("modules.tools.cheatsheet")
-    end,
+	opt = true,
+	cmd = "Cheatsheet",
+	requires = {
+		{ "nvim-telescope/telescope.nvim" },
+		{ "nvim-lua/plenary.nvim" },
+		{ "nvim-lua/popup.nvim" },
+	},
+	config = function()
+		require("modules.tools.cheatsheet")
+	end,
 }
 tools["monaqa/dial.nvim"] = {
-    opt = true,
-    event = "BufReadPost",
-    module = {
-        "dial.augend",
-        "dial.config",
-    },
-    requires = { "nvim-lua/plenary.nvim" },
-    config = function()
-        require("modules.tools.dial")
-    end,
+	opt = true,
+	event = "BufReadPost",
+	module = {
+		"dial.augend",
+		"dial.config",
+	},
+	requires = { "nvim-lua/plenary.nvim" },
+	config = function()
+		require("modules.tools.dial")
+	end,
 }
 tools["ThePrimeagen/git-worktree.nvim"] = {
-    opt = true,
-    event = "BufReadPost",
-    module = "git-worktree",
-    requires = {
-        { "nvim-lua/plenary.nvim" },
-        { "nvim-telescope/telescope.nvim" },
-    },
-    config = function()
-        require("modules.tools.git-worktree")
-    end,
+	opt = true,
+	event = "BufReadPost",
+	module = "git-worktree",
+	requires = {
+		{ "nvim-lua/plenary.nvim" },
+		{ "nvim-telescope/telescope.nvim" },
+	},
+	config = function()
+		require("modules.tools.git-worktree")
+	end,
 }
 tools["samodostal/image.nvim"] = {
-    opt = true,
-    event = "BufReadPost",
-    requires = { "nvim-lua/plenary.nvim", "m00qek/baleia.nvim" },
-    config = function()
-        require("modules.tools.image")
-    end,
+	opt = true,
+	event = "BufReadPost",
+	requires = { "nvim-lua/plenary.nvim", "m00qek/baleia.nvim" },
+	config = function()
+		require("modules.tools.image")
+	end,
 }
 tools["mrjones2014/legendary.nvim"] = {
-    opt = true,
-    cmd = "Legendary",
-    requires = {
-        "stevearc/dressing.nvim",
-        "kkharji/sqlite.lua",
-        "folke/which-key.nvim",
-    },
-    config = function()
-        require("modules.tools.legendary")
-    end,
+	opt = true,
+	cmd = "Legendary",
+	requires = {
+		"stevearc/dressing.nvim",
+		"kkharji/sqlite.lua",
+		"folke/which-key.nvim",
+	},
+	config = function()
+		require("modules.tools.legendary")
+	end,
 }
 tools["AckslD/nvim-neoclip.lua"] = {
-    opt = true,
-    event = { "CmdlineEnter", "TextYankPost" },
-    module = { "neoclip" },
-    requires = {
-        { "kkharji/sqlite.lua" },
-        { "nvim-telescope/telescope.nvim" },
-    },
-    config = function()
-        require("modules.tools.neoclip")
-    end,
+	opt = true,
+	event = { "CmdlineEnter", "TextYankPost" },
+	module = { "neoclip" },
+	requires = {
+		{ "kkharji/sqlite.lua" },
+		{ "nvim-telescope/telescope.nvim" },
+	},
+	config = function()
+		require("modules.tools.neoclip")
+	end,
 }
 tools["kyazdani42/nvim-tree.lua"] = {
-    opt = true,
-    cmd = {
-        "NvimTreeToggle",
-        "NvimTreeOpen",
-        "NvimTreeFindFile",
-        "NvimTreeFindFileToggle",
-        "NvimTreeRefresh",
-    },
-    config = function()
-        require("modules.tools.nvim-tree")
-    end,
+	opt = true,
+	cmd = {
+		"NvimTreeToggle",
+		"NvimTreeOpen",
+		"NvimTreeFindFile",
+		"NvimTreeFindFileToggle",
+		"NvimTreeRefresh",
+	},
+	config = function()
+		require("modules.tools.nvim-tree")
+	end,
 }
 tools["bennypowers/nvim-regexplainer"] = {
-    opt = true,
-    cmd = { "RegexplainerToggle", "RegexplainerShow" },
-    requires = {
-        "nvim-treesitter/nvim-treesitter",
-        "MunifTanjim/nui.nvim",
-    },
-    config = function()
-        require("modules.tools.regexplainer")
-    end,
+	opt = true,
+	cmd = { "RegexplainerToggle", "RegexplainerShow" },
+	requires = {
+		"nvim-treesitter/nvim-treesitter",
+		"MunifTanjim/nui.nvim",
+	},
+	config = function()
+		require("modules.tools.regexplainer")
+	end,
 }
 tools["narutoxy/silicon.lua"] = {
-    opt = true,
-    -- cmd = "Silicon",
-    event = "BufReadPost",
-    requires = { "nvim-lua/plenary.nvim" },
-    config = function()
-        require("modules.tools.silicon")
-    end,
+	opt = true,
+	-- cmd = "Silicon",
+	event = "BufReadPost",
+	requires = { "nvim-lua/plenary.nvim" },
+	config = function()
+		require("modules.tools.silicon")
+	end,
 }
 tools["ibhagwan/smartyank.nvim"] = {
-    opt = true,
-    event = "BufReadPost",
-    config = function()
-        require("modules.tools.smartyank")
-    end,
+	opt = true,
+	event = "BufReadPost",
+	config = function()
+		require("modules.tools.smartyank")
+	end,
 }
 tools["michaelb/sniprun"] = {
-    opt = true,
-    run = "bash ./install.sh",
-    cmd = { "SnipRun", "'<,'>SnipRun" },
-    config = function()
-        require("modules.tools.sniprun")
-    end,
+	opt = true,
+	run = "bash ./install.sh",
+	cmd = { "SnipRun", "'<,'>SnipRun" },
+	config = function()
+		require("modules.tools.sniprun")
+	end,
 }
 tools["aserowy/tmux.nvim"] = {
-    opt = true,
-    event = "BufReadPost",
-    config = function()
-        require("modules.tools.tmux")
-    end,
+	opt = true,
+	event = "BufReadPost",
+	config = function()
+		require("modules.tools.tmux")
+	end,
 }
 tools["akinsho/toggleterm.nvim"] = {
-    opt = true,
-    event = "BufReadPost",
-    config = function()
-        require("modules.tools.toggleterm")
-    end,
+	opt = true,
+	event = "BufReadPost",
+	config = function()
+		require("modules.tools.toggleterm")
+	end,
 }
 tools["folke/trouble.nvim"] = {
-    opt = true,
-    cmd = { "Trouble", "TroubleToggle", "TroubleRefresh" },
-    requires = "kyazdani42/nvim-web-devicons",
-    after = "null-ls.nvim",
-    config = function()
-        require("modules.tools.trouble")
-    end,
+	opt = true,
+	cmd = { "Trouble", "TroubleToggle", "TroubleRefresh" },
+	requires = "kyazdani42/nvim-web-devicons",
+	after = "null-ls.nvim",
+	config = function()
+		require("modules.tools.trouble")
+	end,
 }
 tools["samjwill/nvim-unception"] = {
-    opt = true,
-    event = "BufReadPost",
-    config = function()
-        require("modules.tools.unception")
-    end,
+	opt = true,
+	event = "BufReadPost",
+	config = function()
+		require("modules.tools.unception")
+	end,
 }
 -- Please don't remove which-key.nvim otherwise you need to set timeoutlen=300 at `lua/core/options.lua`
 tools["folke/which-key.nvim"] = {
-    opt = true,
-    event = "BufReadPost",
-    config = function()
-        require("modules.tools.whichkey")
-    end,
+	opt = true,
+	event = "BufReadPost",
+	config = function()
+		require("modules.tools.whichkey")
+	end,
 }
 tools["gelguy/wilder.nvim"] = {
-    event = { "CmdwinEnter", "CmdlineEnter" },
-    module = "wilder",
-    run = function()
-        cmd([[packadd wilder.nvim]])
-        cmd([[silent UpdateRemotePlugins]])
-    end,
-    requires = { "romgrk/fzy-lua-native", after = "wilder.nvim" },
-    config = function()
-        require("modules.tools.wilder")
-    end,
+	event = { "CmdwinEnter", "CmdlineEnter" },
+	module = "wilder",
+	run = function()
+		cmd([[packadd wilder.nvim]])
+		cmd([[silent UpdateRemotePlugins]])
+	end,
+	requires = { "romgrk/fzy-lua-native", after = "wilder.nvim" },
+	config = function()
+		require("modules.tools.wilder")
+	end,
 }
 tools["mbbill/undotree"] = {
-    opt = true,
-    cmd = "UndotreeToggle",
+	opt = true,
+	cmd = "UndotreeToggle",
 }
 
 ----------------------------------------------------------------------
 --                        Telescope Plugins                         --
 ----------------------------------------------------------------------
 tools["nvim-telescope/telescope.nvim"] = {
-    opt = true,
-    module = "telescope",
-    -- cmd = "Telescope",
-    -- keys = "<leader>",
-    event = "BufReadPost",
-    wants = {
-        -- "harpoon",
-        "nvim-notify",
-        "nvim-neoclip.lua",
-        "git-worktree.nvim",
-    },
-    requires = {
-        { "nvim-lua/plenary.nvim" },
-        { "nvim-lua/popup.nvim" },
-    },
-    config = function()
-        require("modules.tools.telescope")
-    end,
+	opt = true,
+	module = "telescope",
+	-- cmd = "Telescope",
+	-- keys = "<leader>",
+	event = "BufReadPost",
+	wants = {
+		-- "harpoon",
+		"nvim-notify",
+		"nvim-neoclip.lua",
+		"git-worktree.nvim",
+	},
+	requires = {
+		{ "nvim-lua/plenary.nvim" },
+		{ "nvim-lua/popup.nvim" },
+	},
+	config = function()
+		require("modules.tools.telescope")
+	end,
 }
 tools["nvim-telescope/telescope-fzf-native.nvim"] = {
-    opt = true,
-    run = "make",
-    after = "telescope.nvim",
+	opt = true,
+	run = "make",
+	after = "telescope.nvim",
 }
-tools["nvim-telescope/telescope-project.nvim"] = {
-    opt = true,
-    after = "telescope.nvim",
-    requires = {
-        {
-            "ahmedkhalf/project.nvim",
-            opt = true,
-            config = function()
-                require("modules.tools.project")
-            end,
-        },
-    },
+tools["ahmedkhalf/project.nvim"] = {
+	opt = true,
+	after = "telescope.nvim",
+	config = function()
+		require("modules.tools.project")
+	end,
 }
 tools["nvim-telescope/telescope-frecency.nvim"] = {
-    opt = true,
-    after = "telescope.nvim",
-    requires = { "kkharji/sqlite.lua" },
+	opt = true,
+	after = "telescope.nvim",
+	requires = { "kkharji/sqlite.lua" },
 }
 tools["jvgrootveld/telescope-zoxide"] = {
-    opt = true,
-    after = "telescope.nvim",
+	opt = true,
+	after = "telescope.nvim",
 }
 tools["LinArcX/telescope-env.nvim"] = {
-    opt = true,
-    cmd = "Telescope env",
-    after = "telescope.nvim",
+	opt = true,
+	cmd = "Telescope env",
+	after = "telescope.nvim",
 }
 tools["princejoogie/dir-telescope.nvim"] = {
-    opt = true,
-    cmd = {
-        "Telescope dir live_grep",
-        "Telescope dir find_files",
-        "GrepInDirectory",
-        "FileInDirectory",
-    },
-    after = "telescope.nvim",
+	opt = true,
+	cmd = {
+		"Telescope dir live_grep",
+		"Telescope dir find_files",
+		"GrepInDirectory",
+		"FileInDirectory",
+	},
+	after = "telescope.nvim",
 }
 tools["nvim-telescope/telescope-live-grep-args.nvim"] = {
-    opt = true,
-    after = "telescope.nvim",
+	opt = true,
+	after = "telescope.nvim",
 }
 
 ----------------------------------------------------------------------
 --                           DAP Plugins                            --
 ----------------------------------------------------------------------
 tools["mfussenegger/nvim-dap"] = {
-    opt = true,
-    cmd = {
-        "DapSetLogLevel",
-        "DapShowLog",
-        "DapContinue",
-        "DapToggleBreakpoint",
-        "DapToggleRepl",
-        "DapStepOver",
-        "DapStepInto",
-        "DapStepOut",
-        "DapTerminate",
-    },
-    module = "dap",
-    config = function()
-        require("modules.tools.dap")
-    end,
+	opt = true,
+	cmd = {
+		"DapSetLogLevel",
+		"DapShowLog",
+		"DapContinue",
+		"DapToggleBreakpoint",
+		"DapToggleRepl",
+		"DapStepOver",
+		"DapStepInto",
+		"DapStepOut",
+		"DapTerminate",
+	},
+	module = "dap",
+	config = function()
+		require("modules.tools.dap")
+	end,
 }
 tools["rcarriga/nvim-dap-ui"] = {
-    opt = true,
-    after = "nvim-dap",
-    config = function()
-        require("modules.tools.dap._dapui")
-    end,
+	opt = true,
+	after = "nvim-dap",
+	config = function()
+		require("modules.tools.dap._dapui")
+	end,
 }
 
 return tools

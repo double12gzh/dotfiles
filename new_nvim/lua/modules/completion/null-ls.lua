@@ -79,10 +79,3 @@ null_ls.setup({
 		end
 	end,
 })
-
--- NOTE: if you want to use local executables.
--- local sources = {
---     null_ls.builtins.formatting.prettier.with({
---         command = "/path/to/prettier",
---     }),
--- }

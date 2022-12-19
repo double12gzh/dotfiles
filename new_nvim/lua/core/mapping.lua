@@ -13,8 +13,8 @@ keymap("n", "-", "<C-x>", opts)
 -- Select all
 --keymap("n", "<C-a>", "gg<S-v>G", opts)
 
---keymap("n", "<A-[>", "vertical resize -5", opts)
---keymap("n", "<A-]>", "vertical resize +5", opts)
+keymap("n", "<A-[>", "<cmd>vertical resize -5<CR>", opts)
+keymap("n", "<A-]>", "<cmd>vertical resize +5<CR>", opts)
 
 --- Buffer keymap (A buffer is in-memory text of a file.)
 -- Move one buffer(window) right
@@ -31,6 +31,10 @@ keymap("n", "<C-j>", "<C-w>j", opts) -- to bottom window
 keymap("n", "<C-k>", "<C-w>k", opts) -- to top window
 keymap("n", "<C-h>", "<C-w>h", opts) -- to left window
 keymap("n", "<C-l>", "<C-w>l", opts) -- to right window
+
+keymap("i", "<C-u>", "<C-G>u<C-U>", opts)
+keymap("i", "<C-b>", "<Left>", opts)
+keymap("i", "<C-a>", "<ESC>^i", opts)
 
 --- Tab keymap (A tab page is a collection of windows.)
 -- Create a new tab
@@ -56,7 +60,7 @@ keymap("v", "K", ":m '<-2<cr>gv=gv")
 keymap("n", "J", "mzJ`z")
 
 -- Do nothing when press "Q", @ThePrimeagen
---keymap("n", "Q", "<nop>")
+keymap("n", "Q", "<nop>")
 
 -- start replacment mode of current word, @ThePrimeagen
 --keymap("n", "<leader><leader>s", "<cmd>%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>")
@@ -95,3 +99,12 @@ keymap("n", "J", "mzJ`z")
 -- ┌────┐
 -- │test│
 -- └────┘
+
+-- command line
+keymap("c", "<C-b>", "<Left>", opts)
+keymap("c", "<C-f>", "<Right>", opts)
+keymap("c", "<C-a>", "<Home>", opts)
+keymap("c", "<C-e>", "<End>", opts)
+keymap("c", "<C-d>", "<Del>", opts)
+keymap("c", "<C-h>", "<BS>", opts)
+keymap("c", "<C-t>", [[<C-R>=expand("%:p:h") . "/" <CR>]], opts)

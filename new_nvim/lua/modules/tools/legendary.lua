@@ -100,7 +100,7 @@ require("which-key").register({
 		--o = "lsp: Show outline",
 		r = "lsp: Rename",
 		s = "lsp: Signature help",
-		["dc"] = "lsp: Declaration",
+		m = "lsp: Declaration",
 		i = "lsp: Implementation",
 		t = "lsp: Type definition",
 		["DL"] = "lsp: Show loclist",

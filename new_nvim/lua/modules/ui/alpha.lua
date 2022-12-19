@@ -18,24 +18,14 @@ dashboard.section.buttons.val = {
 	dashboard.button("r", icons.ui.History .. " Recent files", "<cmd>Telescope oldfiles<cr>"),
 	dashboard.button("t", icons.ui.List .. " Find text", "<cmd>Telescope live_grep<cr>"),
 	dashboard.button("c", icons.ui.Gear .. " Config", "<cmd>e ~/.config/nvim/init.lua <cr>"),
-	dashboard.button("u", icons.ui.CloudDownload .. " Update", "<cmd>PackerSync<cr>"),
 	dashboard.button("q", icons.ui.SignOut .. " Quit", "<cmd>qa<cr>"),
 }
 dashboard.section.buttons.opts.hl = "Keyword"
 
 -- Footer
 local function footer()
-	-- NOTE: requires the fortune-mod package to work
-	-- local handle = io.popen("fortune")
-	-- local fortune = handle:read("*a")
-	-- handle:close()
-	-- return fortune
-	------
-
 	-- Number of plugins
-	-- local total_plugins = #vim.tbl_keys(vim.g.plugs)
 	local total_plugins = #vim.tbl_keys(packer_plugins)
-	-- local total_plugins = 80
 	local datetime = os.date("%Y-%m-%d %H:%M:%S")
 	local plugins_text = "    "
 		.. total_plugins
@@ -49,13 +39,7 @@ local function footer()
 		.. "   "
 		.. datetime
 
-	-- Quote
-	local fortune = require("alpha.fortune")
-	local quote = table.concat(fortune(), "\n")
-	-- local site = "https://charleschiugit.github.io/" .. "\n"
-
-	return plugins_text .. "\n" .. quote
-	-- return "https://charleschiugit.github.io/"
+	return plugins_text
 end
 
 dashboard.section.footer.val = footer()

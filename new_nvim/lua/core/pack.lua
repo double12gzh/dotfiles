@@ -130,12 +130,14 @@ function plugins.ensure_plugins()
 	Packer:init_ensure_plugins()
 end
 
-function plugins.back_compile()
+function plugins.back_compile(disable_notify)
 	if fn.filereadable(packer_compiled) == 1 then
 		os.rename(packer_compiled, bak_compiled)
 	end
 	plugins.compile()
-	vim.notify("Packer Compile Success!", vim.log.levels.INFO, { title = "Success!" })
+	if disable_notify == nil then
+		vim.notify("Packer Compile Success!", vim.log.levels.INFO, { title = "Success!" })
+	end
 end
 
 function plugins.auto_compile()

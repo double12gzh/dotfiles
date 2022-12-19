@@ -15,15 +15,10 @@ end
 
 function autocmd.load_autocmds()
 	local definitions = {
-		packer = {
-			-- Hot reload nvim core config
-			{
-				"BufWritePost,FileWritePost",
-				"~/.config/nvim/*.lua",
-				[[source % | source $MYVIMRC | redraw! | PackerCompile]],
-			},
-		},
+		packer = {},
 		bufs = {
+			-- Reload vim config automatically
+			{ "BufWritePost", [[$VIM_PATH/{*.vim,*.yaml,vimrc} nested source $MYVIMRC | redraw]] },
 			{ "BufWritePre", "/tmp/*", "setlocal noundofile" },
 			{ "BufWritePre", "COMMIT_EDITMSG", "setlocal noundofile" },
 			{ "BufWritePre", "MERGE_MSG", "setlocal noundofile" },
