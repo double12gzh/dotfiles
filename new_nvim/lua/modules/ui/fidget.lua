@@ -4,17 +4,17 @@ local icons = {
 
 require("fidget").setup({
 	text = {
-		--spinner = {
-		--	[1] "⊚∙∙∙∙",
-		--	[2] "∙⊚∙∙∙",      (JeffreyGuan 1 week ago) init
-		--	[3] "∙∙⊚∙∙",
-		--	[4] "∙∙∙⊚∙",
-		--	[5] "∙∙∙∙⊚",
-		--	[6] "∙∙∙⊚∙",
-		--	[7] "∙∙⊚∙∙",
-		--	[8] "∙⊚∙∙∙",
-		--},
-		spinner = "pipe", -- animation shown when tasks are ongoing
+		spinner = {
+			"⊚∙∙∙∙",
+			"∙⊚∙∙∙",
+			"∙∙⊚∙∙",
+			"∙∙∙⊚∙",
+			"∙∙∙∙⊚",
+			"∙∙∙⊚∙",
+			"∙∙⊚∙∙",
+			"∙⊚∙∙∙",
+		},
+		--spinner = "pipe", -- animation shown when tasks are ongoing
 		done = icons.ui.Check, -- character shown when all tasks are complete
 		commenced = "Started", -- message shown when task starts
 		completed = "Completed", -- message shown when task completes
