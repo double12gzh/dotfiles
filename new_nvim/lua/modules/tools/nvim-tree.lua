@@ -20,6 +20,11 @@ require("nvim-tree").setup({
 	sort_by = "name",
 	update_cwd = true,
 	view = {
+		mappings = {
+			list = {
+				{ key = "<C-e>", action = "" },
+			},
+		},
 		adaptive_size = false,
 		centralize_selection = false,
 		width = 30,
