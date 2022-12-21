@@ -9,8 +9,8 @@ require("leap").opts.highlight_unlabeled_phase_one_targets = true
 -- vim.keymap.set("n", "s", "<Nop>", { noremap = false })
 -- vim.keymap.set("n", "S", "<Nop>", { noremap = false })
 
+require("leap").add_default_mappings()
 -- set x/X to original function
 vim.keymap.del({ "x", "o" }, "x")
 vim.keymap.del({ "x", "o" }, "X")
 
-require("leap").add_default_mappings()
