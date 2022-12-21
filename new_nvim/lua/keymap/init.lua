@@ -107,13 +107,10 @@ keymap("n", "<leader>tw", "<cmd>TroubleToggle workspace_diagnostics<cr>", opts)
 keymap("n", "<leader>tq", "<cmd>TroubleToggle quickfix<cr>", opts)
 keymap("n", "<leader>tl", "<cmd>TroubleToggle loclist<cr>", opts)
 
---- NeoTree
+--- NvimTree
 keymap("n", "<F2>", "<cmd>NvimTreeToggle<cr>", opts)
 keymap("n", "<leader>nf", "<cmd>NvimTreeFindFile<cr>", opts)
 keymap("n", "<leader>nr", "<cmd>NvimTreeRefresh<cr>", opts)
-
---- Undotree
-keymap("n", "<leader>u", "<cmd>UndotreeToggle<cr>", opts)
 
 --- accelerate-jk
 keymap("n", "j", "<Plug>(accelerated_jk_gj)", {})
