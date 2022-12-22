@@ -53,7 +53,8 @@ require("nvim-treesitter.configs").setup({
 	},
 	highlight = {
 		enable = true,
-		disable = {},
+		-- only use vim-go's highlight for go type files
+		disable = { "go" },
 		additional_vim_regex_highlighting = true,
 	},
 	indent = {
