@@ -11,14 +11,16 @@ dashboard.section.header.opts.hl = "Include"
 
 -- Buttons
 dashboard.section.buttons.val = {
-	dashboard.button("f", icons.documents.Files .. " Find file", "<cmd>Telescope find_files<cr>"),
+	dashboard.button("f", icons.ui.List .. " Find file", "<cmd>Telescope find_files<cr>"),
+	dashboard.button("w", icons.ui.Telescope .. " Find text", "<cmd>Telescope live_grep<cr>"),
+	dashboard.button("o", icons.ui.History .. " Recent files", "<cmd>Telescope oldfiles<cr>"),
+	dashboard.button("r", icons.ui.Sort .. " File frecency", "<cmd>Telescope frecency<cr>"),
 	dashboard.button("e", icons.ui.NewFile .. " New file", "<cmd>enew<cr>"),
-	dashboard.button("p", icons.git.Repo .. " Find project", "<cmd>Telescope project<cr>"),
-	dashboard.button("y", icons.ui.Sort .. " File frecency", "<cmd>Telescope frecency<cr>"),
-	dashboard.button("r", icons.ui.History .. " Recent files", "<cmd>Telescope oldfiles<cr>"),
-	dashboard.button("t", icons.ui.List .. " Find text", "<cmd>Telescope live_grep<cr>"),
 	dashboard.button("c", icons.ui.Gear .. " Config", "<cmd>e ~/.config/nvim/init.lua <cr>"),
 	dashboard.button("q", icons.ui.SignOut .. " Quit", "<cmd>qa<cr>"),
+	--dashboard.button("y", icons.ui.Sort .. " File frecency", "<cmd>Telescope frecency<cr>"),
+	--dashboard.button("p", icons.git.Repo .. " Find project", "<cmd>Telescope project<cr>"),
+	--dashboard.button("r", icons.ui.History .. " Recent files", "<cmd>Telescope oldfiles<cr>"),
 }
 dashboard.section.buttons.opts.hl = "Keyword"
 
@@ -30,12 +32,12 @@ local function footer()
 	local plugins_text = "    "
 		.. total_plugins
 		.. " plugins"
-		.. "   v"
-		.. vim.version().major
-		.. "."
-		.. vim.version().minor
-		.. "."
-		.. vim.version().patch
+		--.. "   v"
+		--.. vim.version().major
+		--.. "."
+		--.. vim.version().minor
+		--.. "."
+		--.. vim.version().patch
 		.. "   "
 		.. datetime
 
