@@ -79,7 +79,8 @@ require("lualine").setup({
 	options = {
 		icons_enabled = true,
 		-- theme = "kanagawa",
-		theme = vim.g.colors_name,
+		-- theme = vim.g.colors_name,
+		theme = "gruvbox-material",
 		disabled_filetypes = { "alpha", "dashboard", "NvimTree", "undotree", "neo-tree" },
 		component_separators = "|",
 		section_separators = { left = "", right = "" },
