@@ -73,7 +73,8 @@ local function load_options()
 		showmode = false,
 		showtabline = 2,
 		sidescrolloff = 5,
-		signcolumn = "yes",
+		-- setup left border
+		signcolumn = "auto", -- "auto", "yes", "no", "number"
 		smartcase = true,
 		smarttab = true,
 		softtabstop = 4,
