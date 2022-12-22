@@ -43,7 +43,11 @@ require("lspsaga").init_lsp_saga({
 	-- NOTE: <C-o> go to older position in jump list
 	-- NOTE: <C-i> go to newer position in jump list
 	finder_action_keys = {
-		open = "<CR>",
+		open = { "o", "<CR>" },
+		vsplit = "s",
+		split = "i",
+		tabe = "t",
+		quit = { "q", "<ESC>" },
 	},
 	-- use enter to open file with definition preview
 	definition_action_keys = {
