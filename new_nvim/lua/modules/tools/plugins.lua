@@ -81,7 +81,7 @@ tools["AckslD/nvim-neoclip.lua"] = {
 		require("modules.tools.neoclip")
 	end,
 }
-tools["kyazdani42/nvim-tree.lua"] = {
+tools["nvim-tree/nvim-tree.lua"] = {
 	opt = true,
 	cmd = {
 		"NvimTreeToggle",
@@ -244,8 +244,8 @@ tools["nvim-telescope/telescope-live-grep-args.nvim"] = {
 	after = "telescope.nvim",
 }
 tools["debugloop/telescope-undo.nvim"] = {
-    opt = true,
-    after = "telescope.nvim",
+	opt = true,
+	after = "telescope.nvim",
 }
 
 ----------------------------------------------------------------------
