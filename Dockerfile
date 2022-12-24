@@ -2,7 +2,7 @@ From alpine:latest
 
 COPY ./pip /root/.pip
 COPY ./luarocks /root/.luarocks
-COPY new_nvim /nvim
+COPY nvim /nvim
 
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
   apk add --update \
