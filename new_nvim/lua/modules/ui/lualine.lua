@@ -72,6 +72,7 @@ local function python_venv()
 end
 
 -- check your colorscheme in REPO/lua/lualine/themes/THEME.lua -> normal.b.bg
+-- if comment out these two line, fidget cannot display
 vim.api.nvim_set_hl(0, "SLGitIcon", { fg = "#E8AB53", bg = "#252535" })
 vim.api.nvim_set_hl(0, "SLBranchName", { fg = "#D4D4D4", bg = "#252535" })
 
@@ -81,7 +82,7 @@ require("lualine").setup({
 		-- theme = "kanagawa",
 		-- theme = vim.g.colors_name,
 		theme = "gruvbox-material",
-		disabled_filetypes = { "alpha", "dashboard", "NvimTree", "undotree", "neo-tree" },
+		disabled_filetypes = { "alpha", "dashboard", "NvimTree" },
 		component_separators = "|",
 		section_separators = { left = "", right = "" },
 		globalstatus = true,

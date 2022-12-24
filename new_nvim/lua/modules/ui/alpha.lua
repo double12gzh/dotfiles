@@ -18,7 +18,8 @@ dashboard.section.header.val = {
 	[[ ⠈⠓⠶⣶⣾⣿⣿⣿⣧⡀⠀⠈⠒⢤⣀⣀⡀⠀⠀⣀⣀⡠⠚⠁⠀⢀⡼⠃⠀⠀ ]],
 	[[ ⠀⠀⠀⠈⢿⣿⣿⣿⣿⣿⣷⣤⣤⣤⣤⣭⣭⣭⣭⣭⣥⣤⣤⣤⣴⣟⠁    ]],
 }
-dashboard.section.header.opts.hl = "Include"
+dashboard.section.header.opts.hl = "Boolean"
+--dashboard.section.header.opts.hl = "Include"
 
 -- Buttons
 dashboard.section.buttons.val = {
@@ -58,10 +59,10 @@ end
 dashboard.section.footer.val = footer()
 dashboard.section.footer.opts.hl = "Function"
 
-local head_butt_padding = 2
+local head_butt_padding = 1
 local occu_height = #dashboard.section.header.val + 2 * #dashboard.section.buttons.val + head_butt_padding
 local header_padding = math.max(0, math.ceil((vim.fn.winheight("$") - occu_height) * 0.25))
-local foot_butt_padding = 1
+local foot_butt_padding = 0
 
 dashboard.config.layout = {
 	{ type = "padding", val = header_padding },

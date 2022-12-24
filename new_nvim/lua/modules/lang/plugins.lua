@@ -30,13 +30,6 @@ lang["lukas-reineke/headlines.nvim"] = {
 		require("modules.lang.headlines")
 	end,
 }
--- lang["preservim/vim-markdown"] = {
--- 	opt = true,
--- 	ft = "markdown",
--- 	config = function()
--- 		require("modules.lang.markdown")
--- 	end,
--- }
 lang["jakewvincent/mkdnflow.nvim"] = {
 	opt = true,
 	ft = "markdown",

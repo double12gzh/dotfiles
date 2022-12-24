@@ -1,7 +1,7 @@
 vim.api.nvim_set_hl(0, "BLIndicatorIcon", { fg = "#E8AB53", bg = "NONE" })
 local icons = { ui = require("modules.ui.icons").get("ui") }
 
-require("bufferline").setup({
+local opts = {
 	options = {
 		mode = "buffers",
 		numbers = "none",
@@ -62,4 +62,6 @@ require("bufferline").setup({
 		--   return buffer_a.modified > buffer_b.modified
 		-- end
 	},
-})
+}
+
+require("bufferline").setup(opts)

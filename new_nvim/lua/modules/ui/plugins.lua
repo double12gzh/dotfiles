@@ -57,15 +57,6 @@ ui["sainnhe/gruvbox-material"] = {
 		require("modules.ui.gruvbox-material")
 	end,
 }
--- ui["ellisonleao/gruvbox.nvim"] = {
--- 	opt = true,
--- 	config = function()
--- 		require("modules.ui.gruvbox")
--- 	end,
--- }
--- ui["sainnhe/everforest"] = {
--- 	opt = true,
--- }
 ui["kevinhwang91/nvim-hlslens"] = {
 	opt = true,
 	module = "hlslens",
@@ -80,12 +71,6 @@ ui["lukas-reineke/indent-blankline.nvim"] = {
 	after = "nvim-treesitter",
 	config = function()
 		require("modules.ui.indent-blankline")
-	end,
-}
-ui["rebelot/kanagawa.nvim"] = {
-	opt = false,
-	config = function()
-		require("modules.ui.kanagawa")
 	end,
 }
 ui["hoob3rt/lualine.nvim"] = {

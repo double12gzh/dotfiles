@@ -2,14 +2,6 @@ local global = require("core.global")
 
 local function load_options()
 	local global_local = {
-		-- backupdir = global.cache_dir .. "backup/",
-		-- directory = global.cache_dir .. "swap/",
-		-- pumblend = 50,
-		-- spell = true,
-		-- spellfile = global.cache_dir .. "spell/en.uft-8.add",
-		-- spelllang = "en_us",
-		-- viewdir = global.cache_dir .. "view/",
-		-- winblend = 50,
 		autoindent = true,
 		autoread = true,
 		autowrite = true,

@@ -1,9 +1,8 @@
+local wilder = require("wilder")
 local icons = { ui = require("modules.ui.icons").get("ui") }
 
-local wilder = require("wilder")
 wilder.setup({ modes = { ":", "/", "?" } })
 wilder.set_option("use_python_remote_plugin", 0)
-
 wilder.set_option("pipeline", {
 	wilder.branch(
 		wilder.cmdline_pipeline({
@@ -28,21 +27,17 @@ wilder.set_option("pipeline", {
 	),
 })
 
-local highlighters = {
-	wilder.lua_fzy_highlighter(),
-	wilder.basic_highlighter(),
-}
+local match_hl = require("utils").hlToRgb("String", false)
 
 local popupmenu_renderer = wilder.popupmenu_renderer(wilder.popupmenu_border_theme({
 	max_height = "25%",
-	border = "double",
+	border = "rounded",
 	highlights = {
 		border = "Title", -- highlight to use for the border
-		-- accent = wilder.make_hl("WilderAccent", "Pmenu", { { a = 0 }, { a = 0 }, { foreground = "#a7c080" } }),
-		accent = wilder.make_hl("WilderAccent", "Pmenu", { { a = 0 }, { a = 0 }, { foreground = "#20e672" } }),
+		accent = wilder.make_hl("WilderAccent", "Pmenu", { { a = 0 }, { a = 0 }, { foreground = match_hl } }),
 	},
 	empty_message = wilder.popupmenu_empty_message_with_spinner(),
-	highlighter = highlighters,
+	highlighter = wilder.lua_fzy_highlighter(),
 	left = {
 		" ",
 		wilder.popupmenu_devicons(),
@@ -58,7 +53,7 @@ local popupmenu_renderer = wilder.popupmenu_renderer(wilder.popupmenu_border_the
 }))
 
 local wildmenu_renderer = wilder.wildmenu_renderer({
-	highlighter = highlighters,
+	highlighter = wilder.lua_fzy_highlighter(),
 	apply_incsearch_fix = true,
 	separator = " · ",
 	left = { " ", wilder.wildmenu_spinner(), " " },
@@ -71,6 +66,5 @@ wilder.set_option(
 		[":"] = popupmenu_renderer,
 		["/"] = wildmenu_renderer,
 		substitute = wildmenu_renderer,
-		-- pumblend = 50,
 	})
 )

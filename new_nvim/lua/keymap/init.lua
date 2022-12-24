@@ -1,4 +1,4 @@
-local keymap = vim.keymap.set
+local keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true, nowait = true }
 
 -- Plugin keymaps
@@ -60,7 +60,8 @@ keymap("n", "g[", "<cmd>Lspsaga diagnostic_jump_prev<cr>", opts)
 keymap("n", "g]", "<cmd>Lspsaga diagnostic_jump_next<cr>", opts)
 keymap("n", "gr", "<cmd>Lspsaga rename<cr>", opts)
 keymap("n", "K", "<cmd>Lspsaga hover_doc<cr>", opts)
-keymap({ "n", "v" }, "ga", "<cmd>Lspsaga code_action<cr>", opts)
+keymap("n", "ga", "<cmd>Lspsaga code_action<cr>", opts)
+keymap("v", "ga", "<cmd>Lspsaga code_action<cr>", opts)
 keymap("n", "gD", "<cmd>Lspsaga peek_definition<cr>", opts)
 keymap("n", "gh", "<cmd>Lspsaga lsp_finder<cr>", opts)
 keymap("n", "gl", "<cmd>Lspsaga show_line_diagnostics<cr>", opts)
@@ -146,7 +147,7 @@ keymap("n", "<esc>", "<cmd>noh<cr>", opts)
 -- "<leader>cf" to use comment-frame
 
 --- ssr.nvim, structural search and replace
-keymap({ "n", "x" }, "<leader>sr", function()
+vim.keymap.set({ "n", "x" }, "<leader>sr", function()
 	require("ssr").open()
 end, { desc = "structural search and replace." })
 
@@ -174,11 +175,33 @@ end, { desc = "structural search and replace." })
 -- <CR> on an empty list marker to end the list.
 
 --- dial
-keymap({ "n", "v" }, "<leader>=", "<Plug>(dial-increment)", { noremap = true })
-keymap({ "n", "v" }, "<leader>-", "<Plug>(dial-decrement)", { noremap = true })
+keymap("n", "<leader>=", "<Plug>(dial-increment)", { noremap = true })
+keymap("v", "<leader>=", "<Plug>(dial-increment)", { noremap = true })
+keymap("n", "<leader>-", "<Plug>(dial-decrement)", { noremap = true })
+keymap("v", "<leader>-", "<Plug>(dial-decrement)", { noremap = true })
 
 --- regexplainer
 -- "<leader>gR" to toggle regexplainer
 
 --- leap.nvim
 -- "s/S", "f/F", "t/T" to use leap
+
+--- nabla
+keymap("n", "<leader>mp", "<cmd>lua require('nabla').popup('rounded')<cr>", opts)
+
+-- Visual Selection from Normal Mode
+keymap("n", "vx", "<cmd>STSSelectMasterNode<cr>", opts)
+keymap("n", "vn", "<cmd>STSSelectCurrentNode<cr>", opts)
+
+-- Select Nodes in Visual Mode
+keymap("x", "[", "<cmd>STSSelectPrevSiblingNode<cr>", opts)
+keymap("x", "]", "<cmd>STSSelectNextSiblingNode<cr>", opts)
+keymap("x", "=", "<cmd>STSSelectParentNode<cr>", opts)
+keymap("x", "-", "<cmd>STSSelectChildNode<cr>", opts)
+
+-- Targeted Jump with virtual_text, placed in tree-surfer.lua
+-- "gv", jump to variable_declarations(only within visible window)
+-- "gfu", jump to functions
+-- "gif", jump to if-statements
+-- "gfo", jump to for-statements
+-- "gj", jump to certain nodes
