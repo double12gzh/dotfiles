@@ -1,15 +1,22 @@
-<[h1](2022-12-24_h1.md) align="center">
+<h1 align="center">
     dotfiles
 </h1>
 
 
 ---
+# Tmux
 
-# 🎐 Nvim
+# VIM
+
+# Alacritty
+
+# DLV
+
+# Nvim
 
 <p align="center">
   <img src="https://github.com/double12gzh/.dotfiles/raw/main/.github/images/startup.png"
-  width = "90%"
+  width = "70%"
   />
 </p>
 
@@ -23,7 +30,7 @@ Tested with [dstein64/vim-startuptime](https://github.com/dstein64/vim-startupti
 
 <p align="center">
   <img src="https://github.com/double12gzh/.dotfiles/raw/main/.github/images/startuptime-2.png"
-  width = "60%"
+  width = "70%"
   />
 </p>
 
