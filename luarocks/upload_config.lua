@@ -1,3 +1,3 @@
 rocks_servers = {
-│ │ "https://luarocks.cn"
+	"https://luarocks.cn",
 }
