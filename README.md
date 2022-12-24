@@ -8,13 +8,13 @@
 # 🎐 Nvim
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/double12gzh/.dotfiles/main/.github/images/starup.png"
+  <img src="https://github.com/double12gzh/.dotfiles/raw/main/.github/images/startup.png"
   width = "90%"
   />
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/double12gzh/.dotfiles/main/.github/images/startuptime-1.png"
+  <img src="https://github.com/double12gzh/.dotfiles/raw/main/.github/images/startuptime-1.png"
   width = "70%"
   />
 </p>
@@ -22,7 +22,7 @@
 Tested with [dstein64/vim-startuptime](https://github.com/dstein64/vim-startuptime) plugin.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/double12gzh/.dotfiles/main/.github/images/startuptime-2.png"
+  <img src="https://github.com/double12gzh/.dotfiles/raw/main/.github/images/startuptime-2.png"
   width = "60%"
   />
 </p>
