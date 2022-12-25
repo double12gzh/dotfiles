@@ -93,8 +93,7 @@ require("lualine").setup({
 			{
 				"branch",
 				icons_enabled = true,
-				-- icon = "",
-				icon = "%#SLGitIcon#" .. icons.git.Branch .. "%*" .. "%#SLBranchName#",
+				icon = icons.git.Branch,
 			},
 			{ "diff", source = diff_source },
 		},
