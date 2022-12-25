@@ -2,15 +2,15 @@
     dotfiles
 </h1>
 
-# Tmux
+# tmux
 
-# VIM
+# vim
 
-# Alacritty
+# alacritty
 
-# DLV
+# dlv
 
-# Nvim
+# nvim
 
 <p align="center">
   <img src="https://github.com/double12gzh/.dotfiles/raw/main/.github/images/startup.png"
