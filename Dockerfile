@@ -1,7 +1,7 @@
 From alpine:latest
 
-COPY ./pip /root/.pip
-COPY ./luarocks /root/.luarocks
+COPY ./config/pip /root/.pip
+COPY ./config/luarocks /root/.luarocks
 COPY nvim /nvim
 
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
