@@ -113,8 +113,8 @@ require("which-key").register({
 	},
 	["]g"] = "git: Goto next hunk",
 	["[g"] = "git: Goto prev hunk",
-	["g["] = "lsp: Goto prev diagnostic",
-	["g]"] = "lsp: Goto next diagnostic",
+	["e["] = "lsp: Goto prev diagnostic",
+	["e]"] = "lsp: Goto next diagnostic",
 	--- nvim-surround
 	["gz"] = "surround: Add surround",
 	["gZ"] = "surround: Add surround around line",

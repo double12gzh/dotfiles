@@ -24,11 +24,12 @@ require("illuminate").configure({
 		"spectre_panel",
 		"toggleterm",
 	},
-	under_cursor = false,
+	under_cursor = true,
 	large_file_cutoff = 2000,
 })
 
 -- illuminate setting
-vim.api.nvim_set_hl(0, "IlluminatedWordText", { underline = true })
-vim.api.nvim_set_hl(0, "IlluminatedWordRead", { underline = true })
-vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { underline = true })
+-- disable the followings inorder to support grey highlight for word under cursor
+--vim.api.nvim_set_hl(0, "IlluminatedWordText", { underline = true })
+--vim.api.nvim_set_hl(0, "IlluminatedWordRead", { underline = true })
+--vim.api.nvim_set_hl(0, "IlluminatedWordWrite", { underline = true })

@@ -32,6 +32,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
   unibilium \
   neovim && \
   pip3 install --user neovim pep8 && \
+  go install github.com/jesseduffield/lazygit@latest && \
   mkdir /root/.config && \
   ln -s /nvim /root/.config/nvim && \
   #curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh && \

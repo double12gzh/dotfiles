@@ -56,8 +56,9 @@ keymap("n", "<A-9>", "<cmd>ufferLineGoToBuff 9", opts)
 --keymap("n", "<leader>li", "<cmd>LspInfo<cr>", opts)
 --keymap("n", "<leader>lr", "<cmd>LspRestart<cr>", opts)
 keymap("n", "<F3>", "<cmd>Lspsaga outline<cr>", opts)
-keymap("n", "g[", "<cmd>Lspsaga diagnostic_jump_prev<cr>", opts)
-keymap("n", "g]", "<cmd>Lspsaga diagnostic_jump_next<cr>", opts)
+-- Diagnostic jump can use `<c-o>` to jump back
+keymap("n", "e[", "<cmd>Lspsaga diagnostic_jump_prev<cr>", opts)
+keymap("n", "e]", "<cmd>Lspsaga diagnostic_jump_next<cr>", opts)
 keymap("n", "gr", "<cmd>Lspsaga rename<cr>", opts)
 keymap("n", "K", "<cmd>Lspsaga hover_doc<cr>", opts)
 keymap("n", "ga", "<cmd>Lspsaga code_action<cr>", opts)
@@ -73,20 +74,23 @@ keymap("n", "gt", "<cmd>lua vim.lsp.buf.type_definition()<cr>", opts)
 -- keymap("n", "gDL", "<cmd>lua vim.diagnostic.setloclist()<cr>", opts) -- use trouble.nvim instead
 -- keymap("n", "gQL", "<cmd>lua vim.diagnostic.setqflist()<cr>", opts) -- use trouble.nvim instead
 
---- Toggleterm
--- "Ctrl+ \" to open toggleterm
+-- install lazygit: https://github.com/jesseduffield/lazygit#keybindings
 keymap("n", "<leader>lg", "<cmd>lua _LAZYGIT_TOGGLE()<cr>", opts)
+
+-- Toggleterm
+-- "Ctrl+ \" to open toggleterm
 keymap("n", "<C-\\>", "<cmd>ToggleTerm direction=horizontal<cr>", opts)
 keymap("i", "<C-\\>", "<Esc><Cmd>ToggleTerm direction=horizontal<CR>", opts)
 keymap("t", "<C-\\>", "<Esc><Cmd>ToggleTerm<CR>", opts)
---keymap("n", "<F4>", "<Esc><Cmd>ToggleTerm direction=vertical<CR>", opts)
-keymap("n", "<F4>", "<cmd>ToggleTerm direction=vertical<cr>", opts)
+keymap("n", "<F4>", "<cmd>ToggleTerm direction=vertical<CR>", opts)
 keymap("i", "<F4>", "<Esc><Cmd>ToggleTerm direction=vertical<CR>", opts)
 keymap("t", "<F4>", "<Esc><Cmd>ToggleTerm<CR>", opts)
-keymap("n", "<A-d>", "<cmd>ToggleTerm direction=float<cr>", opts)
---keymap("n", "<A-d>", "<Esc><Cmd>ToggleTerm direction=float<CR>", opts)
+keymap("n", "<A-d>", "<cmd>ToggleTerm direction=float<CR>", opts)
 keymap("i", "<A-d>", "<Esc><Cmd>ToggleTerm direction=float<CR>", opts)
 keymap("t", "<A-d>", "<Esc><Cmd>ToggleTerm<CR>", opts)
+keymap("n", "<S-A-d>", "<cmd>ToggleTerm direction=horizontal<CR>", opts)
+keymap("i", "<S-A-d>", "<Esc><Cmd>ToggleTerm direction=horizontal<CR>", opts)
+keymap("t", "<S-A-d>", "<Esc><cmd>ToggleTerm<CR>", opts)
 
 --- Tmux.nvim
 -- Move from Nvim windows to tmux panes
@@ -131,12 +135,10 @@ keymap("n", "<leader><leader>dv", "<cmd>DiffviewClose<cr>", opts)
 --- Legendary
 keymap("n", "<A-p>", "<cmd>Legendary<cr>", opts)
 
---- hlslens
-keymap("n", "n", [[<cmd>execute('normal! ' . v:count1 . 'n')<cr><cmd>lua require('hlslens').start()<cr>zz]], opts)
-keymap("n", "N", [[<cmd>execute('normal! ' . v:count1 . 'N')<cr><cmd>lua require('hlslens').start()<cr>zz]], opts)
-keymap("n", "*", [[*<cmd>lua require('hlslens').start()<cr>zz]], opts)
-keymap("n", "#", [[#<cmd>lua require('hlslens').start()<cr>zz]], opts)
-keymap("n", "<esc>", "<cmd>noh<cr>", opts)
+keymap("n", "n", "nzz", opts)
+keymap("n", "N", "Nzz", opts)
+keymap("n", "*", "*zz", opts)
+keymap("n", "#", "#zz", opts)
 
 --- Packer
 --keymap("n", "<leader>pc", "<cmd>PackerCompile<cr>", opts)

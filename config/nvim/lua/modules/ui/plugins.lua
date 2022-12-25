@@ -57,14 +57,6 @@ ui["sainnhe/gruvbox-material"] = {
 		require("modules.ui.gruvbox-material")
 	end,
 }
-ui["kevinhwang91/nvim-hlslens"] = {
-	opt = true,
-	module = "hlslens",
-	keys = { "/", "?", "*", "#" }, --'n', 'N', '*', '#', 'g'
-	config = function()
-		require("modules.ui.hlslens")
-	end,
-}
 ui["lukas-reineke/indent-blankline.nvim"] = {
 	opt = true,
 	event = "BufReadPost",
@@ -89,7 +81,8 @@ ui["zbirenbaum/neodim"] = {
 }
 ui["romainl/vim-cool"] = {
 	opt = true,
-	after = { "nvim-hlslens" },
+	event = { "CursorMoved", "InsertEnter" },
+	-- after = { "nvim-hlslens" },
 }
 ui["rcarriga/nvim-notify"] = {
 	opt = true,
