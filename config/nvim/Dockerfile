@@ -1,8 +1,8 @@
 From alpine:latest
 
-COPY ./config/pip /root/.pip
-COPY ./config/luarocks /root/.luarocks
-COPY nvim /nvim
+COPY ../config/pip /root/.pip
+COPY ../config/luarocks /root/.luarocks
+COPY ../config/nvim /nvim
 
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
   apk add --update \
