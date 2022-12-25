@@ -103,13 +103,6 @@ ui["kyazdani42/nvim-web-devicons"] = {
 	opt = true,
 	module = "nvim-web-devicons",
 }
--- ui["anuvyklack/pretty-fold.nvim"] = { -- not using fold ATM
--- 	opt = true,
--- 	after = { "nvim-treesitter" },
--- 	config = function()
--- 		require("modules.ui.pretty-fold")
--- 	end,
--- }
 ui["petertriho/nvim-scrollbar"] = {
 	opt = true,
 	event = "BufReadPost",
@@ -118,14 +111,6 @@ ui["petertriho/nvim-scrollbar"] = {
 		require("modules.ui.scrollbar")
 	end,
 }
--- ui["folke/styler.nvim"] = {
--- 	opt = true,
--- 	event = "BufReadPost",
--- 	cmd = "Styler",
--- 	config = function()
--- 		require("modules.ui.styler")
--- 	end,
--- }
 ui["levouh/tint.nvim"] = {
 	opt = true,
 	event = { "BufReadPost" },
