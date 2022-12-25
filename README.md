@@ -2,8 +2,6 @@
     dotfiles
 </h1>
 
-
----
 # Tmux
 
 # VIM
