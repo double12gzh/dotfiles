@@ -110,7 +110,7 @@ require("lspsaga").init_lsp_saga({
 	},
 	symbol_in_winbar = {
 		in_custom = true,
-		enable = true,
+		enable = false,
 		separator = " " .. icons.ui.DoubleSeparator,
 		show_file = true,
 		click_support = function(node, clicks, button, modifiers)
@@ -135,5 +135,10 @@ require("lspsaga").init_lsp_saga({
 				vim.fn.cursor(en.line + 1, en.character + 1)
 			end
 		end,
+	},
+	show_outline = {
+		jump_key = "<CR>",
+		auto_refresh = true,
+		auto_enter = false,
 	},
 })
