@@ -143,7 +143,8 @@ local load_core = function()
 	require("core.event")
 
 	pack.load_compile()
-	vim.api.nvim_command([[colorscheme gruvbox-material]])
+	-- remove to speedup startup
+	--vim.api.nvim_command([[colorscheme gruvbox-material]])
 end
 
 load_core()
