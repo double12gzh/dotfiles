@@ -21,6 +21,8 @@ keymap("n", "<leader>do", "<cmd>lua require('dap').step_out()<cr>", opts)
 keymap("n", "<leader>dl", "<cmd>lua require('dap').repl.open()<cr>", opts)
 
 --- Telescope
+keymap("n", "<leader>fu", "<cmd>lua require('telescope').extensions.undo.undo()<cr>", opts)
+keymap("n", "<leader>fb", "<cmd>Telescope buffers<cr>", opts)
 keymap("n", "<leader>fp", "<cmd>lua require('telescope').extensions.projects.projects{}<cr>", opts)
 keymap("n", "<leader>fr", "<cmd>lua require('telescope').extensions.frecency.frecency{}<cr>", opts)
 keymap("n", "<leader>fw", "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args{}<cr>", opts)
@@ -207,3 +209,7 @@ keymap("x", "-", "<cmd>STSSelectChildNode<cr>", opts)
 -- "gif", jump to if-statements
 -- "gfo", jump to for-statements
 -- "gj", jump to certain nodes
+
+-- SnipRun
+keymap("n", "<leader>r", "<cmd>SnipRun<cr>", opts)
+keymap("v", "<leader>r", "<cmd>%SnipRun<cr>", opts)

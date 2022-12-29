@@ -42,6 +42,7 @@ require("which-key").register({
 		},
 		f = {
 			name = "Telescope commands",
+			b = "find: Opened Buffer",
 			p = "find: Project",
 			w = "find: Word",
 			r = "find: File by frecency",
