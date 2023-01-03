@@ -1,8 +1,8 @@
 From alpine:latest
 
-COPY ../config/pip /root/.pip
-COPY ../config/luarocks /root/.luarocks
-COPY ../config/nvim /nvim
+COPY ../pip /root/.pip
+COPY ../luarocks /root/.luarocks
+COPY ../nvim /nvim
 
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
   apk add --update \
@@ -37,6 +37,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
   mkdir /root/.config && \
   ln -s /nvim /root/.config/nvim && \
   curl https://sh.rustup.rs -sSf | sh -s -- -y && \
+  source "$HOME/.cargo/env" && \
   #curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh && \
   #nvim +PackerSync && \
   rm -rf /var/cache/apk/*
