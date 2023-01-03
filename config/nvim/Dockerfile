@@ -36,6 +36,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
   go install github.com/jesseduffield/lazygit@latest && \
   mkdir /root/.config && \
   ln -s /nvim /root/.config/nvim && \
+  curl https://sh.rustup.rs -sSf | sh -s -- -y && \
   #curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh && \
   #nvim +PackerSync && \
   rm -rf /var/cache/apk/*
