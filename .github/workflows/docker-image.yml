@@ -15,4 +15,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build ./config/nvim/. --file Dockerfile --tag double12gzh/nvim:$(date +%s)
+      run: docker build ./config/nvim/. --file ./config/nvim/Dockerfile --tag double12gzh/nvim:$(date +%s)
