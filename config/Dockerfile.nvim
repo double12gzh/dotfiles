@@ -51,14 +51,8 @@ RUN apk add --update \
   source "$HOME/.cargo/env" && \
   #nvim +PackerSync && \
   rm -rf /var/cache/apk/*
-  
-RUN nvim --headless +PackerInstall +qall
-RUN nvim --headless +PackerUpdate +qall
-RUN nvim --headless +PackerSync +qall
-RUN nvim --headless +PackerUpdate +qall
 
-## Once Packer has install all packages, then update lua init file
-RUN nvim --headless -c 'autocmd User PackerComplete quitall' -c 'silent PackerSync'
-RUN nvim --headless +"sleep 5" +"silent TSInstall go python bash" +"silent LspInstall go python" +"silent LspInstall bash" +"sleep 60" +qa
+RUN nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' && \
+  nvim --headless -c 'TSUpdateSync' -c 'sleep 20' -c 'qa'
 
 RUN nvim +GoInstallBinaries +qall
