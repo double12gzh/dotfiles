@@ -26,6 +26,9 @@ RUN apk add --update \
   python3-dev \
   py3-pip \
   clang \
+  nodejs \
+  nodejs-dev \
+  nodejs-doc \
   go \
   fzf \
   nodejs \
