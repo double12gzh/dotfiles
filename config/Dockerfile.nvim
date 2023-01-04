@@ -52,5 +52,5 @@ RUN apk add --update \
   #nvim +PackerSync && \
   rm -rf /var/cache/apk/*
   
-RUN nvim --headless -c 'GoInstallBinaries' -c qall
+RUN nvim --headless +GoInstallBinaries +qa
 RUN nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' -c 'sleep 60' -c 'qa'
