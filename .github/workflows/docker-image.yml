@@ -54,5 +54,5 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           # 给清单打上多个标签
           tags: |
-            double12gzh/nvim:${{ steps.date.outputs.today }}
-            double12gzh/nvim:latest
+            double12gzh/neovim:${{ steps.date.outputs.today }}
+            double12gzh/neovim:latest
