@@ -37,7 +37,7 @@ keymap("n", "<leader>fz", "<cmd>Telescope zoxide list<cr>", opts)
 
 --- bufdelete.nvim
 keymap("n", "<leader>bq", "<cmd>BufDel<cr>", opts)
---keymap("n", "<leader>bp", "<cmd>BufferLinePick<cr>", opts)
+keymap("n", "<leader>bp", "<cmd>BufferLinePick<cr>", opts)
 
 --- BufferLine
 keymap("n", "<A-l>", "<cmd>BufferLineCycleNext<cr>", opts)
