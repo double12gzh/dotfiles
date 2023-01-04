@@ -36,8 +36,8 @@ keymap("n", "<leader>fg", "<cmd>Telescope git_files<cr>", opts)
 keymap("n", "<leader>fz", "<cmd>Telescope zoxide list<cr>", opts)
 
 --- bufdelete.nvim
-keymap("n", "<leader>bq", "<cmd>Bwipeout<cr>", opts)
-keymap("n", "<leader>bp", "<cmd>BufferLinePick<cr>", opts)
+keymap("n", "<leader>bq", "<cmd>BufDel<cr>", opts)
+--keymap("n", "<leader>bp", "<cmd>BufferLinePick<cr>", opts)
 
 --- BufferLine
 keymap("n", "<A-l>", "<cmd>BufferLineCycleNext<cr>", opts)
@@ -123,6 +123,10 @@ keymap("n", "<leader>nr", "<cmd>NvimTreeRefresh<cr>", opts)
 --- accelerate-jk
 keymap("n", "j", "<Plug>(accelerated_jk_gj)", {})
 keymap("n", "k", "<Plug>(accelerated_jk_gk)", {})
+
+--- comment-frame
+keymap("n", "<leader>cf", "<cmd>lua require('nvim-comment-frame').add_comment()<cr>", {})
+keymap("n", "<leader>cF", "<cmd>lua require('nvim-comment-frame').add_multiline_comment()<cr>", {})
 
 --- MarkdownPreview
 keymap("n", "<F12>", "<cmd>MarkdownPreviewToggle<cr>", opts)

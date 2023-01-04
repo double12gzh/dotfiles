@@ -16,7 +16,8 @@ editor["max397574/better-escape.nvim"] = {
 }
 editor["s1n7ax/nvim-comment-frame"] = {
 	opt = true,
-	after = "nvim-treesitter",
+	event = "BufReadPost",
+	requires = "nvim-treesitter/nvim-treesitter",
 	branch = "bug/10",
 	config = function()
 		require("modules.editor.comment-frame")
@@ -25,6 +26,7 @@ editor["s1n7ax/nvim-comment-frame"] = {
 editor["numToStr/Comment.nvim"] = {
 	opt = true,
 	event = "BufReadPost",
+	requires = "nvim-treesitter/nvim-treesitter",
 	config = function()
 		require("modules.editor.comment")
 	end,
@@ -116,6 +118,7 @@ editor["cshuaimin/ssr.nvim"] = {
 	opt = true,
 	event = "BufReadPost",
 	module = "ssr",
+	requires = "nvim-treesitter/nvim-treesitter",
 	config = function()
 		require("modules.editor._ssr")
 	end,
@@ -136,9 +139,9 @@ editor["andymass/vim-matchup"] = {
 	cmd = { "MatchupWhereAmI" },
 	after = "nvim-treesitter",
 }
-editor["famiu/bufdelete.nvim"] = {
+editor["ojroques/nvim-bufdel"] = {
 	opt = true,
-	cmd = { "Bdelete", "Bwipeout", "Bdelete!", "Bwipeout!" },
+	event = "BufReadPost",
 }
 editor["sindrets/diffview.nvim"] = {
 	opt = true,
@@ -184,10 +187,6 @@ editor["nvim-treesitter/nvim-treesitter"] = {
 	opt = true,
 	run = ":TSUpdate",
 	event = "BufReadPost",
-	module = {
-		"nvim-treesitter",
-		"nvim-treesitter.parsers",
-	},
 	config = function()
 		require("modules.editor.treesitter")
 	end,

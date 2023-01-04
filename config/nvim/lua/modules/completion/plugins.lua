@@ -52,13 +52,12 @@ completion["ray-x/lsp_signature.nvim"] = {
 	after = "nvim-lspconfig",
 }
 completion["hrsh7th/nvim-cmp"] = {
-	event = "BufReadPost",
-	after = { "LuaSnip" },
+	event = "InsertEnter",
 	-- module = "cmp",
 	requires = {
 		{ "onsails/lspkind.nvim", opt = true, module = "lspkind" },
 		{ "lukas-reineke/cmp-under-comparator", opt = true, module = "cmp-under-comparator" },
-		{ "saadparwaiz1/cmp_luasnip", after = { "nvim-cmp", "LuaSnip" } },
+		{ "saadparwaiz1/cmp_luasnip", after = "LuaSnip" },
 		{ "hrsh7th/cmp-nvim-lsp", after = "nvim-cmp", opt = true },
 		{ "hrsh7th/cmp-nvim-lua", after = "nvim-cmp", opt = true },
 		{ "andersevenrud/cmp-tmux", after = "nvim-cmp", opt = true },
@@ -74,7 +73,7 @@ completion["hrsh7th/nvim-cmp"] = {
 }
 completion["L3MON4D3/LuaSnip"] = {
 	opt = true,
-	event = "BufReadPost",
+	after = "nvim-cmp",
 	module = {
 		"luasnip.loaders.from_vscode",
 		"luasnip.loaders.from_lua",
@@ -104,7 +103,6 @@ completion["zbirenbaum/copilot.lua"] = {
 completion["zbirenbaum/copilot-cmp"] = {
 	after = "copilot.lua",
 	module = "copilot_cmp",
-	requires = "hrsh7th/nvim-cmp",
 	config = function()
 		require("modules.completion.copilot-cmp")
 	end,
