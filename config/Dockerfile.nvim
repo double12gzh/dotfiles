@@ -1,11 +1,18 @@
 From alpine:latest
 
-COPY pip /root/.pip
-COPY luarocks /root/.luarocks
+# GFW？ Comment out the following comments 
+# {{
+# COPY pip /root/.pip
+# COPY luarocks /root/.luarocks
+# }}
+
 COPY nvim /nvim
 
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
-  apk add --update \
+# GFW? Comment out the following comments 
+# {{
+# RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
+# }}
+RUN apk add --update \
   git \
   alpine-sdk build-base\
   libtool \
@@ -38,6 +45,22 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
   ln -s /nvim /root/.config/nvim && \
   curl https://sh.rustup.rs -sSf | sh -s -- -y && \
   source "$HOME/.cargo/env" && \
-  #curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh && \
   #nvim +PackerSync && \
   rm -rf /var/cache/apk/*
+  
+RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
+    ~/.fzf/install
+
+RUN git clone --depth 1 https://github.com/wbthomason/packer.nvim\
+ ~/.local/share/nvim/site/pack/packer/start/packer.nvim
+
+RUN nvim --headless +PackerInstall +qall
+RUN nvim --headless +PackerUpdate +qall
+RUN nvim --headless +PackerSync +qall
+RUN nvim --headless +PackerUpdate +qall
+
+## Once Packer has install all packages, then update lua init file
+RUN nvim --headless -c 'autocmd User PackerComplete quitall' -c 'silent PackerSync'
+RUN nvim --headless +"sleep 5" +"silent TSInstall go python bash" +"silent LspInstall go python" +"silent LspInstall bash" +"sleep 60" +qa
+
+RUN nvim +GoInstallBinaries +qall
