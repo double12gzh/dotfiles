@@ -47,6 +47,7 @@ RUN apk add --update \
   sqlite-dev \
   coreutils \
   zsh \
+  tree-sitter-cli \
   neovim && \
   pip3 install --user neovim pep8 black isort beautysh && \
   npm install -g @fsouza/prettierd && \
