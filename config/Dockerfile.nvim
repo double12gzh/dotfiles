@@ -64,6 +64,7 @@ RUN apk add --update \
   source "$HOME/.cargo/env" && \
   cargo install stylua && \
   cargo install cbfmt && \
+  cargo install tree-sitter-cli && \
   #nvim +PackerSync && \
   rm -rf /var/cache/apk/*
 
