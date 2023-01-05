@@ -69,4 +69,5 @@ RUN apk add --update \
 RUN nvim --headless +GoInstallBinaries +qa
 RUN nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' -c 'sleep 60' -c 'qa'
 
-COPY sqlite3.dll /root/.config/sqlite3.dll
+#https://www.sqlite.org/2022/sqlite-dll-win64-x64-3400100.zip
+#cp sqlite3.dll /root/.config/sqlite3.dll
