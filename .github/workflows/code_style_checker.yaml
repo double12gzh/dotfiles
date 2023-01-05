@@ -1,4 +1,4 @@
-name: ci
+name: code_style_checker
 on: [push, pull_request]
 
 jobs:
