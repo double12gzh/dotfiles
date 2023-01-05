@@ -1,4 +1,4 @@
-From alpine:latest
+From alpine:v3.15
 
 # GFW？ Comment out the following comments 
 # {{
