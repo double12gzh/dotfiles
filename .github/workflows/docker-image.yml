@@ -4,8 +4,10 @@ name: build docker image
 # Controls when the action will run.
 on:
   push:
-    branches:
-      - main
+    # branches:
+    #  - main
+    tags:
+      - "release-*"
 
   workflow_dispatch:
     inputs:
