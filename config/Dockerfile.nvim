@@ -48,13 +48,21 @@ RUN apk add --update \
   coreutils \
   zsh \
   neovim && \
-  pip3 install --user neovim pep8 && \
+  pip3 install --user neovim pep8 black isort beautysh && \
+  npm install -g @fsouza/prettierd && \
+  npm install -g eslint_d && \
+  npm install -g write-good && \
+  npm install -g neovim && \
+  npm install -g markdownlint --save-dev && \
   # enable lazygit
   go install github.com/jesseduffield/lazygit@latest && \
+  go install mvdan.cc/sh/v3/cmd/shfmt@latest && \
   mkdir /root/.config && \
   ln -s /nvim /root/.config/nvim && \
   curl https://sh.rustup.rs -sSf | sh -s -- -y && \
   source "$HOME/.cargo/env" && \
+  cargo install stylua && \
+  cargo install cbfmt && \
   #nvim +PackerSync && \
   rm -rf /var/cache/apk/*
 
