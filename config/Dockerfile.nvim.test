@@ -8,6 +8,7 @@ From alpine:3.15
 
 COPY nvim /nvim
 ENV PATH = "/usr/local/go/bin:/root/.go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/root/.cargo/bin:${PATH}"
+ENV GOPATH = "/usr/local/go"
 
 # GFW? Comment out the following comments 
 # {{
@@ -57,6 +58,7 @@ RUN apk add --update \
   npm install -g neovim && \
   npm install -g markdownlint --save-dev && \
   wget -O /tmp/go.tar.gz https://go.dev/dl/go1.18.9.linux-amd64.tar.gz && tar -xzvf /tmp/go.tar.gz -C /usr/local/ && \
+	chmod a+x /usr/local/go/bin/go && ln -s /usr/local/go/bin/go /usr/local/bin/go
   # enable lazygit
   go install github.com/jesseduffield/lazygit@latest && \
   go install mvdan.cc/sh/v3/cmd/shfmt@latest && \
