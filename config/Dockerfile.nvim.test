@@ -1,4 +1,4 @@
-From alpine:3.15
+From golang:1.18-alpine3.15
 
 # GFW？ Comment out the following comments 
 # {{
@@ -57,11 +57,11 @@ RUN apk add --update \
   npm install -g write-good && \
   npm install -g neovim && \
   npm install -g markdownlint --save-dev && \
-  wget -O /tmp/go.tar.gz https://go.dev/dl/go1.18.9.linux-amd64.tar.gz && tar -xzvf /tmp/go.tar.gz -C /usr/local/ && \
-  chmod a+x /usr/local/go/bin/go && ln -s /usr/local/go/bin/go /usr/local/bin/go && \
+  #wget -O /tmp/go.tar.gz https://go.dev/dl/go1.18.9.linux-amd64.tar.gz && tar -xzvf /tmp/go.tar.gz -C /usr/local/ && \
+  #chmod a+x /usr/local/go/bin/go && ln -s /usr/local/go/bin/go /usr/local/bin/go && \
   # enable lazygit
-  #/usr/local/go/bin/go install github.com/jesseduffield/lazygit@latest && \
-  #/usr/local/go/bin/go install mvdan.cc/sh/v3/cmd/shfmt@latest && \
+  go install github.com/jesseduffield/lazygit@latest && \
+  go install mvdan.cc/sh/v3/cmd/shfmt@latest && \
   mkdir /root/.config && \
   ln -s /nvim /root/.config/nvim && \
   curl https://sh.rustup.rs -sSf | sh -s -- -y && \
@@ -72,7 +72,7 @@ RUN apk add --update \
   #nvim +PackerSync && \
   rm -rf /var/cache/apk/*
 
-#RUN nvim --headless +GoInstallBinaries +qa
+RUN nvim --headless +GoInstallBinaries +qa
 RUN nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync' -c 'sleep 60' -c 'qa'
 
 #https://www.sqlite.org/2022/sqlite-dll-win64-x64-3400100.zip
