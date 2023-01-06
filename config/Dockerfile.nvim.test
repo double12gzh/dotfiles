@@ -42,12 +42,12 @@ RUN apk add --update \
   libintl \
   libtermkey \
   libvterm \
-  icu-data-full \
+  #icu-data-full \
   unibilium \
   sqlite-dev \
   coreutils \
   zsh \
-  tree-sitter-cli \
+  #tree-sitter-cli \
   neovim && \
   pip3 install --user neovim pep8 black isort beautysh && \
   npm install -g @fsouza/prettierd && \
