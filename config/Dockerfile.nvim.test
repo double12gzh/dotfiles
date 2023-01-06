@@ -8,7 +8,6 @@ From golang:1.18-alpine3.15
 
 COPY nvim /nvim
 ENV PATH = "/usr/local/go/bin:/root/.go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/root/.cargo/bin:${PATH}"
-ENV GOPATH = "/usr/local/go"
 
 # GFW? Comment out the following comments 
 # {{
