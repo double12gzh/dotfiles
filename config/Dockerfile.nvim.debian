@@ -8,6 +8,8 @@ ENV NVIM_VERSION="v0.8.1"
 ENV PYTHON3_HOST_PROG="/usr/bin/python3"
 ENV PATH=/usr/local/go/bin:/root/.go/bin:/root/.cargo/bin:/usr/local/nvim-linux64/bin:$PATH
 
+RUN mkdir -p /root/.config && mkdir -p /usr/share/fonts/truetype
+
 COPY nvim /root/.config/nvim
 COPY pip /root/.config/pip.cn
 COPY luarocks /root/.config/luarocks.cn
@@ -15,6 +17,8 @@ COPY lazygit /root/.config/lazygit
 COPY git /root/.config/git
 COPY dlv /root/.config/dlv
 COPY zsh /root/.config/zsh
+COPY ["fonts/Operator Mono Lig", "/usr/share/fonts/Operator Mono Lig"]
+COPY fonts/Hack /usr/share/fonts/truetype/hack
 
 RUN apt-get clean all && apt-get update && \
     apt-get install --no-install-recommends -y \
@@ -23,6 +27,7 @@ RUN apt-get clean all && apt-get update && \
     automake \
     cmake \
     curl \
+    fontconfig \
     fzf \
     lua5.3 \
     gcc \
@@ -70,8 +75,10 @@ RUN apt-get clean all && apt-get update && \
     which go && go version && \
     which cargo && cargo --version && \
     which nvim && nvim --version && \
+    chmod 777 /usr/share/fonts/truetype/hack/*.ttf && \
     rm -rf /var/lib/apt/lists/*
 
 RUN CHSH=yes;RUNZSH=no;KEEP_ZSHRC=yes; sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 RUN nvim --headless -c "autocmd User PackerComplete sleep 20 | quitall" -c "silent PackerSync" -c "qall"
+
