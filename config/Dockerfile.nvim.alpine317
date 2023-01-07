@@ -84,6 +84,6 @@ RUN CHSH=yes;RUNZSH=no;KEEP_ZSHRC=yes; sh -c "$(curl -fsSL https://raw.github.co
 
 #RUN nvim --headless +GoInstallBinaries +qa
 RUN nvim --headless -c "autocmd User PackerComplete quitall" -c "PackerSync" -c "sleep 60" -c "qa"
-RUN nvim --headless -c "autocmd User PackerComplete sleep 20 | quitall" -c "silent PackerSync"
+RUN nvim --headless -c "autocmd User PackerComplete sleep 20 | quitall" -c "silent PackerSync" -c "qa"
 #RUN nvim --headless -c "set cmdheight=50" -c "silent TSInstallSync all" -c "sleep 20" -c "qall"
 
