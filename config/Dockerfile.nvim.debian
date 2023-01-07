@@ -74,4 +74,4 @@ RUN apt-get clean all && apt-get update && \
 
 RUN CHSH=yes;RUNZSH=no;KEEP_ZSHRC=yes; sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-RUN nvim --headless -c "autocmd User PackerComplete sleep 20 | quitall" -c "silent PackerSync"
+RUN nvim --headless -c "autocmd User PackerComplete sleep 20 | quitall" -c "silent PackerSync" -c "qall"
