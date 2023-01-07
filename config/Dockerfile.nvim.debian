@@ -1,0 +1,77 @@
+From debian:stable
+#From ubuntu:22.04
+
+LABEL Author="Jeffrey Guan"
+
+ENV GO_VERSION="1.18.9"
+ENV NVIM_VERSION="v0.8.1"
+ENV PYTHON3_HOST_PROG="/usr/bin/python3"
+ENV PATH=/usr/local/go/bin:/root/.go/bin:/root/.cargo/bin:/usr/local/nvim-linux64/bin:$PATH
+
+COPY nvim /root/.config/nvim
+COPY pip /root/.config/pip.cn
+COPY luarocks /root/.config/luarocks.cn
+COPY lazygit /root/.config/lazygit
+COPY git /root/.config/git
+COPY dlv /root/.config/dlv
+COPY zsh /root/.config/zsh
+
+RUN apt-get clean all && apt-get update && \
+    apt-get install --no-install-recommends -y \
+    apt-transport-https \
+    autoconf \
+    automake \
+    cmake \
+    curl \
+    fzf \
+    lua5.3 \
+    gcc \
+    g++ \
+    git \
+    make \
+    nodejs \
+    npm \
+    pkg-config \
+    python3 \
+    python3-pip \
+    ripgrep \
+    sqlite3 \
+    libsqlite3-dev \
+    wget \
+    unzip \
+    zsh && \
+    pip3 install --user pep8 black isort beautysh pynvim && \
+    # {{ go
+    wget -O go.tar.gz https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz && \
+    tar -xzvf go.tar.gz -C /usr/local/ && rm -rf go.tar.gz && \
+    go install github.com/jesseduffield/lazygit@latest && \
+    go install mvdan.cc/sh/v3/cmd/shfmt@latest && \
+    # }}
+    #
+    # {{ nvim
+    wget -O /tmp/sqlite3.zip https://www.sqlite.org/2022/sqlite-dll-win64-x64-3400100.zip && \
+    unzip -d /tmp /tmp/sqlite3.zip && mv /tmp/sqlite3.dll /root/.config/sqlite3.dll && rm -rf /tmp/sqlite3.zip /tmp/sqlite3.def && \
+    wget -O /tmp/nvim-linux64.tar.gz https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}/nvim-linux64.tar.gz && \
+    tar -zxvf /tmp/nvim-linux64.tar.gz -C /usr/local/ && chmod a+x /usr/local/nvim-linux64/bin/nvim && rm -rf /tmp/nvim-linux64.tar.gz && \
+    git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/opt/packer.nvim && \
+    npm install -g @fsouza/prettierd && \
+    npm install -g eslint_d && \
+    npm install -g write-good && \
+    npm install -g markdownlint --save-dev && \
+    # }}
+    #
+    # {{ rust
+    curl https://sh.rustup.rs -sSf | sh -s -- -y && \
+    cargo install stylua && \
+    cargo install cbfmt && \
+    cargo install tree-sitter-cli && \
+    # }}
+    #
+    which go && go version && \
+    which cargo && cargo --version && \
+    which nvim && nvim --version && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN CHSH=yes;RUNZSH=no;KEEP_ZSHRC=yes; sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+RUN nvim --headless -c "autocmd User PackerComplete sleep 20 | quitall" -c "silent PackerSync"

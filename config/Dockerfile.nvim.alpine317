@@ -1,0 +1,89 @@
+#From alpine:3.17
+From golang:1.19-alpine3.17
+
+RUN apk add --no-cache ca-certificates
+
+ENV PATH=/usr/local/go/bin:/go/bin:/root/.go/bin:/root/.cargo/bin:$PATH
+
+COPY nvim /nvim
+COPY pip /root/.config.pip
+COPY luarocks /root/.config.luarocks
+COPY lazygit /root/.config.lazygit
+COPY zsh /root/.config.zsh
+COPY git /root/.config.git
+COPY dlv /root/.config.dlv
+
+# GFW? Comment out the following comments 
+# {{
+# RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
+# }}
+RUN apk add --update --no-cache --virtual .fetch-deps gnupg \
+  git \
+  alpine-sdk build-base\
+  bash \
+  gcc \
+  musl-dev \
+  libtool \
+  automake \
+  m4 \
+  npm \
+  wget \
+  autoconf \
+  linux-headers \
+  unzip \
+  ncurses ncurses-dev ncurses-libs ncurses-terminfo \
+  python3 \
+  python3-dev \
+  py3-pip \
+  openssh-client \
+  clang \
+  nodejs \
+  nodejs-dev \
+  nodejs-doc \
+  #go \
+  fzf \
+  nodejs \
+  xz \
+  curl \
+  make \
+  cmake \
+  libintl \
+  libtermkey \
+  libvterm \
+  icu-data-full \
+  unibilium \
+  sqlite-dev \
+  coreutils \
+  zsh \
+  tree-sitter-cli \
+  neovim && \
+  pip3 install --user neovim pep8 black isort beautysh && \
+  npm install -g @fsouza/prettierd && \
+  npm install -g eslint_d && \
+  npm install -g write-good && \
+  npm install -g neovim && \
+  npm install -g markdownlint --save-dev && \
+  go install github.com/jesseduffield/lazygit@latest && \
+  go install mvdan.cc/sh/v3/cmd/shfmt@latest && \
+  mkdir /root/.config && \
+  ln -s /nvim /root/.config/nvim && \
+  ln -s /root/.config.lazygit /root/.config/lazygit && \
+  ln -s /root/.config.dlv /root/.config/dlv && \
+  ln -s /root/.config.git /root/.config/git && \
+  curl https://sh.rustup.rs -sSf | sh -s -- -y && \
+  cargo install stylua && \
+  cargo install cbfmt && \
+  cargo install tree-sitter-cli && \
+  wget -O /tmp/sqlite3.zip https://www.sqlite.org/2022/sqlite-dll-win64-x64-3400100.zip && \
+  unzip -d /tmp/ /tmp/sqlite3.zip && mv /tmp/sqlite3.dll /root/sqlite3.dll && rm -rf /tmp/sqlite3.zip /tmp/sqlite3.def && \
+  #wget -O go.tgz https://dl.google.com/go/go${GOLANG_VERSION}.src.tar.gz && \
+  #tar -C /usr/local -xzf go.tgz && \
+  rm -rf /var/cache/apk/*
+
+RUN CHSH=yes;RUNZSH=no;KEEP_ZSHRC=yes; sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+#RUN nvim --headless +GoInstallBinaries +qa
+RUN nvim --headless -c "autocmd User PackerComplete quitall" -c "PackerSync" -c "sleep 60" -c "qa"
+RUN nvim --headless -c "autocmd User PackerComplete sleep 20 | quitall" -c "silent PackerSync"
+#RUN nvim --headless -c "set cmdheight=50" -c "silent TSInstallSync all" -c "sleep 20" -c "qall"
+
