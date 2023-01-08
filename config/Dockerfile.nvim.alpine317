@@ -1,9 +1,9 @@
 #From alpine:3.17
 From golang:1.19-alpine3.17
 
-RUN apk add --no-cache ca-certificates
-
 ENV PATH=/usr/local/go/bin:/go/bin:/root/.go/bin:/root/.cargo/bin:$PATH
+
+RUN apk add --no-cache ca-certificates
 
 COPY nvim /nvim
 COPY pip /root/.config.pip
@@ -76,11 +76,12 @@ RUN apk add --update --no-cache --virtual .fetch-deps gnupg \
   cargo install tree-sitter-cli && \
   wget -O /tmp/sqlite3.zip https://www.sqlite.org/2022/sqlite-dll-win64-x64-3400100.zip && \
   unzip -d /tmp/ /tmp/sqlite3.zip && mv /tmp/sqlite3.dll /root/sqlite3.dll && rm -rf /tmp/sqlite3.zip /tmp/sqlite3.def && \
-  #wget -O go.tgz https://dl.google.com/go/go${GOLANG_VERSION}.src.tar.gz && \
-  #tar -C /usr/local -xzf go.tgz && \
+  CHSH=yes;RUNZSH=no;KEEP_ZSHRC=yes; sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && rm -rf /root/.zshrc && \
+  echo "/usr/local/go/bin:/go/bin:/root/.go/bin:/root/.cargo/bin:$PATH" >> /root/.config.zsh/zshrc && \
+  ln -s /root/.config.zsh/zshrc /root/.zshrc && \
+  git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions && \
+  curl -sfL https://direnv.net/install.sh | bash && \
   rm -rf /var/cache/apk/*
-
-RUN CHSH=yes;RUNZSH=no;KEEP_ZSHRC=yes; sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 #RUN nvim --headless +GoInstallBinaries +qa
 RUN nvim --headless -c "autocmd User PackerComplete quitall" -c "PackerSync" -c "sleep 60" -c "qa"

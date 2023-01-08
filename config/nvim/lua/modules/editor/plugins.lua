@@ -104,23 +104,11 @@ editor["nacro90/numb.nvim"] = {
 -- 		require("modules.editor.specs")
 -- 	end,
 -- }
--- editor["nvim-pack/nvim-spectre"] = {
--- 	opt = true,
--- 	event = "BufReadPost",
--- 	requires = {
--- 		{ "nvim-lua/plenary.nvim", opt = false },
--- 	},
--- 	config = function()
--- 		require("modules.editor.spectre")
--- 	end,
--- }
-editor["cshuaimin/ssr.nvim"] = {
+editor["roobert/search-replace.nvim"] = {
 	opt = true,
 	event = "BufReadPost",
-	module = "ssr",
-	requires = "nvim-treesitter/nvim-treesitter",
 	config = function()
-		require("modules.editor._ssr")
+		require("modules.editor._search-replace")
 	end,
 }
 editor["kylechui/nvim-surround"] = {

@@ -4,11 +4,13 @@ From debian:stable
 LABEL Author="Jeffrey Guan"
 
 ENV GO_VERSION="1.18.9"
+ENV GOPATH="/root/.go"
+ENV GOPROXY="https://goproxy.cn"
 ENV NVIM_VERSION="v0.8.1"
 ENV PYTHON3_HOST_PROG="/usr/bin/python3"
-ENV PATH=/root/go/bin:/root/.local/bin:/usr/local/go/bin:/root/.go/bin:/root/.cargo/bin:/usr/local/nvim-linux64/bin:$PATH
+ENV PATH=/usr/local/nvim-linux64/bin:/root/go/bin:/root/.local/bin:/usr/local/go/bin:/root/.go/bin:/root/.cargo/bin:/usr/local/nvim-linux64/bin:$PATH
 
-RUN mkdir -p /root/.config && mkdir -p /usr/share/fonts/truetype
+RUN mkdir -p /root/.config && mkdir -p /usr/share/fonts/truetype && mkdir -p /root/.go/bin
 
 COPY nvim /root/.config/nvim
 COPY pip /root/.config/pip.cn
@@ -25,12 +27,12 @@ RUN apt-get clean all && apt-get update && \
     apt-transport-https \
     autoconf \
     automake \
+    bash \
     build-essential \
     cmake \
     curl \
     fontconfig \
     fzf \
-    #lua5.3 \
     gcc \
     g++ \
     git \
@@ -49,45 +51,59 @@ RUN apt-get clean all && apt-get update && \
     unzip \
     zsh && \
     pip3 install --user pep8 black isort beautysh pynvim && \
-    # {{ go
-    wget -O go.tar.gz https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz && \
-    tar -xzvf go.tar.gz -C /usr/local/ && rm -rf go.tar.gz && \
-    go install github.com/jesseduffield/lazygit@latest && \
-    go install mvdan.cc/sh/v3/cmd/shfmt@latest && \
-    # }}
-    #
-    # {{ nvim
-    wget -O /tmp/sqlite3.zip https://www.sqlite.org/2022/sqlite-dll-win64-x64-3400100.zip && \
-    unzip -d /tmp /tmp/sqlite3.zip && mv /tmp/sqlite3.dll /root/.config/sqlite3.dll && rm -rf /tmp/sqlite3.zip /tmp/sqlite3.def && \
-    wget -O /tmp/nvim-linux64.tar.gz https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}/nvim-linux64.tar.gz && \
-    tar -zxvf /tmp/nvim-linux64.tar.gz -C /usr/local/ && chmod a+x /usr/local/nvim-linux64/bin/nvim && rm -rf /tmp/nvim-linux64.tar.gz && \
-    git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/opt/packer.nvim && \
-    npm install -g @fsouza/prettierd && \
-    npm install -g eslint_d && \
-    npm install -g write-good && \
-    npm install -g markdownlint --save-dev && \
-    npm install -g neovim && \
-    # }}
-    #
-    # {{ rust
-    curl https://sh.rustup.rs -sSf | sh -s -- -y && \
-    cargo install stylua && \
-    cargo install cbfmt && \
-    cargo install tree-sitter-cli && \
-    # }}
-    #
-    which go && go version && \
-    which cargo && cargo --version && \
-    which nvim && nvim --version && \
     chmod 777 /usr/share/fonts/truetype/hack/*.ttf && \
+    # {{ go
+      wget -O go.tar.gz https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz && \
+      tar -xzvf go.tar.gz -C /usr/local/ && rm -rf go.tar.gz && \
+      go install github.com/jesseduffield/lazygit@latest && \
+      go install mvdan.cc/sh/v3/cmd/shfmt@latest && \
+      echo "export PATH=/root/go/bin:/usr/local/go/bin:/root/.go/bin:$PATH" >> /root/.config/zsh/zshrc && \
+    # }}
+    # {{ nvim
+      wget -O /tmp/sqlite3.zip https://www.sqlite.org/2022/sqlite-dll-win64-x64-3400100.zip && \
+      unzip -d /tmp /tmp/sqlite3.zip && \
+      mv /tmp/sqlite3.dll /root/.config/sqlite3.dll && \
+      rm -rf /tmp/sqlite3.zip /tmp/sqlite3.def && \
+      wget -O /tmp/nvim-linux64.tar.gz https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}/nvim-linux64.tar.gz && \
+      tar -zxvf /tmp/nvim-linux64.tar.gz -C /usr/local/ && \
+      chmod a+x /usr/local/nvim-linux64/bin/nvim && \
+      rm -rf /tmp/nvim-linux64.tar.gz && \
+      git clone --depth 1 https://github.com/wbthomason/packer.nvim ~/.local/share/nvim/site/pack/packer/opt/packer.nvim && \
+      npm install -g @fsouza/prettierd && \
+      npm install -g eslint_d && \
+      npm install -g write-good && \
+      npm install -g markdownlint --save-dev && \
+      npm install -g neovim && \
+      echo "export PATH=/usr/local/nvim-linux64/bin:$PATH" >> /root/.config/zsh/zshrc && \
+    # }}
+    # {{ rust
+      curl https://sh.rustup.rs -sSf | sh -s -- -y && \
+      cargo install stylua && \
+      cargo install cbfmt && \
+      cargo install tree-sitter-cli && \
+      echo "export PATH=/root/.cargo/bin:$PATH" >> /root/.config/zsh/zshrc && \
+    # }}
     # {{ lua
-    curl -R -O http://www.lua.org/ftp/lua-5.3.5.tar.gz && tar -zxf lua-5.3.5.tar.gz && rm -rf lua-5.3.5.tar.gz && cd lua-5.3.5 && make linux test && make install && cd - && \
-    wget https://luarocks.org/releases/luarocks-3.8.0.tar.gz && tar zxpf luarocks-3.8.0.tar.gz && rm -rf luarocks-3.8.0.tar.gz && cd luarocks-3.8.0 && ./configure --with-lua-include=/usr/local/include && make && make install && cd - && \
-    #}}
+      curl -R -O http://www.lua.org/ftp/lua-5.3.5.tar.gz && \
+      tar -zxf lua-5.3.5.tar.gz && \
+      rm -rf lua-5.3.5.tar.gz && \
+      cd lua-5.3.5 && make linux test && make install && cd - && \
+      wget https://luarocks.org/releases/luarocks-3.8.0.tar.gz && \
+      tar zxpf luarocks-3.8.0.tar.gz && \
+      rm -rf luarocks-3.8.0.tar.gz && \
+      cd luarocks-3.8.0 && ./configure --with-lua-include=/usr/local/include && make && make install && cd - && \
+    # }}
+    # {{ zsh
+      CHSH=yes;RUNZSH=no;KEEP_ZSHRC=yes; sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && rm -rf /root/.zshrc && \
+      ln -s /root/.config/zsh/zshrc /root/.zshrc && \
+      git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions && \
+    # }}
+    curl -sfL https://direnv.net/install.sh | bash && \
+    touch /root/.dircolors && \
     npm cache clean -f && npm install -g n && n latest && \
-    ln -s /root/.config/zsh/zshrc /root/.zshrc && \
     rm -rf /var/lib/apt/lists/*
 
-RUN CHSH=yes;RUNZSH=no;KEEP_ZSHRC=yes; sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+#RUN CHSH=yes;RUNZSH=no;KEEP_ZSHRC=yes; sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 RUN nvim --headless -c "autocmd User PackerComplete sleep 20 | quitall" -c "silent PackerSync" -c "qall"
 
+CMD ["zsh"]

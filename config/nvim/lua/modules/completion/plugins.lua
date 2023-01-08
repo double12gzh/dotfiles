@@ -42,6 +42,7 @@ completion["jose-elias-alvarez/null-ls.nvim"] = {
 }
 completion["glepnir/lspsaga.nvim"] = {
 	opt = true,
+	after = "nvim-lspconfig",
 	event = "LspAttach",
 	config = function()
 		require("modules.completion.saga")
@@ -91,6 +92,7 @@ completion["windwp/nvim-autopairs"] = {
 	end,
 }
 completion["zbirenbaum/copilot.lua"] = {
+	cmd = "Copilot",
 	event = "VimEnter",
 	module = {
 		"copilot",

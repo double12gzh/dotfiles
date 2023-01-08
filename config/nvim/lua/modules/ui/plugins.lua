@@ -67,9 +67,16 @@ ui["lukas-reineke/indent-blankline.nvim"] = {
 }
 ui["hoob3rt/lualine.nvim"] = {
 	opt = true,
-	after = { "git-blame.nvim" },
+	after = { "nvim-lspconfig", "lspsaga.nvim", "git-blame.nvim" },
 	config = function()
 		require("modules.ui.lualine")
+	end,
+}
+ui["mvllow/modes.nvim"] = {
+	opt = true,
+	event = "BufReadPost",
+	config = function()
+		require("modules.ui.modes")
 	end,
 }
 ui["zbirenbaum/neodim"] = {
