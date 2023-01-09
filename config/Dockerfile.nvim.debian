@@ -188,8 +188,15 @@ RUN echo "START: Do Zsh Installation" && \
     git clone https://github.com/sainnhe/gruvbox-material.git ~/.local/share/nvim/site/pack/packer/start/gruvbox-material && \
     nvim --headless -c "autocmd User PackerComplete quitall" -c "PackerSync" && \
     echo "END: Do Plugins Installation" && \
-    echo "- Enjoy It -"
 # }}
+#
+# {{ others
+    # gem proxy
+    gem sources --add https://gems.ruby-china.com/ --remove https://rubygems.org/ && \
+    ln -s /usr/bin/neovim-node-host /usr/local/bin/neovim-node-host && \
+    echo "- Enjoy It -"
+#
+#}}
 #
 
 CMD ["zsh"]
