@@ -102,6 +102,11 @@ require("nvim-treesitter.configs").setup({
 	-- markid = { enable = true },
 })
 
+-- if Dowloading is slow, uncomment and update proxy
+--require("nvim-treesitter.install").command_extra_args = {
+--    curl = { "--proxy", "http://xxx.aaa.com:aaa"  },
+--}
+
 require("nvim-treesitter.install").prefer_git = true
 if use_ssh then
 	local parsers = require("nvim-treesitter.parsers").get_parser_configs()
