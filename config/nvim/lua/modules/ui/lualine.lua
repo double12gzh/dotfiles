@@ -2,6 +2,7 @@ local icons = {
 	diagnostics = require("modules.ui.icons").get("diagnostics", true),
 	misc = require("modules.ui.icons").get("misc", true),
 	git = require("modules.ui.icons").get("git"),
+	ui = require("modules.ui.icons").get("ui", true),
 }
 
 local function escape_status()
@@ -40,6 +41,15 @@ local function diff_source()
 			removed = gitsigns.removed,
 		}
 	end
+end
+
+local function get_cwd()
+	local cwd = vim.fn.getcwd()
+	local home = os.getenv("HOME")
+	if cwd:find(home, 1, true) == 1 then
+		cwd = "~" .. cwd:sub(#home + 1)
+	end
+	return icons.ui.RootFolderOpened .. cwd
 end
 
 local conditions = {
@@ -130,7 +140,7 @@ require("lualine").setup({
 		},
 		lualine_x = {
 			{ escape_status },
-			{ git_blame.get_current_blame_text, cond = gitblame_cond },
+			{ get_cwd },
 			{
 				"diagnostics",
 				sources = { "nvim_diagnostic" },
