@@ -51,7 +51,7 @@ function Packer:load_packer()
 		packer.init({
 			compile_path = packer_compiled,
 			git = { clone_timeout = 60, default_url_format = clone_prefix },
-            max_jobs = 20,
+			max_jobs = 20,
 			disable_commands = true,
 			display = {
 				title = " packer.nvim",

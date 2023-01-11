@@ -57,7 +57,8 @@ keymap("n", "<A-9>", "<cmd>ufferLineGoToBuff 9", opts)
 --- Lsp mapping work when event:InsertEnter & event:LspStart
 --keymap("n", "<leader>li", "<cmd>LspInfo<cr>", opts)
 --keymap("n", "<leader>lr", "<cmd>LspRestart<cr>", opts)
-keymap("n", "<F3>", "<cmd>Lspsaga outline<cr>", opts)
+--keymap("n", "<F3>", "<cmd>Lspsaga outline<cr>", opts)
+keymap("n", "<F3>", "<cmd>SymbolsOutline<cr>", opts)
 -- Diagnostic jump can use `<c-o>` to jump back
 keymap("n", "e[", "<cmd>Lspsaga diagnostic_jump_prev<cr>", opts)
 keymap("n", "e]", "<cmd>Lspsaga diagnostic_jump_next<cr>", opts)
