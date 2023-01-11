@@ -2,7 +2,7 @@ local editor = {}
 
 editor["rainbowhxch/accelerated-jk.nvim"] = {
 	opt = true,
-	event = "BufReadPost",
+	event = "BufWinEnter", -- fix j/k is not workable before trigger Insert
 	config = function()
 		require("modules.editor.accelerated-jk")
 	end,
