@@ -200,7 +200,7 @@ tools["nvim-telescope/telescope-fzf-native.nvim"] = {
 }
 tools["ahmedkhalf/project.nvim"] = {
 	opt = true,
-	after = "telescope.nvim",
+	-- after = "telescope.nvim",
 	after = "BufReadPost",
 	config = function()
 		require("modules.tools.project")
