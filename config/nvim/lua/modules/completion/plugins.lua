@@ -43,6 +43,7 @@ completion["jose-elias-alvarez/null-ls.nvim"] = {
 completion["glepnir/lspsaga.nvim"] = {
 	opt = true,
 	after = "nvim-lspconfig",
+	commit = "b7b4777369b441341b2dcd45c738ea4167c11c9e", -- temp bugfix waiting for upstream update
 	event = "LspAttach",
 	config = function()
 		require("modules.completion.saga")
