@@ -56,6 +56,10 @@ RUN apt-get clean all && apt-get update && apt-get install --no-install-recommen
     locales \
     make \
     npm \
+    # required by markdown preview
+    yarn \
+    # for lldb-vscode required by debug c/cpp/rust program
+    lldb \
     pkg-config \
     python3 \
     python3-pip \
