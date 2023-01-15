@@ -104,7 +104,7 @@ require("nvim-treesitter.configs").setup({
 
 -- if Dowloading is slow, uncomment and update proxy
 require("nvim-treesitter.install").command_extra_args = {
-    curl = { "--proxy", "http://agent.baidu.com:8118"  },
+	curl = { "--proxy", "http://agent.baidu.com:8118" },
 }
 
 require("nvim-treesitter.install").prefer_git = true
