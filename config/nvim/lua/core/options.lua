@@ -132,7 +132,7 @@ local function load_options()
 	vim.g.perl_host_prog = "/usr/bin/perl"
 
 	-- custom ruby provider
-	vim.g.ruby_host_prog = "/root/.gem/ruby/2.7.0/bin/neovim-ruby-host"
+	vim.g.ruby_host_prog = "/usr/local/bin/neovim-ruby-host"
 end
 
 load_options()
