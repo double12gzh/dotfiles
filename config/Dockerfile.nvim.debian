@@ -130,6 +130,7 @@ RUN echo "START: Do Zsh Installation" && \
     #
     # {{ perl
         wget http://xrl.us/cpanm -O /usr/bin/cpanm && chmod +x /usr/bin/cpanm && \
+        # or cpanm -n App::cpanminus --mirror http://mirrors.163.com/cpan --mirror-only
         cpanm -n Neovim::Ext --quiet && \
         cpanm -n App::cpanminus --quiet && \
         gem install neovim && \
