@@ -198,7 +198,6 @@ RUN echo "START: Do Zsh Installation" && \
 # {{ others
     # gem proxy
     gem sources --add https://gems.ruby-china.com/ --remove https://rubygems.org/ && \
-    ln -s /usr/bin/neovim-node-host /usr/local/bin/neovim-node-host && \
     echo "- Enjoy It -"
 #
 #}}
