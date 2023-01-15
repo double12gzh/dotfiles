@@ -178,6 +178,7 @@ RUN echo "START: Do Zsh Installation" && \
     npm install -g @fsouza/prettierd && \
     npm install -g eslint_d && \
     npm install -g write-good && \
+    npm install -g yarn && \
     npm install -g markdownlint --save-dev && \
     # Install neovim support for node plugins
     npm install -g neovim && \
