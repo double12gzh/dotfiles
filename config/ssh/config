@@ -1,0 +1,16 @@
+Host github
+    Hostname github.com
+    User git
+    IdentityFile ~/.ssh/id_rsa.pub
+
+Host *
+    # 共享连接 
+    ControlMaster auto 
+    # 与上述 ControlMaster 同时使用时，指定连接共享的路径 
+    ControlPath ~/.ssh/master-%r@%h:%p
+    # 在后台保持打开
+    ControlPersist yes
+    ServerAliveInterval 60
+    HostKeyAlgorithms +ssh-dss
+
+# http://man.openbsd.org/ssh_config.5
