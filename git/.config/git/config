@@ -1,8 +1,19 @@
-[http]
-	proxy = "http://xxx.com:8118"
-	sslVerify = false
+#[http]
+#	proxy = "http://xxx.com:8118"
+#	sslVerify = false
+#[https]
+#	proxy = "https://xxx:8118"
+#
+# https://gist.github.com/laispace/666dd7b27e9116faece6
+
+[http "https://github.com"]
+	# no need to setup https for github
+	# http proxy 
+	proxy = http://127.0.0.1:7890
+	# or can use socks5 proxy
+	#proxy = socks5://127.0.0.1:7891
 [https]
-	proxy = "https://xxx:8118"
+	proxy = https://127.0.0.1:7890
 
 [user]
 	email = double12gzh@163.com
@@ -89,3 +100,4 @@
 	conflict-files = conflicts --name-only
 	ignored = ls-files --others --i --exclude-standard
 	latest-tag = describe --tags --abbrev=0
+
