@@ -13,9 +13,9 @@ source ./util.sh
 cat <<EOS
 
 - Project Homepage:
-    ${tty_green}https://github.com/CharlesChiuGit/dotfiles${tty_reset}
+    ${tty_green}https://github.com/double12gzh/dotfiles${tty_reset}
 - File an issue if you encounter any problems.
-    ${tty_green}https://github.com/CharlesChiuGit/dotfiles/issues${tty_reset}
+    ${tty_green}https://github.com/double12gzh/dotfiles/issues${tty_reset}
 
 EOS
 

@@ -7,7 +7,7 @@ source ./config.sh
 
 source ./langs/conda.sh
 source ./langs/golang.sh
-source ./langs/java.sh
+#source ./langs/java.sh
 source ./langs/julia.sh
 source ./langs/lua.sh
 source ./langs/nodejs.sh
