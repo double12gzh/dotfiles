@@ -9,7 +9,7 @@
 	name = JeffreyGuan
 
 [core]
-	excludesfile = ~/.config/git/ignore
+	excludesfile = ~/.config/git/gitignore
 
 [color]
 	ui = true
@@ -22,7 +22,7 @@
 
 [commit]
 	gpgsign = true
-	template = ~/.config/git/template
+	template = ~/.config/template
 
 [rebase]
 	autosquash = true
