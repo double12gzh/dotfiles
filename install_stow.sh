@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+set -x
 
 # NOTE: make sure perl is installed
 # NOTE: also, cpanm install Test::Output and Test::More
@@ -23,7 +25,7 @@ if [[ -z "$(command -v stow)" ]]; then
         mkdir -p "$STOW_DIR"
 
         echo "Assign perl location"
-        export PERL_PREFIX="/usr/local/lib/x86_64-linux-gnu/perl/5.30.0"
+        export PERL_PREFIX="$HOME/tools/perl"
         #export PERL_PREFIX="$HOME/.plenv/versions/5.30.0"
 
         echo "Extracting to $HOME/tools/stow directory"
@@ -36,8 +38,12 @@ if [[ -z "$(command -v stow)" ]]; then
         export PATH="$STOW_DIR/bin:$PATH"
     fi
 
+    echo "==========================================="
     echo "add the following to your .bashrc"
-    echo 'export PATH="$HOME/tools/stow/bin":$PATH'
+    echo "------------------------------------------"
+    echo "------------------------------------------"
+    echo "export PATH=$HOME/bin:$HOME/stow/bin:$PATH"
+    echo "------------------------------------------"
 else
     echo "GNU stow is already installed. Skip installing it."
 fi
