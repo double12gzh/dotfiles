@@ -4,13 +4,13 @@
 HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
-setopt extendedglob nomatch notify
-unsetopt autocd beep
-bindkey -v
+#setopt extendedglob nomatch notify
+#unsetopt autocd beep
+#bindkey -v
 # End of lines configured by zsh-newuser-install
+
 # The following lines were added by compinstall
 zstyle :compinstall filename "$HOME/.zshrc"
-
 fpath[1,0]=~/.zsh/completion/ # local comp files
 autoload -Uz compinit
 compinit
@@ -128,7 +128,7 @@ export XMODIFIERS=@im=fcitx
 
 # Custom env and aliases
 [[ -f ~/.zsh/aliases.zsh ]] && source ~/.zsh/aliases.zsh
-[[ -f ~/.zsh/keybind.zsh ]] && source ~/.zsh/keybind.zsh
+#[[ -f ~/.zsh/keybind.zsh ]] && source ~/.zsh/keybind.zsh
 [[ -f ~/.zsh/starship.zsh ]] && source ~/.zsh/starship.zsh
 [[ -f ~/.zsh/fzf-tab.zsh ]] && source ~/.zsh/fzf-tab.zsh
 [[ -f ~/.zsh/wsl2fix.zsh ]] && source ~/.zsh/wsl2fix.zsh

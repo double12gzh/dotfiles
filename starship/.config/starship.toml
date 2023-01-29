@@ -74,7 +74,7 @@ truncation_symbol = "…/"
 read_only_style = "197"
 read_only = " "
 use_os_path_sep = true
-format = "at [$path]($style)[$read_only]($read_only_style) "
+format = "[$path]($style)[$read_only]($read_only_style) "
 
 [localip]
 disabled = true
