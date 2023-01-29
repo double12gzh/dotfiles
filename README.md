@@ -13,7 +13,7 @@
 # NOTE: make sure perl is installed
 # NOTE: also, cpanm install Test::Output and Test::More
 
-bash install_stow.sh
+bash zzz_install_scripts/apps/stow.sh
 ```
 
 # Usage
@@ -21,7 +21,7 @@ bash install_stow.sh
 - clone this repo
 
 ```bash
-git clone git@github.com:double12gzh/.forked_dotfiles.git ~
+git clone git@github.com:double12gzh/dotfiles.git ~
 ```
 
 - create symlink

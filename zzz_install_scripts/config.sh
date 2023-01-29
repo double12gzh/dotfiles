@@ -36,7 +36,7 @@ EOABORT
 fi
 
 # Whether to add the path of the installed executables to system $PATH
-ADD_TO_SYSTEM_PATH=false
+ADD_TO_SYSTEM_PATH=true
 
 # Select bash/zsh
 USE_BASH_SHELL=false

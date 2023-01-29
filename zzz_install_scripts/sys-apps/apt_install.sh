@@ -13,8 +13,8 @@ sudo nala install ssh vim htop git curl clang latexmk biber tree ninja-build \
     python3-apt python3-pip python3-dev python3-setuptools python3.10-venv \
     pandoc highlight gzip tar plocate pkg-config bzip2 openssl unzip \
     libxml2-dev libevent-dev libbz2-dev libcurl4-openssl-dev libpng-dev libssl-dev \
-    libjpeg-dev libonig-dev libtidy-dev libxslt-dev libzip-dev libstdc++6 \
-    autoconf libyaml-dev libreadline6-dev zlib1g-dev libncurses5-dev \
+    libjpeg-dev libonig-dev libtidy-dev libxslt1-dev libzip-dev libstdc++6 \
+    autoconf libyaml-dev libreadline-dev zlib1g-dev libncurses5-dev \
     libffi-dev libgdbm6 libgdbm-dev libdb-dev uuid-dev sqlite3 libsqlite3-dev \
     libfreetype6-dev librsvg2-dev libtiff5-dev libwebp-dev libtool gtk-doc-tools \
     libimage-exiftool-perl atool libmagic-dev \
@@ -27,7 +27,9 @@ sudo nala install neofetch hollywood cmatrix jp2a speedtest-cli toilet -y
 sudo nala install caca-utils ffmpeg librsvg2-bin atool unrar p7zip-full p7zip-rar -y
 
 # Snap install
-sudo snap install ascii-image-converter lolcat
+sudo apt install -y ascii-image-converter
+sudo apt install -y lolcat
+#sudo snap install ascii-image-converter lolcat
 
 # system pip3 install
 sudo pip3 install pynvim gdown ntfy[emoji] asciinema

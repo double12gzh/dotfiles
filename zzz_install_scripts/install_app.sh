@@ -37,7 +37,7 @@ source ./apps/trashy.sh
 source ./apps/treesitter.sh
 source ./apps/ugrep.sh
 source ./apps/viu.sh
-# source ./apps/xplr.sh
+source ./apps/xplr.sh
 source ./apps/zoxide.sh
 
 printf "\n${tty_yellow}====================Script ends====================${tty_reset}\n\n"

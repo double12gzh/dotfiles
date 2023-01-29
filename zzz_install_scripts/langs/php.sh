@@ -6,7 +6,7 @@ set -o pipefail
 ######################################################################
 #                        PHP/Composer Install                        #
 ######################################################################
-NOTE: sudo apt install build-essential autoconf bison re2c libxml2-dev libsqlite3-dev
+#NOTE: sudo apt install build-essential autoconf bison re2c libxml2-dev libsqlite3-dev
 PHP_DIR=$HOME/tools/php
 PHP_LINK="https://github.com/php/php-src.git"
 if [[ -z "$(command -v php)" ]]; then
