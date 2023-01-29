@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-# NOTE: use sudo sh script.sh to run scripts with sudo privileges.
+# NOTE: use sudo sh apt_install.sh to run scripts with sudo privileges.
+#
+set -x 
+set -e
 
 sudo apt install nala -y
 

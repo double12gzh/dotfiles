@@ -16,7 +16,7 @@ if [[ -z $(command -v pistol) ]]; then
     go mod tidy
     make
     make install
-    cd ~/dotfiles/install_scripts/
+    cd ~/dotfiles/zzz_install_scripts/
 else
     printf "${tty_blue}Pistol${tty_reset} is already installed, skip it.\n"
 fi

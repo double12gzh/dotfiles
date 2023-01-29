@@ -23,7 +23,7 @@ if [[ -z $(command -v jq) ]]; then
         ./configure --with-oniguruma=builtin --disable-maintainer-mode
         make -j8
         make check
-        cd ~/dotfiles/install_scripts/
+        cd ~/dotfiles/zzz_install_scripts/
     fi
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then

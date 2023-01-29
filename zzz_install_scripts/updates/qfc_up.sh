@@ -21,4 +21,4 @@ elif [[ $status = false ]]; then
     printf "${tty_blue}Qfc${tty_reset} is up-to-date!\n"
 fi
 
-cd ~/dotfiles/install_scripts/
+cd ~/dotfiles/zzz_install_scripts/

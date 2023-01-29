@@ -42,4 +42,4 @@ else
     printf "\t${tty_blue}Gem${tty_reset} is already installed, skip it.\n"
 fi
 
-cd ~/dotfiles/install_scripts/
+cd ~/dotfiles/zzz_install_scripts/

@@ -51,4 +51,4 @@ else
     printf "    ${tty_blue}Composer${tty_reset} is already installed, skip it.\n"
 fi
 
-cd ~/dotfiles/install_scripts/
+cd ~/dotfiles/zzz_install_scripts/
