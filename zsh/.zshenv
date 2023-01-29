@@ -126,6 +126,9 @@ export QT5_IM_MODULE=fcitx
 export SDL_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 
+# tmux
+export DISABLE_AUTO_TITLE='true'
+
 # Custom env and aliases
 [[ -f ~/.zsh/aliases.zsh ]] && source ~/.zsh/aliases.zsh
 #[[ -f ~/.zsh/keybind.zsh ]] && source ~/.zsh/keybind.zsh
