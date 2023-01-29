@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 [[ -f $HOME/.bash/aliases.bash ]] && source "$HOME/.bash/aliases.bash"
-bash -c zsh
+#bash -c zsh
