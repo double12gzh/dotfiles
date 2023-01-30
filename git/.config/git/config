@@ -34,7 +34,7 @@
 
 [commit]
 #	gpgsign = true
-	template = ~/.config/template
+	template = ~/.config/git/template
 
 [rebase]
 	autosquash = true
