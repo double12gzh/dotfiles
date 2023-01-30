@@ -4,9 +4,9 @@
 HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
-#setopt extendedglob nomatch notify
-#unsetopt autocd beep
-#bindkey -v
+setopt extendedglob nomatch notify
+unsetopt autocd beep
+bindkey -v
 # End of lines configured by zsh-newuser-install
 
 # The following lines were added by compinstall
