@@ -63,7 +63,7 @@ if __name__ == "__main__":
     # Move bash-completion files to correct dir
     import glob
 
-    match = r"/home/charles/dotfiles/Zsh/.zsh/completion/*.bash"
+    match = r"/home/work/dotfiles/Zsh/.zsh/completion/*.bash"
     res = glob.glob(match)
     print(res)
     bash_cmp_dir = (
