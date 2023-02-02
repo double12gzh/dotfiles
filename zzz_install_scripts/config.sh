@@ -4,8 +4,8 @@
 set -e
 set -o pipefail
 
-USERNAME="Charles Chiu"
-EMAIL="charleschiu2012@gmail.com"
+USERNAME="Jeffrey Guan"
+EMAIL="double12gzh@gmail.com"
 
 # Import var & func from `util.sh`
 source ./util.sh
