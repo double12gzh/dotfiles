@@ -24,7 +24,7 @@ if [[ ! -f "$NODE_DIR/bin/node" ]]; then
     fi
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<EOT >>"$RC_FILE"
+        souce $RC_FILE && cat <<EOT >>"$RC_FILE"
 alias node='~/tools/nodejs/bin/node'
 alias npm='~/tools/nodejs/bin/npm'
 alias npx='~/tools/nodejs/bin/npx'
