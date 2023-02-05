@@ -24,7 +24,7 @@ if [[ ! -f "$JAVA_DIR/bin/java" ]]; then
     fi
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        souce $RC_FILE && cat <<EOT >>"$RC_FILE"
+        cat <<EOT >>"$RC_FILE"
 alias java='~/tools/jdk/bin/java'
 alias javac='~/tools/jdk/bin/javac'
 export PATH="$PATH:$HOME/tools/java/bin"
