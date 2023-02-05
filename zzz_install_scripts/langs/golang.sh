@@ -25,7 +25,7 @@ if [[ ! -f "$GO_DIR/bin/go" ]]; then
     fi
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<EOT >>"$RC_FILE"
+        souce $RC_FILE && cat <<EOT >>"$RC_FILE"
 alias go='~/tools/golang/bin/go'
 export PATH="$PATH:$HOME/tools/golang/bin"
 export PATH="$PATH:$HOME/go/bin"
