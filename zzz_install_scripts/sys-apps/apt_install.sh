@@ -5,7 +5,7 @@
 set -x 
 set -e
 
-sudo apt install nala -y --no-cache
+sudo apt install nala -y
 
 # Essential packages
 sudo nala install ssh vim htop git curl clang latexmk biber tree ninja-build \
@@ -27,8 +27,8 @@ sudo nala install neofetch hollywood cmatrix jp2a speedtest-cli toilet -y
 sudo nala install caca-utils ffmpeg librsvg2-bin atool unrar p7zip-full p7zip-rar -y
 
 # Snap install
-sudo apt install -y --no-cache ascii-image-converter
-sudo apt install -y --no-cache lolcat
+sudo apt install -y ascii-image-converter
+sudo apt install -y lolcat
 #sudo snap install ascii-image-converter lolcat
 
 # system pip3 install
