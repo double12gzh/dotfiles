@@ -24,7 +24,7 @@ if [[ ! -f "$JULIA_DIR/bin/julia" ]]; then
     fi
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<EOT >>"$RC_FILE"
+        souce $RC_FILE && cat <<EOT >>"$RC_FILE"
 alias julia='~/tools/julia/bin/julia'
 export PATH="$PATH:$HOME/tools/julia/bin"
 EOT
