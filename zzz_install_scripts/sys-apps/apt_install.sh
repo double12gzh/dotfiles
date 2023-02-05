@@ -27,9 +27,9 @@ sudo nala install neofetch hollywood cmatrix jp2a speedtest-cli toilet -y
 sudo nala install caca-utils ffmpeg librsvg2-bin atool unrar p7zip-full p7zip-rar -y
 
 # Snap install
-sudo apt install -y ascii-image-converter
-sudo apt install -y lolcat
-#sudo snap install ascii-image-converter lolcat
+#sudo apt install -y ascii-image-converter
+#sudo apt install -y lolcat
+sudo snap install ascii-image-converter lolcat
 
 # system pip3 install
 sudo pip3 install pynvim gdown ntfy[emoji] asciinema --no-cache-dir
