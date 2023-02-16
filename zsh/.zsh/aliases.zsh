@@ -38,3 +38,18 @@ alias zpgrep='ugrep -zP' # search compressed files and archives with Perl regula
 alias zxgrep='ugrep -zW' # search (ERE) compressed files/archives and output text or hex for binary
 
 alias xdump='ugrep -X ""' # hexdump files without searching
+
+alias sshh='server_me="$(cat /root/.hosts/host_lists | fzf)" && ssh root@$server_me'
+alias vimz='vim $(fzf --height=100% --layout=reverse --info=inline --border --margin=1 --padding=1 --preview-window "70%,wrap" --preview "bat --color=always --style=numbers --line-range=:500 {}")'
+alias f='fzf --bind "enter:execute:vim {}" --height=100% --layout=reverse --info=inline --border --margin=1 --padding=1 --preview-window "70%,wrap" --preview "bat --color=always --style=numbers --line-range=:500 {}"'
+
+alias cdh='cd /home/AFiles'
+alias dir='dir --color=auto'
+alias vdir='vdir --color=auto'
+#alias grep='grep --color=auto'
+#alias fgrep='fgrep --color=auto'
+#alias egrep='egrep --color=auto'
+alias ccat='highlight --line-numbers -O ansi --force'
+alias tp='tmuxp load ~/.config/tmuxp/tmuxp.yaml'
+alias tpr='export TERM=xterm && tmuxp load ~/.config/tmuxp/tmuxp.yaml'
+alias expect='export LC_CTYPE=en_US && expect'
