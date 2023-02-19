@@ -117,6 +117,8 @@ if [ -f $HOME/tools/anaconda/etc/profile.d/conda.sh ]; then
 else
     path=(~/tools/anaconda/bin $path)
 fi
+path=($HOME/tools/anaconda/bin $path)
+export CONDA_PREFIX=$HOME/tools/anaconda
 # <<< conda initialize <<<
 
 # Fcitx5 env
@@ -139,3 +141,4 @@ export DISABLE_AUTO_TITLE='true'
 
 [[ -f ~/.local_aliases.zsh ]] && source ~/.local_aliases.zsh
 . "$HOME/.cargo/env"
+

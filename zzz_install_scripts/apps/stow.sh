@@ -24,7 +24,7 @@ if [[ -z $(command -v stow) ]]; then
         echo "Extracting to $HOME/tools/stow directory"
         tar zxvf "$STOW_SRC_NAME" -C "$STOW_DIR" --strip-components 1
         cd "$STOW_DIR"
-        cpanm install Test::Output Test::Output
+        cpanm install Test::Output Test::Output --mirror http://mirrors.163.com/cpan --mirror-only
         echo "Assign perl location"
         # export PERL_PREFIX="$HOME/.plenv/versions/5.36.0"
         export PERL_PREFIX="$HOME/tools/perl"
