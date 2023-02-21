@@ -278,13 +278,26 @@ M.mouse_bindings = {
 	{
 		event = { Up = { streak = 1, button = "Right" } },
 		mods = "NONE",
-		action = act({ CompleteSelection = "Clipboard" }),
+		action = act.PasteFrom("PrimarySelection"),
 	},
 	{
 		event = { Up = { streak = 1, button = "Left" } },
 		mods = "CTRL",
 		action = "OpenLinkAtMouseCursor",
 	},
+        -- Scrolling up while holding CTRL increases the font size
+        {
+                event = { Down = { streak = 1, button = { WheelUp = 1 } } },
+                mods = "CTRL",
+                action = act.IncreaseFontSize,
+        },
+
+        -- Scrolling down while holding CTRL decreases the font size
+        {
+                event = { Down = { streak = 1, button = { WheelDown = 1 } } },
+                mods = "CTRL",
+                action = act.DecreaseFontSize,
+        },
 }
 
 return M
