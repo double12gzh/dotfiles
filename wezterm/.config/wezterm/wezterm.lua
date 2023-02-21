@@ -5,6 +5,7 @@ local gpus = wezterm.gui.enumerate_gpus()
 require("on")
 
 return {
+  	default_domain = 'WSL:Ubuntu-Preview',
 	automatically_reload_config = true,
 	use_ime = true,
 	scrollback_lines = 5000,
