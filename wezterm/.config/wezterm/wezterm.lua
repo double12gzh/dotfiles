@@ -1,15 +1,16 @@
 local wezterm = require("wezterm")
 
 local keybindings = require("config.keybindings")
+local wsl_domains = require("config.wsl-domains")
 
 require("config.right-status").setup()
 require("config.tab-title").setup()
 
 local gpus = wezterm.gui.enumerate_gpus()
+local font = "Hack Nerd Font"
+local color_scheme = "Gruvbox dark, medium (base16)"
 
 return {
-	-- default_domain = "WSL:Ubuntu-Preview",
-	default_domain = "WSL:Ubuntu-22.04",
 	automatically_reload_config = true,
 	use_ime = true,
 	scrollback_lines = 5000,
@@ -27,12 +28,12 @@ return {
 	default_cursor_style = "SteadyBlock",
 	force_reverse_video_cursor = false,
 	use_cap_height_to_scale_fallback_fonts = true,
-	font = wezterm.font("Hack Nerd Font"),
+	font = wezterm.font(font),
 	font_size = 12,
 	bold_brightens_ansi_colors = false,
 	freetype_load_target = "Normal",
 	freetype_load_flags = "NO_HINTING|MONOCHROME",
-	color_scheme = "Gruvbox dark, medium (base16)",
+	color_scheme = color_scheme,
 	tab_max_width = 35,
 	initial_rows = 35,
 	initial_cols = 120,
@@ -52,7 +53,25 @@ return {
 	-- window_close_confirmation = "NeverPrompt",
 	window_frame = {
 		active_titlebar_bg = "#090909",
-		font = wezterm.font("Hack Nerd Font", { bold = true }),
+		font = wezterm.font(font, { bold = true }),
 		font_size = 9,
 	},
+	background = {
+		{
+			source = { File = wezterm.config_dir .. "/pictures/final-showdown.jpg" },
+		},
+	},
+
+	-- wsl config
+	-- {{
+	wsl_domains = wsl_domains.wsl_domains,
+	default_domain = wsl_domains.is_windows and "WSL:Ubuntu-Preview" or nil,
+	default_prog = wsl_domains.is_windows and { "wsl.exe" } or nil,
+	--launch_menu = wsl_domains.is_windows and { { args = { "wsl.exe" }, domain = { DomainName = "local" } } } or nil,
+	set_environment_variables = {
+		TERMINFO_DIRS = "/home/" .. (os.getenv("USERNAME") or os.getenv("USER")) .. "/.nix-profile/share/terminfo",
+		WSLENV = "TERMINFO_DIRS",
+		prompt = wsl_domains.is_windows and "$E]7;file://localhost/$P$E\\$E[32m$T$E[0m $E[35m$P$E[36m$_$G$E[0m " or nil,
+	},
+	-- }}
 }
