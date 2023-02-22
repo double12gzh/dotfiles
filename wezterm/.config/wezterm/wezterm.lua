@@ -1,12 +1,15 @@
 local wezterm = require("wezterm")
-local keybindings = require("keybindings")
+
+local keybindings = require("config.keybindings")
+
+require("config.right-status").setup()
+require("config.tab-title").setup()
+
 local gpus = wezterm.gui.enumerate_gpus()
 
-require("on")
-
 return {
-	default_domain = "WSL:Ubuntu-Preview",
-	--default_domain = "WSL:Ubuntu-22.04",
+	-- default_domain = "WSL:Ubuntu-Preview",
+	default_domain = "WSL:Ubuntu-22.04",
 	automatically_reload_config = true,
 	use_ime = true,
 	scrollback_lines = 5000,
@@ -38,6 +41,18 @@ return {
 	window_padding = { left = 5, right = 5, top = 5, bottom = 5 },
 	webgpu_preferred_adapter = gpus[1],
 	keys = keybindings.create_keybinds(),
+	-- disable_default_key_bindings = true,
 	key_tables = keybindings.key_tables,
 	mouse_bindings = keybindings.mouse_bindings,
+	enable_scroll_bar = true,
+	status_update_interval = 1000,
+	hide_tab_bar_if_only_one_tab = false,
+	switch_to_last_active_tab_when_closing_tab = true,
+	inactive_pane_hsb = { saturation = 1.0, brightness = 1.0 },
+	-- window_close_confirmation = "NeverPrompt",
+	window_frame = {
+		active_titlebar_bg = "#090909",
+		font = wezterm.font("Hack Nerd Font", { bold = true }),
+		font_size = 9,
+	},
 }
