@@ -5,7 +5,8 @@ local gpus = wezterm.gui.enumerate_gpus()
 require("on")
 
 return {
-  	default_domain = 'WSL:Ubuntu-Preview',
+	default_domain = "WSL:Ubuntu-Preview",
+	--default_domain = "WSL:Ubuntu-22.04",
 	automatically_reload_config = true,
 	use_ime = true,
 	scrollback_lines = 5000,
@@ -24,7 +25,7 @@ return {
 	force_reverse_video_cursor = false,
 	use_cap_height_to_scale_fallback_fonts = true,
 	font = wezterm.font("Hack Nerd Font"),
-	font_size = 16,
+	font_size = 12,
 	bold_brightens_ansi_colors = false,
 	freetype_load_target = "Normal",
 	freetype_load_flags = "NO_HINTING|MONOCHROME",
