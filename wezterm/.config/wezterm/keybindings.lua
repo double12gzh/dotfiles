@@ -13,22 +13,22 @@ M.tmux_keybinds = {
 	{ key = "l", mods = "ALT", action = act({ ActivateTabRelative = 1 }) },
 	{ key = "h", mods = "ALT|CTRL", action = act({ MoveTabRelative = -1 }) },
 	{ key = "l", mods = "ALT|CTRL", action = act({ MoveTabRelative = 1 }) },
-	--{ key = "k", mods = "ALT|CTRL", action = act.ActivateCopyMode },
+	{ key = "k", mods = "ALT|CTRL", action = act.ActivateCopyMode },
 	{
 		key = "k",
 		mods = "ALT|CTRL",
 		action = act.Multiple({ act.CopyMode("ClearSelectionMode"), act.ActivateCopyMode, act.ClearSelection }),
 	},
 	{ key = "j", mods = "ALT|CTRL", action = act({ PasteFrom = "PrimarySelection" }) },
-	{ key = "1", mods = "ALT", action = act({ ActivateTab = 0 }) },
-	{ key = "2", mods = "ALT", action = act({ ActivateTab = 1 }) },
-	{ key = "3", mods = "ALT", action = act({ ActivateTab = 2 }) },
-	{ key = "4", mods = "ALT", action = act({ ActivateTab = 3 }) },
-	{ key = "5", mods = "ALT", action = act({ ActivateTab = 4 }) },
-	{ key = "6", mods = "ALT", action = act({ ActivateTab = 5 }) },
-	{ key = "7", mods = "ALT", action = act({ ActivateTab = 6 }) },
-	{ key = "8", mods = "ALT", action = act({ ActivateTab = 7 }) },
-	{ key = "9", mods = "ALT", action = act({ ActivateTab = 8 }) },
+	{ key = "1", mods = "CTRL", action = act({ ActivateTab = 0 }) },
+	{ key = "2", mods = "CTRL", action = act({ ActivateTab = 1 }) },
+	{ key = "3", mods = "CTRL", action = act({ ActivateTab = 2 }) },
+	{ key = "4", mods = "CTRL", action = act({ ActivateTab = 3 }) },
+	{ key = "5", mods = "CTRL", action = act({ ActivateTab = 4 }) },
+	{ key = "6", mods = "CTRL", action = act({ ActivateTab = 5 }) },
+	{ key = "7", mods = "CTRL", action = act({ ActivateTab = 6 }) },
+	{ key = "8", mods = "CTRL", action = act({ ActivateTab = 7 }) },
+	{ key = "9", mods = "CTRL", action = act({ ActivateTab = 8 }) },
 	{ key = "-", mods = "ALT", action = act({ SplitVertical = { domain = "CurrentPaneDomain" } }) },
 	{ key = "\\", mods = "ALT", action = act({ SplitHorizontal = { domain = "CurrentPaneDomain" } }) },
 	{ key = "h", mods = "ALT|SHIFT", action = act({ ActivatePaneDirection = "Left" }) },
@@ -39,7 +39,7 @@ M.tmux_keybinds = {
 	{ key = "l", mods = "ALT|SHIFT|CTRL", action = act({ AdjustPaneSize = { "Right", 1 } }) },
 	{ key = "k", mods = "ALT|SHIFT|CTRL", action = act({ AdjustPaneSize = { "Up", 1 } }) },
 	{ key = "j", mods = "ALT|SHIFT|CTRL", action = act({ AdjustPaneSize = { "Down", 1 } }) },
-	{ key = "Enter", mods = "ALT", action = "QuickSelect" },
+	{ key = "Enter", mods = "ALT|SHIFT|CTRL", action = "QuickSelect" },
 	{ key = "/", mods = "ALT", action = act.Search("CurrentSelectionOrEmptyString") },
 }
 
@@ -278,26 +278,26 @@ M.mouse_bindings = {
 	{
 		event = { Up = { streak = 1, button = "Right" } },
 		mods = "NONE",
-		action = act.PasteFrom("PrimarySelection"),
+		action = act({ CompleteSelection = "Clipboard" }),
 	},
 	{
 		event = { Up = { streak = 1, button = "Left" } },
 		mods = "CTRL",
 		action = "OpenLinkAtMouseCursor",
 	},
-        -- Scrolling up while holding CTRL increases the font size
-        {
-                event = { Down = { streak = 1, button = { WheelUp = 1 } } },
-                mods = "CTRL",
-                action = act.IncreaseFontSize,
-        },
+	-- Scrolling up while holding CTRL increases the font size
+	{
+		event = { Down = { streak = 1, button = { WheelUp = 1 } } },
+		mods = "CTRL",
+		action = act.IncreaseFontSize,
+	},
 
-        -- Scrolling down while holding CTRL decreases the font size
-        {
-                event = { Down = { streak = 1, button = { WheelDown = 1 } } },
-                mods = "CTRL",
-                action = act.DecreaseFontSize,
-        },
+	-- Scrolling down while holding CTRL decreases the font size
+	{
+		event = { Down = { streak = 1, button = { WheelDown = 1 } } },
+		mods = "CTRL",
+		action = act.DecreaseFontSize,
+	},
 }
 
 return M
