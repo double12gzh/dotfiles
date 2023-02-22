@@ -233,6 +233,7 @@ M.key_tables = {
 			action = act.CopyMode("ClearSelectionMode"),
 		},
 		-- search
+
 		{ key = "/", mods = "NONE", action = act.Search("CurrentSelectionOrEmptyString") },
 		{
 			key = "n",
@@ -275,10 +276,15 @@ M.mouse_bindings = {
 		mods = "NONE",
 		action = act({ CompleteSelection = "PrimarySelection" }),
 	},
+	--	{
+	--		event = { Up = { streak = 1, button = "Right" } },
+	--		mods = "NONE",
+	--		action = act({ CompleteSelection = "Clipboard" }),
+	--	},
 	{
-		event = { Up = { streak = 1, button = "Right" } },
+		event = { Down = { streak = 1, button = "Right" } },
 		mods = "NONE",
-		action = act({ CompleteSelection = "Clipboard" }),
+		action = act.PasteFrom("PrimarySelection"),
 	},
 	{
 		event = { Up = { streak = 1, button = "Left" } },
