@@ -56,11 +56,11 @@ return {
 		font = wezterm.font(font, { bold = true }),
 		font_size = 9,
 	},
-	background = {
-		{
-			source = { File = wezterm.config_dir .. "/pictures/final-showdown.jpg" },
-		},
-	},
+	--background = {
+	--	{
+	--		source = { File = wezterm.config_dir .. "/pictures/astro-jelly.jpg" },
+	--	},
+	--},
 
 	-- wsl config
 	-- {{
