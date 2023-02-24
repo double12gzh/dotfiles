@@ -2,7 +2,7 @@ local wezterm = require("wezterm")
 local lume = require("utils.lume")
 local M = {}
 
-M.separator_char = " "
+M.separator_char = " "
 
 M.colors = {
 	date_fg = "#fab387",
