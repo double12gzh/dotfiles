@@ -1,12 +1,11 @@
 #!/usr/bin/zsh
 
-# speedup zsh
-# https://carlosbecker.com/posts/speeding-up-zsh/
-# https://htr3n.github.io/2018/07/faster-zsh/
-# https://github.com/htr3n/zsh-config
-# https://github.com/mattmc3/zdotdir
-# https://gist.github.com/ctechols/ca1035271ad134841284
+# for profiling zsh
+# https://unix.stackexchange.com/a/329719/27109
+#
+#zmodload zsh/zprof
 
+# https://blog.patshead.com/2011/04/improve-your-oh-my-zsh-startup-time-maybe.html
 skip_global_compinit=1
 
 # Lines configured by zsh-newuser-install
@@ -18,7 +17,12 @@ unsetopt autocd beep
 bindkey -v
 # End of lines configured by zsh-newuser-install
 
-# The following lines were added by compinstall
+# Begin speedup zsh
+# https://carlosbecker.com/posts/speeding-up-zsh/
+# https://htr3n.github.io/2018/07/faster-zsh/
+# https://github.com/htr3n/zsh-config
+# https://github.com/mattmc3/zdotdir
+# https://gist.github.com/ctechols/ca1035271ad134841284
 zstyle :compinstall filename "$HOME/.zshrc"                                                                                                                      
 fpath[1,0]=~/.zsh/completion/ # local comp files                                                                                                                 
 autoload -Uz compinit·                                                                                                                                           
@@ -27,7 +31,7 @@ if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then
 else                                                                                                                                                             
     compinit -C;                                                                                                                                                 
 fi 
-# End of lines added by compinstall
+# End speedup zsh
 
 # XDG PATH
 export XDG_CONFIG_HOME="$HOME/.config"
