@@ -23,6 +23,7 @@ bindkey -v
 # https://github.com/htr3n/zsh-config
 # https://github.com/mattmc3/zdotdir
 # https://gist.github.com/ctechols/ca1035271ad134841284
+# https://github.com/sorin-ionescu/prezto/blob/e149367445d2bcb9faa6ada365dfd56efec39de8/modules/completion/init.zsh#L34
 zstyle :compinstall filename "$HOME/.zshrc"                                                                                                                      
 fpath[1,0]=~/.zsh/completion/ # local comp files                                                                                                                 
 autoload -Uz compinit·                                                                                                                                           
