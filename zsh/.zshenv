@@ -1,5 +1,14 @@
 #!/usr/bin/zsh
 
+# speedup zsh
+# https://carlosbecker.com/posts/speeding-up-zsh/
+# https://htr3n.github.io/2018/07/faster-zsh/
+# https://github.com/htr3n/zsh-config
+# https://github.com/mattmc3/zdotdir
+# https://gist.github.com/ctechols/ca1035271ad134841284
+
+skip_global_compinit=1
+
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
 HISTSIZE=1000
@@ -10,10 +19,14 @@ bindkey -v
 # End of lines configured by zsh-newuser-install
 
 # The following lines were added by compinstall
-zstyle :compinstall filename "$HOME/.zshrc"
-fpath[1,0]=~/.zsh/completion/ # local comp files
-autoload -Uz compinit
-compinit
+zstyle :compinstall filename "$HOME/.zshrc"                                                                                                                      
+fpath[1,0]=~/.zsh/completion/ # local comp files                                                                                                                 
+autoload -Uz compinit·                                                                                                                                           
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then                                                                                                        
+    compinit;                                                                                                                                                    
+else                                                                                                                                                             
+    compinit -C;                                                                                                                                                 
+fi 
 # End of lines added by compinstall
 
 # XDG PATH
