@@ -27,7 +27,7 @@ source ./apps/nvim.sh
 source ./apps/pistol.sh
 source ./apps/qfc.sh
 source ./apps/ripgrep.sh
-source ./apps/sheldon.sh
+# source ./apps/sheldon.sh
 source ./apps/silicon.sh
 source ./apps/starship.sh
 source ./apps/stow.sh
@@ -39,6 +39,7 @@ source ./apps/ugrep.sh
 source ./apps/viu.sh
 source ./apps/xplr.sh
 source ./apps/zoxide.sh
+source ./apps/zplug.sh
 
 printf "\n${tty_yellow}====================Script ends====================${tty_reset}\n\n"
 printf "Remember ${tty_yellow}\"source ~/.bashrc or source ~/.zshrc\"${tty_reset} to make \$PATH valid.\n"
