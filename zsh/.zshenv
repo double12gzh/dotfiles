@@ -119,7 +119,7 @@ eval "$(starship init zsh)" || echo "starship not found!"]
 
 # Init shelden
 # [ -x  ~/tools/sheldon/sheldon ] && eval "$(sheldon source)" || echo "sheldon not found!"
-eval "$(sheldon source)" || echo "sheldon not found!"
+# eval "$(sheldon source)" || echo "sheldon not found!"
 bindkey '^[[a' history-substring-search-up
 bindkey '^[[b' history-substring-search-down
 bindkey ',' autosuggest-accept
