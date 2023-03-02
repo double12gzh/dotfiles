@@ -155,6 +155,7 @@ export DISABLE_AUTO_TITLE='true'
 [[ -f ~/.zsh/starship.zsh ]] && source ~/.zsh/starship.zsh
 [[ -f ~/.zsh/fzf-tab.zsh ]] && source ~/.zsh/fzf-tab.zsh
 [[ -f ~/.zsh/wsl2fix.zsh ]] && source ~/.zsh/wsl2fix.zsh
+[[ -f ~/.zsh/zplug.zsh ]] && source ~/.zsh/zplug.zsh
 # [[ -f ~/.bash/wayland.zsh ]] && source ~/.zsh/wayland.zsh
 
 [[ -f ~/.local_aliases.zsh ]] && source ~/.local_aliases.zsh
