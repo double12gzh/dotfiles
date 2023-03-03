@@ -44,7 +44,13 @@ M.tmux_keybinds = {
 }
 
 M.default_keybinds = {
-	{ key = "n", mods = "CTRL|ALT", action = act({ ShowLauncherArgs = { flags = 'FUZZY|TABS|LAUNCH_MENU_ITEMS|DOMAINS|KEY_ASSIGNMENTS|WORKSPACES|COMMANDS' } }) },
+	{
+		key = "n",
+		mods = "CTRL|ALT",
+		action = act({
+			ShowLauncherArgs = { flags = "FUZZY|TABS|LAUNCH_MENU_ITEMS|DOMAINS|KEY_ASSIGNMENTS|WORKSPACES|COMMANDS" },
+		}),
+	},
 	{ key = "c", mods = "CTRL|SHIFT", action = act({ CopyTo = "Clipboard" }) },
 	{ key = "v", mods = "CTRL|SHIFT", action = act({ PasteFrom = "Clipboard" }) },
 	{ key = "Insert", mods = "SHIFT", action = act({ PasteFrom = "PrimarySelection" }) },
@@ -101,7 +107,9 @@ M.default_keybinds = {
 	{ key = "RightArrow", mods = "ALT|SHIFT", action = act({ AdjustPaneSize = { "Right", 5 } }) },
 
 	-- New Tab
-	{ key = "n", mods = "CTRL|SHIFT", action = act({ SpawnTab = "CurrentPaneDomain" }) },
+	-- { key = "t", mods = "CTRL|SHIFT", action = act({ SpawnTab = "CurrentPaneDomain" }) },
+	--  New Window
+	-- { key = "n", mods = "CTRL|SHIFT", action = act.SpawnWindow },
 	-- Swap Tabs
 	{ key = "h", mods = "CTRL|SHIFT", action = act.ActivateTabRelative(-1) },
 	{ key = "l", mods = "CTRL|SHIFT", action = act.ActivateTabRelative(1) },
