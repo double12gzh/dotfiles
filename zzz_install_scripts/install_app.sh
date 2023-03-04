@@ -39,7 +39,8 @@ source ./apps/ugrep.sh
 source ./apps/viu.sh
 source ./apps/xplr.sh
 source ./apps/zoxide.sh
-source ./apps/zplug.sh
+#source ./apps/zplug.sh
+source ./apps/zinit.sh
 
 printf "\n${tty_yellow}====================Script ends====================${tty_reset}\n\n"
 printf "Remember ${tty_yellow}\"source ~/.bashrc or source ~/.zshrc\"${tty_reset} to make \$PATH valid.\n"

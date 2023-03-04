@@ -26,11 +26,11 @@ bindkey -v
 # https://github.com/sorin-ionescu/prezto/blob/e149367445d2bcb9faa6ada365dfd56efec39de8/modules/completion/init.zsh#L34
 zstyle :compinstall filename "$HOME/.zshrc"                                                                                                                      
 fpath[1,0]=~/.zsh/completion/ # local comp files                                                                                                                 
-autoload -Uz compinit·                                                                                                                                           
-if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]]; then                                                                                                        
-    compinit;                                                                                                                                                    
-else                                                                                                                                                             
-    compinit -C;                                                                                                                                                 
+autoload -Uz compinit
+if [[ -n ${ZDOTDIR:-$HOME}/.zcompdump(#qN.mh+24) ]];then
+    compinit 
+else
+    compinit -C;                                                                                                          
 fi 
 # End speedup zsh
 
@@ -120,9 +120,9 @@ eval "$(starship init zsh)" || echo "starship not found!"]
 # Init shelden
 # [ -x  ~/tools/sheldon/sheldon ] && eval "$(sheldon source)" || echo "sheldon not found!"
 # eval "$(sheldon source)" || echo "sheldon not found!"
-bindkey '^[[a' history-substring-search-up
-bindkey '^[[b' history-substring-search-down
-bindkey ',' autosuggest-accept
+#bindkey '^[[a' history-substring-search-up
+#bindkey '^[[b' history-substring-search-down
+#bindkey ',' autosuggest-accept
 
 # Init qfc
 [[ -s $HOME/tools/qfc/bin/qfc.sh ]] && source "$HOME/tools/qfc/bin/qfc.sh"
@@ -146,19 +146,16 @@ export QT5_IM_MODULE=fcitx
 export SDL_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 
-# tmux
-export DISABLE_AUTO_TITLE='true'
-
 # Custom env and aliases
+[[ -f ~/.zsh/zinit.zsh ]] && source ~/.zsh/zinit.zsh
 [[ -f ~/.zsh/aliases.zsh ]] && source ~/.zsh/aliases.zsh
 [[ -f ~/.zsh/keybind.zsh ]] && source ~/.zsh/keybind.zsh
 [[ -f ~/.zsh/starship.zsh ]] && source ~/.zsh/starship.zsh
 [[ -f ~/.zsh/fzf-tab.zsh ]] && source ~/.zsh/fzf-tab.zsh
 [[ -f ~/.zsh/wsl2fix.zsh ]] && source ~/.zsh/wsl2fix.zsh
-[[ -f ~/.zsh/zplug.zsh ]] && source ~/.zsh/zplug.zsh
+#[[ -f ~/.zsh/zplug.zsh ]] && source ~/.zsh/zplug.zsh
 # [[ -f ~/.zsh/proxies.zsh ]] && source ~/.zsh/proxies.zsh
 # [[ -f ~/.bash/wayland.zsh ]] && source ~/.zsh/wayland.zsh
 
 [[ -f ~/.local_aliases.zsh ]] && source ~/.local_aliases.zsh
-. "$HOME/.cargo/env"
 
