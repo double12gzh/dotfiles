@@ -4,6 +4,14 @@
     "actions": 
     [
         {
+            "command": 
+            {
+                "action": "switchToTab",
+                "index": 7
+            },
+            "keys": "ctrl+7"
+        },
+        {
             "command": "unbound",
             "keys": "ctrl+comma"
         },
@@ -33,10 +41,6 @@
         },
         {
             "command": "unbound",
-            "keys": "ctrl+shift+n"
-        },
-        {
-            "command": "unbound",
             "keys": "ctrl+shift+1"
         },
         {
@@ -46,10 +50,6 @@
         {
             "command": "unbound",
             "keys": "ctrl+shift+3"
-        },
-        {
-            "command": "unbound",
-            "keys": "ctrl+shift+t"
         },
         {
             "command": "unbound",
@@ -110,10 +110,6 @@
         {
             "command": "unbound",
             "keys": "alt+8"
-        },
-        {
-            "command": "unbound",
-            "keys": "ctrl+shift+w"
         },
         {
             "command": "unbound",
@@ -287,8 +283,17 @@
             "command": 
             {
                 "action": "switchToTab",
+                "index": 0
+            },
+            "keys": "ctrl+0"
+        },
+        {
+            "command": 
+            {
+                "action": "switchToTab",
                 "index": 2
-            }
+            },
+            "keys": "ctrl+2"
         },
         {
             "command": 
@@ -306,35 +311,8 @@
         {
             "command": 
             {
-                "action": "switchToTab",
-                "index": 7
-            }
-        },
-        {
-            "command": 
-            {
-                "action": "switchToTab",
-                "index": 0
-            }
-        },
-        {
-            "command": 
-            {
-                "action": "switchToTab",
-                "index": 3
-            }
-        },
-        {
-            "command": 
-            {
-                "action": "splitPane",
-                "split": "down"
-            }
-        },
-        {
-            "command": 
-            {
-                "action": "newTab"
+                "action": "resizePane",
+                "direction": "left"
             }
         },
         {
@@ -348,46 +326,74 @@
             "command": 
             {
                 "action": "switchToTab",
-                "index": 4
-            }
+                "index": 3
+            },
+            "keys": "ctrl+3"
         },
         {
             "command": 
             {
-                "action": "resizePane",
-                "direction": "left"
-            }
+                "action": "splitPane",
+                "split": "down"
+            },
+            "keys": "ctrl+alt+shift+'"
         },
         {
             "command": 
             {
                 "action": "switchToTab",
                 "index": 1
-            }
+            },
+            "keys": "ctrl+1"
+        },
+        {
+            "command": 
+            {
+                "action": "newTab"
+            },
+            "keys": "ctrl+shift+n"
+        },
+        {
+            "command": 
+            {
+                "action": "newTab"
+            },
+            "keys": "ctrl+shift+t"
         },
         {
             "command": 
             {
                 "action": "switchToTab",
-                "index": 5
-            }
-        },
-        {
-            "command": 
-            {
-                "action": "switchToTab",
-                "index": 8
-            }
-        },
-        {
-            "command": "closePane"
+                "index": 4
+            },
+            "keys": "ctrl+4"
         },
         {
             "command": 
             {
                 "action": "switchToTab",
                 "index": 6
-            }
+            },
+            "keys": "ctrl+6"
+        },
+        {
+            "command": 
+            {
+                "action": "switchToTab",
+                "index": 5
+            },
+            "keys": "ctrl+5"
+        },
+        {
+            "command": 
+            {
+                "action": "switchToTab",
+                "index": 8
+            },
+            "keys": "ctrl+8"
+        },
+        {
+            "command": "closePane"
         },
         {
             "command": 
@@ -404,7 +410,8 @@
             {
                 "action": "splitPane",
                 "split": "right"
-            }
+            },
+            "keys": "ctrl+alt+shift+5"
         },
         {
             "command": 
@@ -412,12 +419,19 @@
                 "action": "copy",
                 "singleLine": false
             }
+        },
+        {
+            "command": 
+            {
+                "action": "closeTab"
+            },
+            "keys": "ctrl+shift+w"
         }
     ],
-    "alwaysShowTabs": false,
+    "alwaysShowTabs": true,
     "copyFormatting": "all",
     "copyOnSelect": true,
-    "defaultProfile": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+    "defaultProfile": "{8c701c6d-1341-546d-84ae-1a1fb3a809ed}",
     "experimental.rendering.forceFullRepaint": true,
     "experimental.rendering.software": true,
     "largePasteWarning": false,
@@ -426,24 +440,26 @@
     {
         "defaults": 
         {
-            "colorScheme": "Jeffrey",
+            "colorScheme": "Gruvbox-matrial medium dark",
             "cursorShape": "filledBox",
             "font": 
             {
                 "face": "Hack Nerd Font",
-                "size": 13
+                "size": 13.0
             },
-            "padding": "0"
+            "padding": "0",
+            "useAtlasEngine": true
         },
         "list": 
         [
             {
                 "commandline": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
-                "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
-                "hidden": false,
-                "font": {
+                "font": 
+                {
                     "face": "Hack Nerd Font"
                 },
+                "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+                "hidden": false,
                 "name": "Windows PowerShell"
             },
             {
@@ -453,31 +469,12 @@
                 "name": "\u547d\u4ee4\u63d0\u793a\u7b26"
             },
             {
-                "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
+                "commandline": "wsl.exe",
+                "guid": "{8c701c6d-1341-546d-84ae-1a1fb3a809ed}",
                 "hidden": false,
-                "name": "Azure Cloud Shell",
-                "font": {
-                    "face": "Hack Nerd Font"
-                },
-                "source": "Windows.Terminal.Azure"
-            },
-            {
-                "guid": "{17bf3de4-5353-5709-bcf9-835bd952a95e}",
-                "hidden": true,
-                "name": "Ubuntu-22.04",
-                "font": {
-                    "face": "Hack Nerd Font"
-                },
-                "source": "Windows.Terminal.Wsl"
-            },
-            {
-                "guid": "{f9ceaf27-504c-58d7-927c-d1d6a7ac7d3c}",
-                "hidden": false,
-                "name": "Ubuntu 22.04.1 LTS",
-                "font": {
-                    "face": "Hack Nerd Font"
-                },
-                "source": "CanonicalGroupLimited.Ubuntu22.04LTS_79rhkp1fndgsc"
+                "name": "Ubuntu (Preview)",
+                "source": "CanonicalGroupLimited.UbuntuPreview_79rhkp1fndgsc",
+                "useAcrylic": true
             }
         ]
     },
@@ -530,27 +527,27 @@
             "yellow": "#C19C00"
         },
         {
-            "background": "#282A36",
-            "black": "#282A36",
-            "blue": "#57C7FF",
-            "brightBlack": "#686868",
-            "brightBlue": "#57C7FF",
-            "brightCyan": "#9AEDFE",
-            "brightGreen": "#5AF78E",
-            "brightPurple": "#FF00FF",
-            "brightRed": "#FF5C57",
-            "brightWhite": "#EFF0EB",
-            "brightYellow": "#F3F99D",
-            "cursorColor": "#97979B",
-            "cyan": "#F1F1F0",
-            "foreground": "#EFF0EB",
-            "green": "#5AF78E",
-            "name": "Jeffrey",
-            "purple": "#800080",
-            "red": "#FF5C57",
-            "selectionBackground": "#FEFFFF",
-            "white": "#F1F1F0",
-            "yellow": "#F3F99D"
+            "background": "#282828",
+            "black": "#665C54",
+            "blue": "#7DAEA3",
+            "brightBlack": "#928374",
+            "brightBlue": "#7DAEA3",
+            "brightCyan": "#89B482",
+            "brightGreen": "#A9B665",
+            "brightPurple": "#D3869B",
+            "brightRed": "#EA6962",
+            "brightWhite": "#D4BE98",
+            "brightYellow": "#D8A657",
+            "cursorColor": "#FFFFFF",
+            "cyan": "#89B482",
+            "foreground": "#D4BE98",
+            "green": "#A9B665",
+            "name": "Gruvbox-matrial medium dark",
+            "purple": "#D3869B",
+            "red": "#EA6962",
+            "selectionBackground": "#FFFFFF",
+            "white": "#D4BE98",
+            "yellow": "#D8A657"
         },
         {
             "background": "#282C34",
@@ -706,7 +703,7 @@
             "cyan": "#3A96DD",
             "foreground": "#FFFFFF",
             "green": "#26A269",
-            "name": "Ubuntu-22.04-ColorScheme",
+            "name": "Ubuntu-Preview-ColorScheme",
             "purple": "#881798",
             "red": "#C21A23",
             "selectionBackground": "#FFFFFF",
@@ -737,7 +734,8 @@
             "yellow": "#808000"
         }
     ],
-    "showTabsInTitlebar": false,
+    "showTabsInTitlebar": true,
     "theme": "dark",
+    "themes": [],
     "useAcrylicInTabRow": true
 }
