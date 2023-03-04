@@ -39,8 +39,7 @@ $time\
 $character"""
 
 [sudo]
-# symbol = "🧙"
-symbol = " "
+symbol = "🧙"
 disabled = false
 style = "red"
 # format = '[ $symbol ]($style)'
