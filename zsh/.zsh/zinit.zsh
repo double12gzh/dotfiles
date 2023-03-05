@@ -30,9 +30,10 @@ zinit ice wait="0a" lucid atload="_zsh_autosuggest_start"
 zinit light zsh-users/zsh-autosuggestions
 
 # ENHANCD
-zinit ice wait="0b" lucid
-zinit light b4b4r07/enhancd
-export ENHANCD_FILTER=fzf:fzy:peco
+# disable always pop-up dirs chosen
+#zinit ice wait="0b" lucid
+#zinit light b4b4r07/enhancd
+#export ENHANCD_FILTER=fzf:fzy:peco
 
 # HISTORY SUBSTRING SEARCHING
 zinit ice wait="0b" lucid atload'bindkey "$terminfo[kcuu1]" history-substring-search-up; bindkey "$terminfo[kcud1]" history-substring-search-down'
