@@ -117,6 +117,9 @@ eval "$(zoxide init zsh)" || echo "zoxide not found!"
 # [ -x ~/tools/starship/starship ] && eval "$(starship init zsh)" || echo "starship not found!"]
 eval "$(starship init zsh)" || echo "starship not found!"]
 
+# Init direnv
+eval "$(direnv hook zsh)"
+
 # Init shelden
 # [ -x  ~/tools/sheldon/sheldon ] && eval "$(sheldon source)" || echo "sheldon not found!"
 # eval "$(sheldon source)" || echo "sheldon not found!"
