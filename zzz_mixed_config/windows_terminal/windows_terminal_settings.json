@@ -105,10 +105,6 @@
         },
         {
             "command": "unbound",
-            "keys": "ctrl+shift+f"
-        },
-        {
-            "command": "unbound",
             "keys": "alt+8"
         },
         {
@@ -280,12 +276,30 @@
             "keys": ""
         },
         {
+            "command": "unbound",
+            "keys": "ctrl+shift+f"
+        },
+        {
             "command": 
             {
                 "action": "switchToTab",
                 "index": 0
             },
             "keys": "ctrl+0"
+        },
+        {
+            "command": 
+            {
+                "action": "prevTab"
+            },
+            "keys": "alt+h"
+        },
+        {
+            "command": 
+            {
+                "action": "prevTab"
+            },
+            "keys": "alt+l"
         },
         {
             "command": 
@@ -306,7 +320,8 @@
             "command": "selectAll"
         },
         {
-            "command": "find"
+            "command": "find",
+            "keys": "ctrl+alt+shift+f"
         },
         {
             "command": 
@@ -351,13 +366,6 @@
             {
                 "action": "newTab"
             },
-            "keys": "ctrl+shift+n"
-        },
-        {
-            "command": 
-            {
-                "action": "newTab"
-            },
             "keys": "ctrl+shift+t"
         },
         {
@@ -394,6 +402,13 @@
         },
         {
             "command": "closePane"
+        },
+        {
+            "command": 
+            {
+                "action": "newWindow"
+            },
+            "keys": "ctrl+shift+n"
         },
         {
             "command": 
@@ -448,6 +463,7 @@
                 "size": 13.0
             },
             "padding": "0",
+            "scrollbarState": "hidden",
             "useAtlasEngine": true
         },
         "list": 
@@ -473,6 +489,7 @@
                 "guid": "{8c701c6d-1341-546d-84ae-1a1fb3a809ed}",
                 "hidden": false,
                 "name": "Ubuntu (Preview)",
+                "opacity": 100,
                 "source": "CanonicalGroupLimited.UbuntuPreview_79rhkp1fndgsc",
                 "useAcrylic": true
             }
@@ -735,6 +752,7 @@
         }
     ],
     "showTabsInTitlebar": true,
+    "showTerminalTitleInTitlebar": false,
     "theme": "dark",
     "themes": [],
     "useAcrylicInTabRow": true
