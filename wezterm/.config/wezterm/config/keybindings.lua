@@ -62,7 +62,7 @@ M.default_keybinds = {
 	{ key = "F5", mods = "CTRL|SHIFT", action = "ReloadConfiguration" },
 	{ key = "z", mods = "ALT|SHIFT", action = act({ EmitEvent = "toggle-tmux-keybinds" }) },
 	{ key = "e", mods = "ALT", action = act({ EmitEvent = "trigger-nvim-with-scrollback" }) },
-	{ key = "q", mods = "ALT", action = act({ CloseCurrentPane = { confirm = true } }) },
+	{ key = "w", mods = "ALT", action = act({ CloseCurrentPane = { confirm = false } }) },
 	-- { key = "x", mods = "ALT", action = act({ CloseCurrentPane = { confirm = true } }) },
 	{
 		key = "r",
@@ -92,7 +92,7 @@ M.default_keybinds = {
 	{ key = "k", mods = "ALT|SHIFT", action = act.ActivatePaneDirection("Up") },
 	{ key = "j", mods = "ALT|SHIFT", action = act.ActivatePaneDirection("Down") },
 	-- Close Pane
-	{ key = "c", mods = "ALT|SHIFT", action = wezterm.action.CloseCurrentPane({ confirm = false }) },
+	-- { key = "c", mods = "ALT|SHIFT", action = wezterm.action.CloseCurrentPane({ confirm = false }) },
 	-- Swap Panes
 	{ key = "i", mods = "ALT|SHIFT", action = act.PaneSelect({ alphabet = "asdfghjkl;", mode = "Activate" }) },
 	{
