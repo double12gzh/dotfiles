@@ -59,11 +59,10 @@ M.default_keybinds = {
 	{ key = "-", mods = "CTRL", action = "DecreaseFontSize" },
 	{ key = "PageUp", mods = "ALT", action = act({ ScrollByPage = -1 }) },
 	{ key = "PageDown", mods = "ALT", action = act({ ScrollByPage = 1 }) },
-	{ key = "F5", mods = "CTRL|SHIFT", action = "ReloadConfiguration" },
+	-- { key = "F5", mods = "CTRL|SHIFT", action = "ReloadConfiguration" },
 	{ key = "z", mods = "ALT|SHIFT", action = act({ EmitEvent = "toggle-tmux-keybinds" }) },
 	{ key = "e", mods = "ALT", action = act({ EmitEvent = "trigger-nvim-with-scrollback" }) },
 	{ key = "w", mods = "ALT", action = act({ CloseCurrentPane = { confirm = false } }) },
-	-- { key = "x", mods = "ALT", action = act({ CloseCurrentPane = { confirm = true } }) },
 	{
 		key = "r",
 		mods = "ALT",
@@ -111,8 +110,8 @@ M.default_keybinds = {
 	--  New Window
 	-- { key = "n", mods = "CTRL|SHIFT", action = act.SpawnWindow },
 	-- Swap Tabs
-	{ key = "h", mods = "CTRL|SHIFT", action = act.ActivateTabRelative(-1) },
-	{ key = "l", mods = "CTRL|SHIFT", action = act.ActivateTabRelative(1) },
+	-- { key = "h", mods = "CTRL|SHIFT", action = act.ActivateTabRelative(-1) },
+	-- { key = "l", mods = "CTRL|SHIFT", action = act.ActivateTabRelative(1) },
 }
 
 function M.create_keybinds()
