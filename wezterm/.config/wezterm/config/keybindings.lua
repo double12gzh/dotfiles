@@ -9,7 +9,7 @@ local act = wezterm.action
 wezterm.on("update-right-status", function(window, pane)
 	local name = window:active_key_table()
 	if name then
-		name = "TABLE: " .. name
+		name = "MODE: " .. name
 	end
 	window:set_left_status(name or "")
 end)
