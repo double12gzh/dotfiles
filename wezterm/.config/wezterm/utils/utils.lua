@@ -11,4 +11,12 @@ function M.merge_lists(t1, t2)
 	return result
 end
 
+function M.append(dest, src)
+	for _, v in pairs(src) do
+		table.insert(dest, v)
+	end
+
+	return dest
+end
+
 return M

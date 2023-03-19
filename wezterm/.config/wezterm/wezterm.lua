@@ -11,6 +11,7 @@ local font = "Hack Nerd Font"
 local color_scheme = "Gruvbox dark, medium (base16)"
 
 return {
+	leader = { key = "=", mods = "ALT", timeout_milliseconds = 1000 },
 	automatically_reload_config = true,
 	use_ime = true,
 	scrollback_lines = 5000,
@@ -34,7 +35,7 @@ return {
 	freetype_load_target = "Normal",
 	freetype_load_flags = "NO_HINTING|MONOCHROME",
 	color_scheme = color_scheme,
-	tab_max_width = 35,
+	tab_max_width = 135,
 	initial_rows = 35,
 	initial_cols = 120,
 	window_background_opacity = 1,
