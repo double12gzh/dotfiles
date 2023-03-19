@@ -30,6 +30,7 @@ else
 	launch_menu = {
 		{ label = "bash", args = { "/usr/bin/bash" } },
 		{ label = "fish", args = { "/usr/bin/fish" } },
+		{ label = "zsh", args = { "/usr/bin/zsh" } },
 	}
 end
 
