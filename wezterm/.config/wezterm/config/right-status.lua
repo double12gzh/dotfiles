@@ -62,9 +62,15 @@ M.set_battery = function()
 	M.push(charge, icon, M.colors.battery_fg, M.colors.battery_bg, false)
 end
 
+M.set_active_workspace = function(window)
+	local ws = window:actinve_workspace()
+	M.push(ws, "ws:", M.colors.date_fg, M.colors.date_bg, true)
+end
+
 M.setup = function()
 	wezterm.on("update-right-status", function(window, pane)
 		M.cells = {}
+		M.set_active_workspace()
 		M.set_date()
 		M.set_battery()
 
