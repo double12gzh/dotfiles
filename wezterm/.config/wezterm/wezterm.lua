@@ -11,7 +11,7 @@ local font = "Hack Nerd Font"
 local color_scheme = "Gruvbox dark, medium (base16)"
 
 return {
-	leader = { key = "=", mods = "ALT", timeout_milliseconds = 1000 },
+	leader = { key = ".", mods = "ALT", timeout_milliseconds = 1000 },
 	automatically_reload_config = true,
 	use_ime = true,
 	scrollback_lines = 5000,
