@@ -70,7 +70,7 @@ end
 M.setup = function()
 	wezterm.on("update-right-status", function(window, pane)
 		M.cells = {}
-		M.set_active_workspace()
+		M.set_active_workspace(window)
 		M.set_date()
 		M.set_battery()
 
