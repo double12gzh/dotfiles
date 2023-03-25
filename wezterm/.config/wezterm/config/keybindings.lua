@@ -60,6 +60,20 @@ local custom_default_keybinds = {
 	{ key = "n", mods = "LEADER", action = act.SwitchToWorkspace },
 	{ key = "h", mods = "LEADER", action = act.SwitchWorkspaceRelative(1) },
 	{ key = "l", mods = "LEADER", action = act.SwitchWorkspaceRelative(-1) },
+	{ 
+		key = "y", 
+		mods = "LEADER",
+		action = act.SwitchToWorkspace({
+			name = "local",
+		}),
+	},
+	{ 
+		key = "t", 
+		mods = "LEADER",
+		action = act.SwitchToWorkspace({
+			name = "remote",
+		}),
+	},
 	-- Workspace }}
 
 	-- Key table {{
