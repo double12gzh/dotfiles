@@ -21,6 +21,7 @@ local custom_default_keybinds = {
 	-- Tab {{
 	{ key = "h", mods = "ALT", action = act.ActivateTabRelative(-1) },
 	{ key = "l", mods = "ALT", action = act.ActivateTabRelative(1) },
+	{ key = "n", mods = "ALT", action = wezterm.action.ShowTabNavigator },
 	-- Tab }}
 
 	-- Panes {{
@@ -57,6 +58,8 @@ local custom_default_keybinds = {
 
 	-- Workspace {{
 	{ key = "n", mods = "LEADER", action = act.SwitchToWorkspace },
+	{ key = "h", mods = "LEADER", action = act.SwitchWorkspaceRelative(1) },
+	{ key = "l", mods = "LEADER", action = act.SwitchWorkspaceRelative(-1) },
 	-- Workspace }}
 
 	-- Key table {{
