@@ -63,7 +63,7 @@ M.set_battery = function()
 end
 
 M.set_active_workspace = function(window)
-	local ws = window:actinve_workspace()
+	local ws = window:active_workspace()
 	M.push(ws, "ws:", M.colors.date_fg, M.colors.date_bg, true)
 end
 
