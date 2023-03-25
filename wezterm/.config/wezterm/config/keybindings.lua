@@ -51,7 +51,7 @@ local custom_default_keybinds = {
 		key = "p",
 		mods = "CTRL|ALT|SHIFT",
 		action = act.ShowLauncherArgs({
-			flags = "FUZZY|TABS|LAUNCH_MENU_ITEMS|DOMAINS|WORKSPACES",
+			flags = "FUZZY|LAUNCH_MENU_ITEMS|DOMAINS|WORKSPACES",
 		}),
 	},
 	-- Launcher Menu }}
