@@ -49,6 +49,7 @@ return {
 	enable_scroll_bar = true,
 	status_update_interval = 1000,
 	hide_tab_bar_if_only_one_tab = false,
+	hide_mouse_cursor_when_typing = false,
 	switch_to_last_active_tab_when_closing_tab = true,
 	inactive_pane_hsb = { saturation = 1.0, brightness = 1.0 },
 	-- window_close_confirmation = "NeverPrompt",

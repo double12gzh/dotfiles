@@ -60,15 +60,15 @@ local custom_default_keybinds = {
 	{ key = "n", mods = "LEADER", action = act.SwitchToWorkspace },
 	{ key = "h", mods = "LEADER", action = act.SwitchWorkspaceRelative(1) },
 	{ key = "l", mods = "LEADER", action = act.SwitchWorkspaceRelative(-1) },
-	{ 
-		key = "y", 
+	{
+		key = "y",
 		mods = "LEADER",
 		action = act.SwitchToWorkspace({
 			name = "local",
 		}),
 	},
-	{ 
-		key = "t", 
+	{
+		key = "t",
 		mods = "LEADER",
 		action = act.SwitchToWorkspace({
 			name = "remote",
@@ -86,6 +86,21 @@ local custom_default_keybinds = {
 		}),
 	},
 	-- Key table }}
+	{
+		key = "c",
+		mods = "LEADER",
+		action = act.PromptInputLine({
+			description = "Enter new name for tab",
+			action = wezterm.action_callback(function(window, pane, line)
+				-- line will be `nil` if they hit escape without entering anything
+				-- An empty string if they just hit enter
+				-- Or the actual line of text they wrote
+				if line then
+					window:active_tab():set_title(line)
+				end
+			end),
+		}),
+	},
 }
 
 local default_keybinds = function()
