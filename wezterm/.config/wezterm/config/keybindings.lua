@@ -57,44 +57,23 @@ local custom_default_keybinds = {
 	-- Launcher Menu }}
 
 	-- Workspace {{
-	{ key = "n", mods = "LEADER", action = act.SwitchToWorkspace },
+	{ key = "a", mods = "LEADER", action = act.SwitchToWorkspace({ name = "local" }) },
+	{ key = "b", mods = "LEADER", action = act.SwitchToWorkspace({ name = "remote" }) },
 	{ key = "h", mods = "LEADER", action = act.SwitchWorkspaceRelative(1) },
 	{ key = "l", mods = "LEADER", action = act.SwitchWorkspaceRelative(-1) },
-	{
-		key = "y",
-		mods = "LEADER",
-		action = act.SwitchToWorkspace({
-			name = "local",
-		}),
-	},
-	{
-		key = "t",
-		mods = "LEADER",
-		action = act.SwitchToWorkspace({
-			name = "remote",
-		}),
-	},
+	{ key = "n", mods = "LEADER", action = act.SwitchToWorkspace },
 	-- Workspace }}
 
 	-- Key table {{
-	{
-		key = "r",
-		mods = "LEADER",
-		action = act.ActivateKeyTable({
-			name = "resize_pane",
-			one_shot = false,
-		}),
-	},
+	{ key = "r", mods = "LEADER", action = act.ActivateKeyTable({ name = "resize_pane", one_shot = false }) },
 	-- Key table }}
+	{ key = "t", mods = "LEADER", action = wezterm.action.ShowTabNavigator },
 	{
 		key = "c",
 		mods = "LEADER",
 		action = act.PromptInputLine({
 			description = "Enter new name for tab",
 			action = wezterm.action_callback(function(window, pane, line)
-				-- line will be `nil` if they hit escape without entering anything
-				-- An empty string if they just hit enter
-				-- Or the actual line of text they wrote
 				if line then
 					window:active_tab():set_title(line)
 				end
