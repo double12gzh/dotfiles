@@ -38,7 +38,7 @@ end
 
 M.set_title = function(process_name, base_title, max_width, inset, index)
 	local title
-	inset = inset or 6
+	inset = inset or 1
 
 	if process_name:len() > 0 then
 		title = index .. ". " .. process_name .. " ~ " .. base_title
@@ -116,9 +116,9 @@ M.setup = function()
 		if has_unseen_output then
 			M.push(bg, "#FFA066", { Intensity = "Bold" }, " " .. GLYPH_CIRCLE)
 		end
-			
+
 		-- Right padding
-		M.push(bg, fg, { Intensity = "Bold"}, " ") 
+		M.push(bg, fg, { Intensity = "Bold" }, " ")
 
 		-- Right semi-circle
 		M.push(fg, bg, { Intensity = "Bold" }, GLYPH_SEMI_CIRCLE_RIGHT)
