@@ -7,9 +7,9 @@
             "command": 
             {
                 "action": "switchToTab",
-                "index": 7
+                "index": 0
             },
-            "keys": "ctrl+7"
+            "keys": "ctrl+0"
         },
         {
             "command": "unbound",
@@ -277,29 +277,33 @@
         },
         {
             "command": "unbound",
-            "keys": "ctrl+shift+f"
+            "keys": "enter"
+        },
+        {
+            "command": "unbound",
+            "keys": "shift+enter"
+        },
+        {
+            "command": 
+            {
+                "action": "findMatch",
+                "direction": "next"
+            }
         },
         {
             "command": 
             {
                 "action": "switchToTab",
-                "index": 0
+                "index": 7
             },
-            "keys": "ctrl+0"
+            "keys": "ctrl+7"
         },
         {
             "command": 
             {
-                "action": "prevTab"
-            },
-            "keys": "alt+h"
-        },
-        {
-            "command": 
-            {
-                "action": "prevTab"
-            },
-            "keys": "alt+l"
+                "action": "resizePane",
+                "direction": "right"
+            }
         },
         {
             "command": 
@@ -312,22 +316,29 @@
         {
             "command": 
             {
-                "action": "resizePane",
-                "direction": "right"
-            }
+                "action": "prevTab"
+            },
+            "keys": "alt+h"
         },
         {
             "command": "selectAll"
         },
         {
             "command": "find",
-            "keys": "ctrl+alt+shift+f"
+            "keys": "ctrl+shift+f"
         },
         {
             "command": 
             {
                 "action": "resizePane",
                 "direction": "left"
+            }
+        },
+        {
+            "command": 
+            {
+                "action": "newWindow",
+                "profile": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}"
             }
         },
         {
@@ -356,17 +367,17 @@
         {
             "command": 
             {
-                "action": "switchToTab",
-                "index": 1
+                "action": "newTab"
             },
-            "keys": "ctrl+1"
+            "keys": "ctrl+shift+t"
         },
         {
             "command": 
             {
-                "action": "newTab"
+                "action": "switchToTab",
+                "index": 1
             },
-            "keys": "ctrl+shift+t"
+            "keys": "ctrl+1"
         },
         {
             "command": 
@@ -401,9 +412,6 @@
             "keys": "ctrl+8"
         },
         {
-            "command": "closePane"
-        },
-        {
             "command": 
             {
                 "action": "newWindow"
@@ -411,11 +419,21 @@
             "keys": "ctrl+shift+n"
         },
         {
+            "command": "closePane"
+        },
+        {
             "command": 
             {
                 "action": "resizePane",
                 "direction": "down"
             }
+        },
+        {
+            "command": 
+            {
+                "action": "scrollUp"
+            },
+            "keys": "shift+up"
         },
         {
             "command": "togglePaneZoom"
@@ -431,6 +449,13 @@
         {
             "command": 
             {
+                "action": "findMatch",
+                "direction": "prev"
+            }
+        },
+        {
+            "command": 
+            {
                 "action": "copy",
                 "singleLine": false
             }
@@ -441,14 +466,38 @@
                 "action": "closeTab"
             },
             "keys": "ctrl+shift+w"
+        },
+        {
+            "command": 
+            {
+                "action": "nextTab"
+            },
+            "keys": "alt+l"
+        },
+        {
+            "command": "scrollUpPage",
+            "keys": "pgup"
+        },
+        {
+            "command": "scrollDownPage",
+            "keys": "pgdn"
+        },
+        {
+            "command": 
+            {
+                "action": "scrollDown"
+            },
+            "keys": "shift+down"
         }
     ],
+    "alwaysOnTop": false,
     "alwaysShowTabs": true,
     "copyFormatting": "all",
     "copyOnSelect": true,
-    "defaultProfile": "{8c701c6d-1341-546d-84ae-1a1fb3a809ed}",
-    "experimental.rendering.forceFullRepaint": true,
-    "experimental.rendering.software": true,
+    "defaultProfile": "{64ec4374-5bc6-4ec9-8438-6402ccbb2944}",
+    "disableAnimations": true,
+    "experimental.rendering.forceFullRepaint": false,
+    "experimental.rendering.software": false,
     "largePasteWarning": false,
     "multiLinePasteWarning": false,
     "profiles": 
@@ -463,8 +512,7 @@
                 "size": 13.0
             },
             "padding": "0",
-            "scrollbarState": "hidden",
-            "useAtlasEngine": true
+            "useAtlasEngine": false
         },
         "list": 
         [
@@ -485,13 +533,24 @@
                 "name": "\u547d\u4ee4\u63d0\u793a\u7b26"
             },
             {
-                "commandline": "wsl.exe",
-                "guid": "{8c701c6d-1341-546d-84ae-1a1fb3a809ed}",
+                "altGrAliasing": false,
+                "bellStyle": "audible",
+                "commandline": "ubuntu2204.exe",
+                "experimental.retroTerminalEffect": false,
+                "font": 
+                {
+                    "weight": "semi-light"
+                },
+                "guid": "{64ec4374-5bc6-4ec9-8438-6402ccbb2944}",
                 "hidden": false,
-                "name": "Ubuntu (Preview)",
+                "icon": "https://assets.ubuntu.com/v1/49a1a858-favicon-32x32.png",
+                "name": "Ubuntu 22.04.2 LTS",
                 "opacity": 100,
-                "source": "CanonicalGroupLimited.UbuntuPreview_79rhkp1fndgsc",
-                "useAcrylic": true
+                "scrollbarState": "hidden",
+                "suppressApplicationTitle": false,
+                "tabTitle": "Ubuntu 22.04.2 LTS",
+                "useAcrylic": false,
+                "useAtlasEngine": false
             }
         ]
     },
@@ -720,6 +779,29 @@
             "cyan": "#3A96DD",
             "foreground": "#FFFFFF",
             "green": "#26A269",
+            "name": "Ubuntu-22.04-ColorScheme",
+            "purple": "#881798",
+            "red": "#C21A23",
+            "selectionBackground": "#FFFFFF",
+            "white": "#CCCCCC",
+            "yellow": "#A2734C"
+        },
+        {
+            "background": "#300A24",
+            "black": "#171421",
+            "blue": "#0037DA",
+            "brightBlack": "#767676",
+            "brightBlue": "#08458F",
+            "brightCyan": "#2C9FB3",
+            "brightGreen": "#26A269",
+            "brightPurple": "#A347BA",
+            "brightRed": "#C01C28",
+            "brightWhite": "#F2F2F2",
+            "brightYellow": "#A2734C",
+            "cursorColor": "#FFFFFF",
+            "cyan": "#3A96DD",
+            "foreground": "#FFFFFF",
+            "green": "#26A269",
             "name": "Ubuntu-Preview-ColorScheme",
             "purple": "#881798",
             "red": "#C21A23",
@@ -753,7 +835,7 @@
     ],
     "showTabsInTitlebar": true,
     "showTerminalTitleInTitlebar": false,
-    "theme": "dark",
+    "theme": "light",
     "themes": [],
     "useAcrylicInTabRow": true
 }
