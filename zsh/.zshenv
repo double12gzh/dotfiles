@@ -156,6 +156,7 @@ export XMODIFIERS=@im=fcitx
 [[ -f ~/.zsh/starship.zsh ]] && source ~/.zsh/starship.zsh
 [[ -f ~/.zsh/fzf-tab.zsh ]] && source ~/.zsh/fzf-tab.zsh
 [[ -f ~/.zsh/wsl2fix.zsh ]] && source ~/.zsh/wsl2fix.zsh
+[[ -f ~/.zsh/ssh_menu.zsh ]] && source ~/.zsh/ssh_menu.zsh
 #[[ -f ~/.zsh/zplug.zsh ]] && source ~/.zsh/zplug.zsh
 # [[ -f ~/.zsh/proxies.zsh ]] && source ~/.zsh/proxies.zsh
 # [[ -f ~/.bash/wayland.zsh ]] && source ~/.zsh/wayland.zsh
