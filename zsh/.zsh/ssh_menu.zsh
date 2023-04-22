@@ -1,4 +1,6 @@
-ssh_config="$HOME/.ssh/config"
+#!/bin/zsh
+
+default_ssh_config="$HOME/.ssh/config"
 custom_ssh_config="$HOME/.zsh/sshs/hosts"
 ssh_config_awk="$HOME/.zsh/sshs/ssh_config.awk"
 
@@ -13,7 +15,7 @@ myssh ()
     #   Info: xxxx
     # 文件路径: $HOME/.zsh/sshs/hosts
 
-    [ $# -eq 1 ] && ssh_config=$custom_ssh_config/$1
+    [ $# -eq 1 ] && ssh_config=$custom_ssh_config/$1 || ssh_config=$default_ssh_config
 
     host=$(grep '^[[:space:]]*Host[[:space:]]' $ssh_config | cut -d ' ' -f 2 | fzf --height=20% --reverse --prompt="SSH > " --preview="awk -v HOST={} -f $ssh_config_awk $ssh_config")
 
