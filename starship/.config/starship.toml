@@ -26,7 +26,6 @@ $conda\
 $python\
 $rust\
 $lua\
-$kubernetes\
 $docker_context\
 $perl\
 $php\
