@@ -38,7 +38,9 @@ $time\
 $character"""
 
 [sudo]
-symbol = "🧙" # 依赖 noto color emoji: https://github.com/double12gzh/nvim/wiki/1.-Prerequest#135-noto-color-emoji%E5%8F%AF%E9%80%89 
+symbol = "🧙" 
+# 依赖 noto color emoji: https://github.com/double12gzh/nvim/wiki/1.-Prerequest#135-noto-color-emoji%E5%8F%AF%E9%80%89 
+# 如果是 macbook需要使用 apple color emoji
 disabled = false
 style = "red"
 # format = '[ $symbol ]($style)'
