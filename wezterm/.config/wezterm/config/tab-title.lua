@@ -54,6 +54,17 @@ M.set_title = function(process_name, base_title, max_width, inset, index)
 	return title
 end
 
+M.table_title = function(tab_info)
+	local title = tab_info.tab_title
+	-- if the tab title is explicitly set, take that
+	if title and #title > 0 then
+		return title
+	end
+	-- Otherwise, use the title from the active pane
+	-- in that tab
+	return tab_info.active_pane.title
+end
+
 M.check_if_admin = function(p)
 	if p:match("^Administrator: ") then
 		return true
@@ -80,7 +91,8 @@ M.setup = function()
 		local fg
 		local process_name = M.set_process_name(tab.active_pane.foreground_process_name)
 		local is_admin = M.check_if_admin(tab.active_pane.title)
-		local title = M.set_title(process_name, tab.active_pane.title, max_width, (is_admin and 8), tab.tab_index + 1)
+		local tab_title = M.table_title(tab)
+		local title = M.set_title(process_name, tab_title, max_width, (is_admin and 8), tab.tab_index + 1)
 
 		if tab.is_active then
 			bg = M.colors.is_active.bg
