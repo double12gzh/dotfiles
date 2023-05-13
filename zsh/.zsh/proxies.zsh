@@ -23,26 +23,26 @@ ip_() {
     curl cip.cc/$1
 }
 
-proxy_npm() {
+proxy_npm_() {
     npm config set proxy ${PROXY_HTTP}
     npm config set https-proxy ${PROXY_HTTP}
     yarn config set proxy ${PROXY_HTTP}
     yarn config set https-proxy ${PROXY_HTTP}
 }
 
-unproxy_npm() {
+unproxy_npm_() {
     npm config delete proxy
     npm config delete https-proxy
     yarn config delete proxy
     yarn config delete https-proxy
 }
 
-proxy_global_git() {
+proxy_global_git_() {
     git config --global http.proxy ${PROXY_HTTP}
     git config --global https.proxy ${PROXY_HTTP}
 }
 
-unproxy_global_git() {
+unproxy_global_git_() {
     git config --global --unset http.proxy
     git config --global --unset https.proxy
 }
@@ -60,7 +60,7 @@ proxy_git() {
     fi
 }
 
-proxies () {
+proxies_ () {
     # pip can read http_proxy & https_proxy
     export http_proxy="${PROXY_HTTP}"
     export HTTP_PROXY="${PROXY_HTTP}"
@@ -77,12 +77,12 @@ proxies () {
     export ALL_PROXY="${PROXY_SOCKS5}"
     export all_proxy="${PROXY_SOCKS5}"
 
-    proxy_git
-    proxy_npm
-    proxy_global_git
+    proxy_git_
+    proxy_npm_
+    proxy_global_git_
 }
 
-unproxies () {
+unproxies_ () {
     unset http_proxy
     unset HTTP_PROXY
     unset https_proxy
@@ -98,4 +98,8 @@ unproxies () {
     echo "可以继续执行"
     echo "unproxy_npm"
     echo "unproxy_global_git"
+}
+
+check_proxy_ () {
+    curl --head www.google.com
 }
