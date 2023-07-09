@@ -2,11 +2,11 @@ local wezterm = require("wezterm")
 
 local keybindings = require("config.keybindings")
 local wsl_domains = require("config.wsl-domains")
+local gpus = require("config.gpu")
 
 require("config.right-status").setup()
 require("config.tab-title").setup()
 
-local gpus = wezterm.gui.enumerate_gpus()
 local font = "Hack Nerd Font"
 local color_scheme = "Gruvbox dark, medium (base16)"
 
@@ -41,7 +41,7 @@ return {
 	window_background_opacity = 1,
 	text_background_opacity = 1,
 	window_padding = { left = 5, right = 5, top = 5, bottom = 5 },
-	webgpu_preferred_adapter = gpus[1],
+	enable_wayland = false,
 	keys = keybindings.create_keybinds(),
 	-- disable_default_key_bindings = true,
 	key_tables = keybindings.key_tables,
@@ -66,8 +66,8 @@ return {
 
 	-- wsl config
 	-- {{
-	wsl_domains = wsl_domains.wsl_domains,
-	default_domain = wsl_domains.is_windows and "WSL:Ubuntu-Preview" or nil,
+	-- wsl_domains = wsl_domains.wsl_domains,
+	default_domain = wsl_domains.is_windows and "WSL:Ubuntu" or nil,
 	default_prog = wsl_domains.is_windows and { "wsl.exe" } or nil,
 	--launch_menu = wsl_domains.is_windows and { { args = { "wsl.exe" }, domain = { DomainName = "local" } } } or nil,
 	set_environment_variables = {
@@ -75,5 +75,12 @@ return {
 		WSLENV = "TERMINFO_DIRS",
 		prompt = wsl_domains.is_windows and "$E]7;file://localhost/$P$E\\$E[32m$T$E[0m $E[35m$P$E[36m$_$G$E[0m " or nil,
 	},
+	-- }}
+
+	-- {{ GPU config
+	max_fps = gpus.max_fps,
+	front_end = gpus.front_end,
+	webgpu_preferred_adapter = gpus.webgpu_preferred_adapter,
+	webgpu_power_preference = gpus.webgpu_power_preference,
 	-- }}
 }
