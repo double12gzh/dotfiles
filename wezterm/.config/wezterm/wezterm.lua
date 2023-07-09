@@ -41,7 +41,6 @@ return {
 	window_background_opacity = 1,
 	text_background_opacity = 1,
 	window_padding = { left = 5, right = 5, top = 5, bottom = 5 },
-	enable_wayland = false,
 	keys = keybindings.create_keybinds(),
 	-- disable_default_key_bindings = true,
 	key_tables = keybindings.key_tables,
