@@ -22,7 +22,12 @@ $1 == "Host" && $2 ~ HOST {
 
 did_find_host {
     keys[n] = $1
-    values[n++] = $2
+
+    temp_value = ""
+    for (i= 2; i <=NF; ++i)
+        temp_value = sprintf("%s %s", temp_value, $i)
+    values[n++] = temp_value
+
     width = max(length($1), width)
 }
 
