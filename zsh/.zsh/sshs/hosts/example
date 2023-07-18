@@ -3,3 +3,6 @@ Host root@127.9.9.1
 
 Host 169.254.169.254
     Message yyy
+
+Host work@1.1.1.1
+    cmd: ls -alh
