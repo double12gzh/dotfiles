@@ -13,11 +13,15 @@ myssh ()
     #   Message: xxxxx
     # Host 169.254.169.254
     #   Info: xxxx
+    #   cmd: ls -alh
+    #   password: 12345
     # 文件路径: $HOME/.zsh/sshs/hosts
 
     [ $# -eq 1 ] && ssh_config=$custom_ssh_config/$1 || ssh_config=$default_ssh_config
 
     host=$(grep '^[[:space:]]*Host[[:space:]]' $ssh_config | cut -d ' ' -f 2 | fzf --height=20% --reverse --prompt="SSH > " --preview="awk -v HOST={} -f $ssh_config_awk $ssh_config")
+    cmd=$(awk -v HOST=$host -f $ssh_config_awk $ssh_config | awk -F ':'  '{sub(/^ +/, "", $2);if ($1 == "cmd") print $2}')
+    passwd=$(awk -v HOST=$host -f $ssh_config_awk $ssh_config | awk -F ':'  '{sub(/^ +/, "", $2);if ($1 == "password") print $2}')
 
-    [ $? -eq 0 ] && ssh "$host"
+    [ $? -eq 0 ] && sshpass -p "$passwd" ssh "$host" "$cmd"
 }
