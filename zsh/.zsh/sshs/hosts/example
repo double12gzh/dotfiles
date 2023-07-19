@@ -6,3 +6,4 @@ Host 169.254.169.254
 
 Host work@1.1.1.1
     cmd: ls -alh
+    password: 123
