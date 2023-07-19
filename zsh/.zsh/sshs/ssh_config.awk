@@ -33,7 +33,11 @@ did_find_host {
 
 END {
     for (i = 0; i < n; ++i)
-        printf "%-"width"s  %s\n", keys[i], values[i]
+        if (SEC == "1" && keys[i] == "password:" ) {
+            printf "%-"width"s  %s\n", keys[i], "***"
+        } else {
+            printf "%-"width"s  %s\n", keys[i], values[i]
+        }
 }
 
 function max(a, b) {
