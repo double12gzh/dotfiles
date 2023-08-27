@@ -53,7 +53,7 @@ mycolorfulssh ()
     hosts=($(awk '/^Host / {print $2}' $ssh_config))
     tags=($(awk '/^    tag/ {print $2}' $ssh_config))
     formatted_options=""
-    for (( i = 0; i <= ${#hosts[@]}; i++ )); do
+    for (( i = 1; i <= ${#hosts[@]}; i++ )); do
         tag=${tags[$i]//\"/} # Remove quotes and whitespace from tag value
         tag=$(echo $tag | tr -d '[:space:]')
         if [[ "$tag" =~ "red" ]]; then
@@ -67,7 +67,7 @@ mycolorfulssh ()
         fi
         formatted_options+="${color}${hosts[$i]}${reset_color}\n"
     done
-    host=$(echo -e "$formatted_options" | fzf --ansi --height=20% --reverse --prompt="SSH > " --preview="awk -v SEC=1  -v HOST={} -f $ssh_config_awk $ssh_config")
+    host=$(echo -ne "$formatted_options" | fzf --ansi --height=20% --reverse --prompt="SSH > " --preview="awk -v SEC=1  -v HOST={} -f $ssh_config_awk $ssh_config")
     # end: with color
 
     cmd=$(awk -v SEC=0 -v HOST=$host -f $ssh_config_awk $ssh_config | awk -F ':'  '{sub(/^ +/, "", $2);if ($1 == "cmd") print $2}')
