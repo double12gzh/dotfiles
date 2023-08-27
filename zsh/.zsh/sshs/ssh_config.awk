@@ -2,6 +2,10 @@
 
 BEGIN {
     n = 0
+    red = "\033[0;31m"
+    green = "\033[0;32m"
+    blue = "\033[0;34m"
+    reset_color = "\033[0m"
 }
 
 # 过滤注释
@@ -36,7 +40,15 @@ END {
         if (SEC == "1" && keys[i] == "password:" ) {
             printf "%-"width"s  %s\n", keys[i], "***"
         } else {
-            printf "%-"width"s  %s\n", keys[i], values[i]
+            if (keys[i] == "tag:" && index(values[i], "red") != 0) {
+                printf "%s%-"width"s  %s%s\n", red, keys[i], values[i], reset_color
+            } else if (keys[i] == "tag:" && index(values[i], "green") != 0){
+                printf "%s%-"width"s  %s%s\n", green, keys[i], values[i], reset_color
+            } else if (keys[i] == "tag:" && index(values[i], "blue") != 0){
+                printf "%s%-"width"s  %s%s\n", blue, keys[i], values[i], reset_color
+            } else {
+                printf "%-"width"s  %s\n", keys[i], values[i]
+            }
         }
 }
 
