@@ -73,5 +73,5 @@ mycolorfulssh ()
     cmd=$(awk -v SEC=0 -v HOST=$host -f $ssh_config_awk $ssh_config | awk -F ':'  '{sub(/^ +/, "", $2);if ($1 == "cmd") print $2}')
     passwd=$(awk -v SEC=0 -v HOST=$host -f $ssh_config_awk $ssh_config | awk -F ':'  '{sub(/^ +/, "", $2);if ($1 == "password") print $2}')
 
-    [ $? -eq 0 ] && relay "$host" "$passwd" "$cmd"
+    [ $? -eq 0 ] && ssh -p "$passwd" ssh "$host" "$cmd"
 }
