@@ -1,84 +1,83 @@
 #[http]
-#	proxy = "http://xxx.com:8118"
-#	sslVerify = false
+#   proxy = "http://xxx.com:8118"
+#   sslVerify = false
 #[https]
-#	proxy = "https://xxx:8118"
+#   proxy = "https://xxx:8118"
 #
 # https://gist.github.com/laispace/666dd7b27e9116faece6
 #
 #[http "https://github.com"]
-#	# no need to setup https for github
-#	# http proxy 
-#	proxy = http://127.0.0.1:7890
-#	# or can use socks5 proxy
-#	#proxy = socks5://127.0.0.1:7891
+#   # no need to setup https for github
+#   # http proxy 
+#   proxy = http://127.0.0.1:7890
+#   # or can use socks5 proxy
+#   #proxy = socks5://127.0.0.1:7891
 #[https]
-#	proxy = https://127.0.0.1:7890
+#   proxy = https://127.0.0.1:7890
 
 [user]
-	email = double12gzh@163.com
-	name = JeffreyGuan
-	signingkey = E0BA830A5A7A3030
+    email = double12gzh@163.com
+    name = JeffreyGuan
 
 [core]
-	excludesfile = ~/.config/git/gitignore
+    excludesfile = ~/.config/git/gitignore
 
 [color]
-	ui = true
-	pager = true
-	diff = auto
-	status = auto
+    ui = true
+    pager = true
+    diff = auto
+    status = auto
 
 [github]
-	user = double12gzh
+    user = double12gzh
 
 [commit]
-#	gpgsign = true
-	template = ~/.config/git/template
+    # gpgsign = true
+    template = ~/.config/git/template
 
 [rebase]
-	autosquash = true
-	abbreviatecommands = true
+    autosquash = true
+    abbreviatecommands = true
 
 [fetch]
-	prune = true
+    prune = true
 
 [push]
-	default = simple
+    default = simple
 
 [remote "origin"]
-	prune = true
+    prune = true
 
 [pull]
-	rebase = false
+    rebase = false
 
 [diff]
-	wsErrorHighlight = all
-	tool = vimdiff
-	algorithm = patience
-	indentHeuristic = true
-	wordRegex = [a-zA-Z0-9_]+|[^[:space:]]
-	mnemonicPrefix = true
+    wsErrorHighlight = all
+    tool = vimdiff
+    algorithm = patience
+    indentHeuristic = true
+    wordRegex = [a-zA-Z0-9_]+|[^[:space:]]
+    mnemonicPrefix = true
 
 [difftool]
-	prompt = false
-	trustExitCode = true
+    prompt = false
+    trustExitCode = true
 
 [diff "json"]
-	textconv = gojq '.' $1
+    textconv = gojq '.' $1
 
 [merge]
-	tool = vimdiff
-	guitool = meld
+    tool = vimdiff
+    guitool = meld
 
 [mergetool]
-	prompt = false
-	keepBackup = false
-	trustExitCode = true
-	writeToTemp = true
+    prompt = false
+    keepBackup = false
+    trustExitCode = true
+    writeToTemp = true
 
 [mergetool "vimdiff"]
-	path = nvim
+    path = nvim
 
 [alias]
     ## CORE
@@ -164,4 +163,4 @@
     remotes = remote -v
 
 [gpg]
-	format = ssh
+    format = ssh
