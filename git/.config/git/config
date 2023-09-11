@@ -81,26 +81,87 @@
 	path = nvim
 
 [alias]
-	## CORE
-	st = status
-	co = checkout
-	aliases = "!git config -l | grep alias | cut -c 7-"
-	
-	## STATUS
-	ls = log --pretty=\"format:%C(auto)%h %ad %C(auto)%s%d %Cblue(%an)\" --decorate --abbrev-commit --date=local
-	lg = log --graph --abbrev-commit --decorate --all --date-order \
-	         --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- <%an>%C(reset)%C(bold yellow)%d%C(reset)'
+    ## CORE
+    st = status
+    co = checkout
 
-	last = log -1 HEAD --stat
-	contrib = shortlog -e --summary --numbered
-	recent = branch --sort=-committerdate
-	branch-progress = for-each-ref --sort='authordate:iso8601' --format=' %(color:green)%(authordate:relative)%09%(color:white)%(refname:short)' refs/heads
-	
-	# Show conflict-only diff patches.
-	conflicts = diff --diff-filter=U
-	conflict-files = conflicts --name-only
-	ignored = ls-files --others --i --exclude-standard
-	latest-tag = describe --tags --abbrev=0
+    ## STATUS
+    l = log --graph --pretty=format:'%Cred%h%Creset %C(bold blue)%an%C(reset) - %s - %Creset %C(yellow)%d%Creset %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+    ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [a:%an,c:%cn]" --decorate --numstat
+    ls = log --pretty=\"format:%C(auto)%h %ad %C(auto)%s%d %Cblue(%an)\" --decorate --abbrev-commit --date=local
+    lg = log --graph --abbrev-commit --decorate --all --date-order \
+        --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- <%an>%C(reset)%C(bold yellow)%d%C(reset)'
+
+    last = log -1 HEAD --stat
+    contrib = shortlog -e --summary --numbered
+    recent = branch --sort=-committerdate
+    branch-progress = for-each-ref --sort='authordate:iso8601' --format=' %(color:green)%(authordate:relative)%09%(color:white)%(refname:short)' refs/heads
+
+    # Show conflict-only diff patches.
+    conflicts = diff --diff-filter=U
+    conflict-files = conflicts --name-only
+    ignored = ls-files --others --i --exclude-standard
+    latest-tag = describe --tags --abbrev=0
+
+    # # list all aliases
+    la = "!git config -l | grep alias | cut -c 7-"
+
+    cane = commit --amend --no-edit
+
+    # gh commands
+    browse = "!gh repo view --web"
+
+    # show the committers in the last 100 commits, sorted by who has commited the most
+    review = "!git log --no-merges --pretty=%an | head -n 100 | sort | uniq -c | sort -nr"
+
+    # order files by number of commits, ascending
+    # Written by Corey Haines
+    # Scriptified by Gary Bernhardt
+    # Show churn for a time range:
+    #   $ git churn --since='1 month ago'
+    churn = "!f() { git log --all -M -C --name-only --format='format:' \"$@\" | sort | grep -v '^$' | uniq -c | sort | awk 'BEGIN {print \"count\tfile\"} {print $1 \"\t\" $2}' | sort -g; }; f"
+
+    # show all deleted files in the repo
+    deleted = "!git log --diff-filter=D --summary | grep delete"
+
+    # current branch
+    cbr = rev-parse --abbrev-ref HEAD
+
+    # show number of commits per contributer, sorted
+    count = shortlog -sn
+
+    undo = reset --soft HEAD~1
+    amend = commit -a --amend
+
+    cleanup = "!git remote prune origin && git gc && git clean -df && git stash clear"
+
+    # rebase the current branch with changes from upstream remote
+    update = !git fetch upstream && git rebase upstream/`git rev-parse --abbrev-ref HEAD`
+
+    # tag aliases
+    # show the last tag
+    lt = describe --tags --abbrev=0
+
+    # show the most recently touched branches
+    recent = "!git for-each-ref --sort='-committerdate' --format='%(color:red)%(refname)%(color:reset)%09%(committerdate)' refs/heads | sed -e 's-refs/heads/--' | less -XFR"
+    latest = "!git for-each-ref --sort='-committerdate' --format='%(color:red)%(refname)%(color:reset)%09%(committerdate)' refs/remotes | sed -e 's-refs/remotes/origin/--' | less -XFR"
+
+    # grep commands
+
+    # 'diff grep'
+    dg = "!sh -c 'git ls-files -m | grep $1 | xargs git diff' -"
+    # diff grep changes between two commits
+    dgc = "!sh -c 'git ls-files | grep $1 | xargs git diff $2 $3 -- ' -"
+    # 'checkout grep'
+    cg = "!sh -c 'git ls-files -m | grep $1 | xargs git checkout ' -"
+    # add grep
+    ag = "!sh -c 'git ls-files -m -o --exclude-standard | grep $1 | xargs git add --all' -"
+    # add all
+    aa = !git ls-files -d | xargs git rm && git ls-files -m -o --exclude-standard | xargs git add
+    # remove grep - Remove found files that are NOT under version control
+    rg = "!sh -c 'git ls-files --others --exclude-standard | grep $1 | xargs rm' -"
+
+    remotes = remote -v
 
 [gpg]
 	format = ssh
