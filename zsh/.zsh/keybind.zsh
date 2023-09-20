@@ -1,6 +1,7 @@
 bindkey  "^[[H"   beginning-of-line
 bindkey  "^[[F"   end-of-line
 bindkey  "^[[2~"  vi-insert
+# ctrl+h
 bindkey  "^[[3~"  delete-char
 bindkey  "^A"     beginning-of-line
 bindkey  "^E"     end-of-line
@@ -15,6 +16,9 @@ bindkey "^[[1;5D" backward-word
 # Edit line in vim with ctrl-o:
 autoload edit-command-line; zle -N edit-command-line
 bindkey '^o' edit-command-line
+
+# ctrl+? withdraw delete
+bindkey '^_' undo
 
 # help
 # man zshzle
