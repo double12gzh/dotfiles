@@ -54,3 +54,7 @@ alias ccat='highlight --line-numbers -O ansi --force'
 alias tp='tmuxp load ~/.config/tmuxp/tmuxp.yaml'
 alias tpr='export TERM=xterm && tmuxp load ~/.config/tmuxp/tmuxp.yaml'
 alias expect='export LC_CTYPE=en_US && expect'
+
+alias p="BAT_THEME=GitHub fzf --height=100% --info=right --border=thinblock --preview-window=border-thinblock \
+    --margin=3 --scrollbar=▏▕ --preview='bat --color=always --style=numbers {}' --preview-window "90%,wrap" \
+    --color=light,query:238,fg:238,bg:251,bg+:249,gutter:251,border:248,preview-bg:253"
