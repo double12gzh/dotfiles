@@ -8,5 +8,9 @@ bindkey  "^P"     history-substring-search-up
 bindkey  "^N"     history-substring-search-down
 bindkey  "^R"     history-incremental-search-backward
 
+# ctrl+left/rigth arrow: jump backward/forward
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
+
 # help
 # man zshzle
