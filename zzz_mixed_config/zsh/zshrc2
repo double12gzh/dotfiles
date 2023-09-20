@@ -1,0 +1,46 @@
+# Luke's config for the Zoomer Shell
+
+# Enable colors and change prompt:
+autoload -U colors && colors
+PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M]%{$reset_color%}$%b "
+
+# History in cache directory:
+HISTSIZE=10000
+SAVEHIST=10000
+HISTFILE=~/.cache/zsh/history
+
+# Basic auto/tab complete:
+autoload -U compinit
+zstyle ':completion:*' menu select
+zmodload zsh/complist
+compinit
+_comp_options+=(globdots)               # Include hidden files.
+
+# vi mode
+export KEYTIMEOUT=1
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
+
+# Use vim keys in tab complete menu:
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
+bindkey -v '^?' backward-delete-char
+
+bindkey  "^[[H"   beginning-of-line
+bindkey  "^[[F"   end-of-line
+bindkey  "^[[2~"  vi-insert
+bindkey  "^[[3~"  delete-char
+bindkey  "^A"     beginning-of-line
+bindkey  "^E"     end-of-line
+bindkey  "^P"     history-substring-search-up
+bindkey  "^N"     history-substring-search-down
+bindkey  "^R"     history-incremental-search-backward
+
+# Edit line in vim with ctrl-e:
+autoload edit-command-line; zle -N edit-command-line
+bindkey '^o' edit-command-line
+
+# Load aliases and shortcuts if existent.
+[ -f "/home/work/alias" ] && source "/home/work/alias"
