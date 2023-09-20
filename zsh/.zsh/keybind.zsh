@@ -12,5 +12,9 @@ bindkey  "^R"     history-incremental-search-backward
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 
+# Edit line in vim with ctrl-o:
+autoload edit-command-line; zle -N edit-command-line
+bindkey '^o' edit-command-line
+
 # help
 # man zshzle
