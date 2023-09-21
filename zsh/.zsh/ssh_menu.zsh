@@ -47,7 +47,10 @@ mycolorfulssh ()
     # begin: with color
     red=$(tput setaf 1)
     green=$(tput setaf 2)
+    yellow=$(tput setaf 3)
     blue=$(tput setaf 4)
+    magenta=$(tput setaf 5)
+    cyan=$(tput setaf 6)
     reset_color=$(tput sgr0)
 
     hosts=($(awk '/^Host / {print $2}' $ssh_config))
@@ -62,6 +65,12 @@ mycolorfulssh ()
                 color="$green"
         elif [[ "$tag" =~ "blue" ]]; then
                 color="$blue"
+        elif [[ "$tag" =~ "cyan" ]]; then
+                color="$cyan"
+        elif [[ "$tag" =~ "yellow" ]]; then
+                color="$yellow"
+        elif [[ "$tag" =~ "magenta" ]]; then
+                color="$magenta"
         else
                 color=""
         fi
