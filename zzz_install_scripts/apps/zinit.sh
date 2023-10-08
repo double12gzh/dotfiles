@@ -7,5 +7,5 @@ set -o pipefail
 #                            Zinit Part                              #
 ######################################################################
 
-ZINIT_HOME="{$XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+ZINIT_HOME="${HOME}/.local/share}/zinit/zinit.git"
 git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
