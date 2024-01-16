@@ -1,11 +1,35 @@
-IP="127.0.0.1"
-HTTP_PORT="52088"
-SOCKS5_PORT="52088"
+#!/bin/zsh
+
+readonly IP="127.0.0.1"
+readonly HTTP_PORT="7890"
+readonly SOCKS5_PORT="7890"
 
 PROXY_HTTP="http://${IP}:${HTTP_PORT}"
 PROXY_HTTP_IP="${IP}:${HTTP_PORT}"
 PROXY_SOCKS5="socks5://${IP}:${SOCKS5_PORT}"
 PROXY_SOCKS5_IP="${IP}:${SOCKS5_PORT}"
+
+__check_proxies() {
+    git_http_proxy=$(git config --global --get http.proxy)
+    git_https_proxy=$(git config --global --get https.proxy)
+
+    echo "current proxies used:"
+    echo "      http_proxy:             $http_proxy"
+    echo "      https_proxy:            $https_proxy"
+    echo "      all_proxy:              $all_proxy"
+    echo "      ftp_proxy:              $ftp_proxy"
+    echo "      rsync_proxy:            $rsync_proxy"
+    echo "      git__http_proxy:        $git_http_proxy"
+    echo "      git_https_proxy:        $git_https_proxy"
+}
+
+__help() {
+    echo "Usage: $0 [options]"
+    echo "  -s, --setup     Setup proxies"
+    echo "  -d, --destroy   Teardown proxies"
+    echo "  -c, --check     Check proxies status"
+}
+
 
 help_() {
     echo "Commands:"
@@ -16,11 +40,14 @@ help_() {
     echo "  proxy_global_git"
     echo "  unproxy_global_git"
     echo "  proxies"
-    echo "  unproxies"
 }
 
 ip_() {
     curl cip.cc/$1
+}
+
+check_proxy_() {
+    curl --head www.google.com
 }
 
 proxy_npm_() {
@@ -47,7 +74,7 @@ unproxy_global_git_() {
     git config --global --unset https.proxy
 }
 
-proxy_git() {
+proxy_git_() {
     git config --global http.https://github.com.proxy ${PROXY_HTTP}
     if ! grep -qF "Host github.com" ~/.ssh/config ; then
         echo "" >> ~/.ssh/config
@@ -60,7 +87,7 @@ proxy_git() {
     fi
 }
 
-proxies_ () {
+__setup_proxies() {
     # pip can read http_proxy & https_proxy
     export http_proxy="${PROXY_HTTP}"
     export HTTP_PROXY="${PROXY_HTTP}"
@@ -77,12 +104,14 @@ proxies_ () {
     export ALL_PROXY="${PROXY_SOCKS5}"
     export all_proxy="${PROXY_SOCKS5}"
 
-    proxy_git_
-    proxy_npm_
+#    proxy_git_
+#    proxy_npm_
     proxy_global_git_
+
+    sed -i "s/    # ProxyCommand nc -X 5 -x 127.0.0.1:7890 %h %p/    ProxyCommand nc -X 5 -x 127.0.0.1:7890 %h %p/g" ~/.ssh/config
 }
 
-unproxies_ () {
+__teardown_proxies() {
     unset http_proxy
     unset HTTP_PROXY
     unset https_proxy
@@ -94,12 +123,32 @@ unproxies_ () {
     unset ALL_PROXY
     unset all_proxy
 
-    echo "取消proxy成功"
-    echo "可以继续执行"
-    echo "unproxy_npm"
-    echo "unproxy_global_git"
+    unproxy_global_git_
+
+    sed -i "s/    ProxyCommand nc -X 5 -x 127.0.0.1:7890 %h %p/    # ProxyCommand nc -X 5 -x 127.0.0.1:7890 %h %p/g" ~/.ssh/config
 }
 
-check_proxy_ () {
-    curl --head www.google.com
+proxies() {
+    while [[ "$#" -gt 0 ]]; do
+        case "$1" in
+            -s|--setup)
+                __setup_proxies
+                __check_proxies
+                ;;
+            -c|--check)
+                __check_proxies
+                ;;
+            -d|--destroy)
+                __teardown_proxies
+                __check_proxies
+                ;;
+            -h|--help)
+                __help
+                __check_proxies
+                ;;
+            *)
+                __help
+        esac
+        shift
+    done
 }
