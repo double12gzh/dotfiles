@@ -1,8 +1,8 @@
 #!/bin/zsh
 
-readonly IP="127.0.0.1"
-readonly HTTP_PORT="7890"
-readonly SOCKS5_PORT="7890"
+IP="127.0.0.1"
+HTTP_PORT="7890"
+SOCKS5_PORT="7890"
 
 PROXY_HTTP="http://${IP}:${HTTP_PORT}"
 PROXY_HTTP_IP="${IP}:${HTTP_PORT}"
