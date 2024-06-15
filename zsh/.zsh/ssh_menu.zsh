@@ -81,6 +81,10 @@ mycolorfulssh ()
 
     cmd=$(awk -v SEC=0 -v HOST=$host -f $ssh_config_awk $ssh_config | awk -F ':'  '{sub(/^ +/, "", $2);if ($1 == "cmd") print $2}')
     passwd=$(awk -v SEC=0 -v HOST=$host -f $ssh_config_awk $ssh_config | awk -F ':'  '{sub(/^ +/, "", $2);if ($1 == "password") print $2}')
+    port=$(awk -v SEC=0 -v HOST=$host -f $ssh_config_awk $ssh_config | awk -F ':'  '{sub(/^ +/, "", $2);if ($1 == "port") print $2}')
+    username=$(awk -v SEC=0 -v HOST=$host -f $ssh_config_awk $ssh_config | awk -F ':'  '{sub(/^ +/, "", $2);if ($1 == "username") print $2}')
+    remote=$(awk -v SEC=0 -v HOST=$host -f $ssh_config_awk $ssh_config | awk -F ':'  '{sub(/^ +/, "", $2);if ($1 == "remote") print $2}')
 
-    [ $? -eq 0 ] && ssh -p "$passwd" ssh "$host" "$cmd"
+    # .auto_login: https://www.notion.so/double12gzh/expect-d393087103fd49f78107d1cf2979b4c4?pvs=4#d61977f8769a435bb829e0750c142558
+    [ $? -eq 0 ] && $HOME/.auto_login $username $host $passwd $remote $passwd $cmd
 }
