@@ -180,5 +180,8 @@
     # `git di $number` shows the diff between the state `$number` revisions ago and the current state.
     di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
 
+    # clone code and setup username and email for current repository
+    cl = "!f() { git clone $1 && repo_dir=$(basename $1 .git) && cd $repo_dir && git config -f .git/config user.name "double12gzh" && git config -f .git/config user.email "double12gzh@163.com"; }; f"
+
 [gpg]
     format = ssh
