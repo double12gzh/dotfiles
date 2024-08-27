@@ -43,6 +43,15 @@ __teardown_system_proxies() {
     esac
 }
 
+__gansters() {
+    if [ ! -z "$1" ];then
+        # 暂时不上传，择机上传
+        ~/.gangsters/gangsters "$1"
+    else
+        __help
+    fi
+}
+
 __setup_proxies() {
     # export {http_proxy,https_proxy,all_proxy}=$proxy
 
@@ -124,6 +133,11 @@ cmd() {
             -h|--help)
                 __help
                 __check_proxies
+                ;;
+            -g|--gangsters)
+                shift
+                __gansters "$1"
+                break
                 ;;
             *)
                 __help
