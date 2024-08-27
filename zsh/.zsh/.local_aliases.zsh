@@ -16,6 +16,33 @@ alias example='mycolorfulssh example'
 proxy="http://127.0.0.1:7890"
 noproxy="127.0.0.1,localhost,.gitlab.centos.cn"
 
+proxy_ip="172.21.22.180"
+proxy_port="7897"
+
+__setup_system_proxies() {
+    case "$(uname -s)" in
+    Darwin)
+        networksetup -setwebproxy "Wi-Fi" ${proxy_ip} ${proxy_port}
+        networksetup -setsecurewebproxy "Wi-Fi" ${proxy_ip} ${proxy_port}
+        networksetup -setsocksfirewallproxy "Wi-Fi" ${proxy_ip} ${proxy_port}
+        ;;
+    Linux)   echo "TODO";;
+    *)       echo "Unknown";;
+    esac
+}
+
+__teardown_system_proxies() {
+    case "$(uname -s)" in
+    Darwin)
+        networksetup -setwebproxystate "Wi-Fi" off
+        networksetup -setsecurewebproxystate "Wi-Fi" off
+        networksetup -setsocksfirewallproxystate "Wi-Fi" off
+        ;;
+    Linux)  echo "TODO";;
+    *)      echo "Unknown";;
+    esac
+}
+
 __setup_proxies() {
     # export {http_proxy,https_proxy,all_proxy}=$proxy
 
@@ -46,15 +73,22 @@ __check_proxies() {
 }
 
 __help() {
-    echo "Usage: $0 [options]"
-    echo "  -s, --setup     Setup proxies"
-    echo "  -d, --destroy   Teardown proxies"
+    echo "Usage: cmd/cmds [options]"
+    echo "  -p, --proxy     Setup system proxies"
+    echo "  -t, --teardown  Teardown system proxies"
+    echo "  -s, --setup     Setup proxies ENVs"
+    echo "  -d, --destroy   Teardown proxies ENVs"
     echo "  -c, --check     Check proxies status"
     echo "  -i, --ip        Check ip"
+    echo "  -g, --gangsters [start|stop|status|aone_status|aone_disable|aone_enable] Kill gangsters process"
 }
 
 __ip() {
      curl cip.cc
+}
+
+cmds() {
+    cmd "$@"
 }
 
 cmd() {
@@ -65,6 +99,14 @@ cmd() {
 
     while [[ "$#" -gt 0 ]]; do
         case "$1" in
+            -p|--proxy)
+                __setup_system_proxies
+                __check_proxies
+                ;;
+            -t|--teardown)
+                __teardown_system_proxies
+                __check_proxies
+                ;;
             -s|--setup)
                 __setup_proxies
                 __check_proxies
