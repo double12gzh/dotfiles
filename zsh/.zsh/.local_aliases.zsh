@@ -12,6 +12,7 @@ alias k8s='server_me="$(\cat $HOME/.zsh/sshs/hosts/k8s | fzf)" && $HOME/.auto_lo
 ##  1.2.3.5
 
 alias example='mycolorfulssh example'
+
 DEFAULT_NOPROXY=(
     "127.0.0.1"
     "localhost"
