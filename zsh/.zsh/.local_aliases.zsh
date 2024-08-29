@@ -16,13 +16,7 @@ DEFAULT_NOPROXY=(
     "127.0.0.1"
     "localhost"
     "*.local"
-    "*.srdcloud.cn"
-    "*.ctyun.cn"
-    "30.8/16"
-    "21.57/16"
-    "150.223/16"
     "169.254/16"
-    "10.113/16"
 )
 DEFAULT_PROXY_IP=192.168.175.24
 DEFAULT_PROXY_PORT=7897
