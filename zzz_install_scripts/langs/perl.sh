@@ -50,4 +50,4 @@ else
     printf "\t${tty_blue}Cpanm${tty_reset} is already installed, skip it.\n"
 fi
 
-cd ~/dotfiles/zzz_install_scripts/
+cd "$SCRIPT_DIR"

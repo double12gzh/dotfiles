@@ -19,7 +19,7 @@ if [[ -z $(command -v ugrep) ]]; then
         cd "$UGREP_DIR"
         # INFO: build options: https://github.com/Genivia/ugrep#other-platforms-step-3-build
         ./build.sh --enable-hidden --enable-pretty
-        cd ~/dotfiles/zzz_install_scripts/
+        cd "${SCRIPT_DIR}"
     fi
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then

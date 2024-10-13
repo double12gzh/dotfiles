@@ -21,7 +21,7 @@ if [[ -z $(command -v magick) ]]; then
         ./configure --prefix="$MAGICK_DIR" --with-modules
         make
         make install
-        cd ~/dotfiles/zzz_install_scripts/
+        cd "${SCRIPT_DIR}"
     fi
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then

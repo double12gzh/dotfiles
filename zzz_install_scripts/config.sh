@@ -4,6 +4,10 @@
 set -e
 set -o pipefail
 
+script_path=$(readlink -f "$0")
+SCRIPT_DIR=$(dirname "$script_path")
+DOT_DIR=$(dirname "$SCRIPT_DIR")
+
 USERNAME="Jeffrey Guan"
 EMAIL="double12gzh@gmail.com"
 
@@ -28,7 +32,7 @@ fi
 
 if ! command -v git >/dev/null; then
     abort "$(
-		cat <<EOABORT
+        cat <<EOABORT
 You must install Git before executing this script. See:
   ${tty_green}https://git-scm.com/${tty_reset}
 EOABORT
@@ -70,10 +74,10 @@ CheckDir() {
 printf "All downloaded files will be placed in ${tty_blue}%s/packages${tty_reset}.\n" "$HOME"
 printf "All installed apps will be placed in ${tty_blue}%s/tools${tty_reset}.\n\n" "$HOME"
 
-MAN_PATH=$HOME/dotfiles/Local/.local/share/man/man1
+MAN_PATH=$DOT_DIR/local/.local/share/man/man1
 LOCAL_MAN=$HOME/.local/share/man/man1
 printf "All man docs will be placed in ${tty_blue}%s${tty_reset}.\n" "$MAN_PATH"
-printf "Use ${tty_yellow}\"cd ~/dotfiles && stow Local\"${tty_reset} to link it to ${tty_blue}%s${tty_reset}.\n\n" "$LOCAL_MAN"
+printf "Use ${tty_yellow}\"cd $DOT_DIR && stow local\"${tty_reset} to link it to ${tty_blue}%s${tty_reset}.\n\n" "$LOCAL_MAN"
 
 wait_for_user
 printf "\n${tty_yellow}====================Script starts====================${tty_reset}\n\n"
