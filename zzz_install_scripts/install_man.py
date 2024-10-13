@@ -33,7 +33,12 @@ if __name__ == "__main__":
         ["BurntSushi/ripgrep", "master", "^doc/rg.1.txt.tpl"],
         ["Genivia/ugrep", "master", "^man/ugrep.1"],
     ]
-    out_dir = os.path.expanduser("~") + "/dotfiles/Local/.local/share/man/man1/"
+    
+    script_path = os.path.abspath(__file__)
+    script_dir = os.path.dirname(script_path)
+    parent_dir = os.path.dirname(script_dir)
+
+    out_dir = os.path.join(parent_dir, "local/.local/share/man/man1/")
     print(out_dir + "\n")
     shutil.rmtree(out_dir)
 

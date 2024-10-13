@@ -10,13 +10,13 @@ set -o pipefail
 PISTOL_LINK="https://github.com/doronbehar/pistol.git"
 if [[ -z $(command -v pistol) ]]; then
     echo "Install Pistol"
-    cd ~/tools
+    cd $HOME/tools
     git clone "$PISTOL_LINK" --depth=1
-    cd ~/tools/pistol
+    cd $HOME/tools/pistol
     go mod tidy
     make
     make install
-    cd ~/dotfiles/zzz_install_scripts/
+    cd "${SCRIT_DIR}"
 else
     printf "${tty_blue}Pistol${tty_reset} is already installed, skip it.\n"
 fi

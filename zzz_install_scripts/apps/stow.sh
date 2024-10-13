@@ -31,7 +31,7 @@ if [[ -z $(command -v stow) ]]; then
         ./configure --prefix="$PERL_PREFIX"
         make
         make install
-        cd ~/dotfiles/zzz_install_scripts/
+        cd "${SCRIPT_DIR}"
     fi
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then

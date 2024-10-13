@@ -31,7 +31,12 @@ if __name__ == "__main__":
         ["sharkdp/fd", "master", "^contrib/completion/_fd"],
         ["BurntSushi/ripgrep", "master", "^complete/_rg"],
     ]
-    out_dir = os.path.expanduser("~") + "/dotfiles/Zsh/.zsh/completion/"
+
+    script_path = os.path.abspath(__file__)
+    script_dir = os.path.dirname(script_path)
+    parent_dir = os.path.dirname(script_dir)
+
+    out_dir = os.path.join(parent_dir, "/zsh/.zsh/completion/")
     print(out_dir + "\n")
     shutil.rmtree(out_dir)
     os.makedirs(out_dir, exist_ok=True)
@@ -63,12 +68,12 @@ if __name__ == "__main__":
     # Move bash-completion files to correct dir
     import glob
 
-    match = r"/home/work/dotfiles/Zsh/.zsh/completion/*.bash"
+    match = parent_dir + "/zsh/.zsh/completion/*.bash"
     res = glob.glob(match)
     print(res)
     bash_cmp_dir = (
-        os.path.expanduser("~")
-        + "/dotfiles/Local/.local/share/bash-completion/completions/"
+        parent_dir
+        + "/local/.local/share/bash-completion/completions/"
     )
     shutil.rmtree(bash_cmp_dir)
     os.makedirs(bash_cmp_dir, exist_ok=True)

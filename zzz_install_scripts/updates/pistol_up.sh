@@ -16,11 +16,11 @@ status=$(check_git_update "")
 
 if [[ $status = true ]]; then
     printf "Update ${tty_blue}Pistol${tty_reset}.\n"
-    cd ~/tools/pistol
+    cd $HOME/tools/pistol
     git pull
     go install github.com/doronbehar/pistol/cmd/pistol@latest
 elif [[ $status = false ]]; then
     printf "${tty_blue}Pistol${tty_reset} is up-to-date!\n"
 fi
 
-cd ~/dotfiles/zzz_install_scripts/
+cd "${SCRIPT_DIR}"

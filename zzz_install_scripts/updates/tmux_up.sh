@@ -36,4 +36,4 @@ else
     printf "${tty_blue}Tmux${tty_reset} is up-to-date.\n"
 fi
 
-cd ~/dotfiles/zzz_install_scripts/
+cd "${SCRIT_DIR}"

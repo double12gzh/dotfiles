@@ -19,7 +19,7 @@ if [[ -z $(command -v fzf) ]]; then
         git clone "$FZF_LINK" --depth=1
         cd "$FZF_DIR"
         ./install --bin --xdg --no-key-bindings --no-completion --no-update-rc --no-bash --no-zsh --no-fish
-        cd ~/dotfiles/zzz_install_scripts/
+        cd "${SCRIPT_DIR}"
     fi
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then

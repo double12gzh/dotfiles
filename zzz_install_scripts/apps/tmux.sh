@@ -26,7 +26,7 @@ if [[ ! -f $TMUX_DIR/tmux ]]; then
         ./configure --prefix="$TMUX_DIR"
         make
         make install
-        cd ~/dotfiles/zzz_install_scripts/
+        cd "${SCRIPT_DIR}"
     fi
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
