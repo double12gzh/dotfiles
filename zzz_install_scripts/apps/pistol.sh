@@ -20,3 +20,5 @@ if [[ -z $(command -v pistol) ]]; then
 else
     printf "${tty_blue}Pistol${tty_reset} is already installed, skip it.\n"
 fi
+
+cd "${SCRIPT_DIR}"
