@@ -1,0 +1,81 @@
+# Enable colors and change prompt:
+autoload -U colors && colors
+PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
+#PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
+
+# History in cache directory:
+HISTSIZE=10000
+SAVEHIST=10000
+HISTFILE=/cwaidev/000GZH/.cache/zsh/history
+
+fpath=(~/.zfunc $fpath)
+
+# Basic auto/tab complete:
+autoload -Uz compinit
+zstyle ':completion:*' menu select
+zmodload zsh/complist
+compinit
+_comp_options+=(globdots)               # Include hidden files.
+
+# vi mode
+export KEYTIMEOUT=1
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
+
+# Use vim keys in tab complete menu:
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
+bindkey -v '^?' backward-delete-char
+
+bindkey  "^[[H"   beginning-of-line
+bindkey  "^[[F"   end-of-line
+bindkey  "^[[2~"  vi-insert
+bindkey  "^[[3~"  delete-char
+bindkey  "^A"     beginning-of-line
+bindkey  "^E"     end-of-line
+bindkey  "^P"     history-substring-search-up
+bindkey  "^N"     history-substring-search-down
+bindkey  "^R"     history-incremental-search-backward
+
+# Edit line in vim with ctrl-e:
+autoload edit-command-line; zle -N edit-command-line
+bindkey '^o' edit-command-line
+
+path=($HOME/.go/go/bin $path)
+path=($HOME/.bin $path)
+path=($HOME/tools/nvim/bin $path)
+path=($HOME/.local/bin $path)
+path=($HOME/tools/miniconda/bin $path)
+path=($HOME/.cargo/bin $path)
+path=($HOME/tools/nodejs/bin $path)
+path=($HOME/tools/luajit/src $path)
+path=($HOME/tools/luarocks $path)
+path=($HOME/tools/lua/src $path)
+path=($HOME/tools/treesitter $path)
+
+source <(kubectl completion zsh)
+source <(fzf --zsh)
+
+# Load aliases and shortcuts if existent.
+[ -f "/cwaidev/000GZH/.alias" ] && source "/cwaidev/000GZH/.alias"
+[ -f "/cwai/dev/000GZH/.zsh/fzf-tab.zsh" ] && source "/cwaidev/000GZH/.zsh/fzf-tab.zsh"
+
+go env -w GOPATH='/cwaidev/000GZH/.gopath'
+go env -w GOPROXY='https://goproxy.cn'
+
+export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow'
+export FZF_DEFAULT_OPTS='--ansi --height 40% --layout=reverse --border=double --border-label="╣ FZF ╠" --header="E to edit" --preview="pistol {}" --bind="E:execute(nvim {})" --preview-label="┓ ⟪Preview⟫ ┏" --preview-window=right,border-bold --color=border:#7ba46c,label:#7ba46c'
+export FZF_CTRL_T_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'
+export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS"
+export FZF_ALT_C_COMMAND='fd -H --type d . --color=never'
+export FZF_ALT_T_OPTS="$FZF_DEFAULT_OPTS"
+
+. "$HOME/.cargo/env"
+
+export LUA_LIBRARY="$HOME/tools/luajit/src/libluajit.so"
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
+
+eval "$(zoxide init zsh)" || echo "zoxide not found!"
+#eval "$(starship init zsh)" || echo "starship not found!"]
