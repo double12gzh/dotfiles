@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+alias rsync='rsync -avpgolrz --progress --partial'
+
 alias jm='expect $HOME/.auto_login {username} {hostip} {passwd}'
 alias prem='jm {username}@{hostip} "{password}"'
 
@@ -10,6 +12,11 @@ alias k8s='server_me="$(\cat $HOME/.zsh/sshs/hosts/k8s | fzf)" && $HOME/.auto_lo
 ##  1.2.3.4
 ##  ===========worker-0003
 ##  1.2.3.5
+
+# 定义别名动态更新 KUBECONFIG
+export KUBECONFIG=$(find $HOME/Library/Mobile\ Documents/com~apple~CloudDocs/k8s/kubeconfig $HOME/.kube -type f \( -name "config" -o -name "*.yaml" -o -name "*.yml" \) -print0 | xargs -0 printf "%s:" | sed 's/:$//')
+alias kx='kubectx'
+# }}
 
 alias example='mycolorfulssh example'
 
@@ -28,11 +35,11 @@ __setup_system_proxies() {
 
     case "$(uname -s)" in
     Darwin)
-        networksetup -setwebproxy "Wi-Fi" ${proxy_ip} ${proxy_port}
-        networksetup -setsecurewebproxy "Wi-Fi" ${proxy_ip} ${proxy_port}
-        networksetup -setsocksfirewallproxy "Wi-Fi" ${proxy_ip} ${proxy_port}
+        sudo networksetup -setwebproxy "Wi-Fi" ${proxy_ip} ${proxy_port}
+        sudo networksetup -setsecurewebproxy "Wi-Fi" ${proxy_ip} ${proxy_port}
+        sudo networksetup -setsocksfirewallproxy "Wi-Fi" ${proxy_ip} ${proxy_port}
 
-        networksetup -setproxybypassdomains "Wi-Fi" "${DEFAULT_NOPROXY[@]}"
+        sudo networksetup -setproxybypassdomains "Wi-Fi" "${DEFAULT_NOPROXY[@]}"
         ;;
     Linux)   echo "TODO";;
     *)       echo "Unknown";;
@@ -42,10 +49,10 @@ __setup_system_proxies() {
 __teardown_system_proxies() {
     case "$(uname -s)" in
     Darwin)
-        networksetup -setwebproxystate "Wi-Fi" off
-        networksetup -setsecurewebproxystate "Wi-Fi" off
-        networksetup -setsocksfirewallproxystate "Wi-Fi" off
-        networksetup -setproxybypassdomains "Wi-Fi" ""
+        sudo networksetup -setwebproxystate "Wi-Fi" off
+        sudo networksetup -setsecurewebproxystate "Wi-Fi" off
+        sudo networksetup -setsocksfirewallproxystate "Wi-Fi" off
+        sudo networksetup -setproxybypassdomains "Wi-Fi" ""
         ;;
     Linux)  echo "TODO";;
     *)      echo "Unknown";;
@@ -76,7 +83,7 @@ __check_proxies() {
     echo "  https_proxy:    $https_proxy"
     echo "  all_proxy:      $all_proxy"
     echo "  no_proxy:       $no_proxy"
-    if [[ uname -s == "Darwin" ]];then
+    if [[ `uname -s` == "Darwin" ]];then
         echo "\n>>>> scutil --proxy <<<<\n"
         scutil --proxy
     fi
