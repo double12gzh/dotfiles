@@ -8,7 +8,11 @@ set -o pipefail
 ######################################################################
 NODE_DIR=$HOME/tools/nodejs
 NODE_SRC_NAME=$HOME/packages/nodejs.tar.gz
-NODE_LINK="https://nodejs.org/dist/v16.16.0/node-v16.16.0-linux-x64.tar.xz"
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    NODE_LINK="https://nodejs.org/dist/v16.16.0/node-v16.16.0-darwin-arm64.tar.xz"
+else
+    NODE_LINK="https://nodejs.org/dist/v16.16.0/node-v16.16.0-linux-x64.tar.xz"
+fi
 if [[ ! -f "$NODE_DIR/bin/node" ]]; then
     echo "Install Node.js"
     if [[ ! -f $NODE_SRC_NAME ]]; then

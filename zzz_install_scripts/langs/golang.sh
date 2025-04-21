@@ -8,7 +8,11 @@ set -o pipefail
 ######################################################################
 GO_DIR=$HOME/tools/golang
 GO_SRC_NAME=$HOME/packages/golang.tar.gz
-GO_LINK="https://go.dev/dl/go1.19.3.linux-amd64.tar.gz"
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    GO_LINK="https://go.dev/dl/go1.24.1.darwin-arm64.tar.gz"
+else
+    GO_LINK="https://go.dev/dl/go1.24.1.linux-amd64.tar.gz"
+fi
 # if [[ -z "$(command -v go)" ]] && [[ ! -f "$GO_DIR/bin/go" ]]; then
 if [[ ! -f "$GO_DIR/bin/go" ]]; then
     echo "Install Golang"

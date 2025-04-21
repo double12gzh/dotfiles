@@ -13,11 +13,19 @@ INSTALL_ANACONDA=true
 if [[ $INSTALL_ANACONDA = true ]]; then
     CONDA_DIR=$HOME/tools/anaconda
     CONDA_NAME=Anaconda.sh
-    CONDA_LINK="https://repo.anaconda.com/archive/Anaconda3-2022.10-Linux-x86_64.sh"
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        CONDA_LINK="https://repo.anaconda.com/archive/Anaconda3-2023.09-0-MacOSX-arm64.sh"
+    else
+        CONDA_LINK="https://repo.anaconda.com/archive/Anaconda3-2022.10-Linux-x86_64.sh"
+    fi
 else
     CONDA_DIR=$HOME/tools/miniconda
     CONDA_NAME=Miniconda.sh
-    CONDA_LINK="https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        CONDA_LINK="https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh"
+    else
+        CONDA_LINK="https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"
+    fi
 fi
 
 if [[ ! -d $CONDA_DIR ]]; then

@@ -8,7 +8,11 @@ set -o pipefail
 ######################################################################
 JULIA_DIR=$HOME/tools/julia
 JULIA_SRC_NAME=$HOME/packages/julia.tar.gz
-JULIA_LINK="https://julialangnightlies-s3.julialang.org/bin/linux/x64/julia-latest-linux64.tar.gz"
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    JULIA_LINK="https://julialang-s3.julialang.org/bin/mac/aarch64/1.9/julia-1.9.4-macaarch64.tar.gz"
+else
+    JULIA_LINK="https://julialangnightlies-s3.julialang.org/bin/linux/x64/julia-latest-linux64.tar.gz"
+fi
 if [[ ! -f "$JULIA_DIR/bin/julia" ]]; then
     echo "Install Julia"
     if [[ ! -f $JULIA_SRC_NAME ]]; then
