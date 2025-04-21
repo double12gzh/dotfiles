@@ -51,6 +51,11 @@ if [[ ! -f "$LUAJIT_DIR/src/luajit" ]]; then
         echo "Extracting to $HOME/tools/luajit directory"
         tar xvf "$LUAJIT_SRC_NAME" -C "$LUAJIT_DIR" --strip-components 1
         cd "$LUAJIT_DIR"
+        
+        if [[ "$OSTYPE" == "darwin"* ]]; then
+            export MACOSX_DEPLOYMENT_TARGET=14.2.1
+        fi
+
         make
     fi
 

@@ -19,7 +19,11 @@ if [[ -z "$(command -v php)" ]]; then
         git clone --depth=1 "$PHP_LINK" "$PHP_DIR"
         cd "$PHP_DIR"
         ./buildconf
-        ./configure --prefix="$PHP_DIR" --with-openssl --with-zlib
+        if [[ "$OSTYPE" == "darwin"* ]]; then
+            ./configure --prefix="$PHP_DIR" --with-openssl --with-zlib --with-iconv=$(brew --prefix libiconv)
+        else
+            ./configure --prefix="$PHP_DIR" --with-openssl --with-zlib
+        fi
         make -j4
         make install
     fi

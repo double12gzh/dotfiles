@@ -11,7 +11,7 @@ source ./apps/btop.sh
 # source ./apps/chafa.sh
 source ./apps/cpufetch.sh
 source ./apps/delta.sh
-source ./apps/direnv.sh
+# source ./apps/direnv.sh
 source ./apps/dua.sh
 source ./apps/exa.sh
 source ./apps/fdfind.sh
@@ -25,16 +25,16 @@ source ./apps/lnav.sh
 # source ./apps/magick.sh
 source ./apps/navi.sh
 source ./apps/nvim.sh
-source ./apps/pistol.sh
+# source ./apps/pistol.sh
 source ./apps/qfc.sh
 source ./apps/ripgrep.sh
 # source ./apps/sheldon.sh
-source ./apps/silicon.sh
+# source ./apps/silicon.sh
 source ./apps/starship.sh
 source ./apps/stow.sh
 source ./apps/termpix.sh
 source ./apps/tmux.sh
-source ./apps/trashy.sh
+# source ./apps/trashy.sh
 source ./apps/treesitter.sh
 source ./apps/ugrep.sh
 source ./apps/viu.sh

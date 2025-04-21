@@ -8,7 +8,11 @@ set -o pipefail
 ######################################################################
 JAVA_DIR=$HOME/tools/java
 JAVA_SRC_NAME=$HOME/packages/java.tar.gz
-JAVA_LINK="https://download.java.net/java/GA/jdk18.0.2/f6ad4b4450fd4d298113270ec84f30ee/9/GPL/openjdk-18.0.2_linux-x64_bin.tar.gz"
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    JAVA_LINK="https://download.java.net/java/GA/jdk18.0.2/f6ad4b4450fd4d298113270ec84f30ee/9/GPL/openjdk-18.0.2_macos-aarch64_bin.tar.gz"
+else
+    JAVA_LINK="https://download.java.net/java/GA/jdk18.0.2/f6ad4b4450fd4d298113270ec84f30ee/9/GPL/openjdk-18.0.2_linux-x64_bin.tar.gz"
+fi
 if [[ ! -f "$JAVA_DIR/bin/java" ]]; then
     echo "Install JAVA"
     if [[ ! -f $JAVA_SRC_NAME ]]; then
