@@ -61,7 +61,12 @@ function setup_iterm2() {
 	killall iTerm2
 }
 
+function setup_autologin() {
+	ln -sf $(PWD)/autologin $HOME/.auto_login
+}
+
 setup_finder
+setup_autologin
 
 if command -v iTerm2 &>/dev/null; then
 	setup_iterm2
