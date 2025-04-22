@@ -51,3 +51,6 @@ my_nvim/plugin/packer_compiled.lua
 nvim/plugin/packer_compiled.lua
 java-debug/
 vscode-java-test/
+
+lazygit/.config/lazygit/state.yml
+iterm2/.config/iterm2/AppSupport
