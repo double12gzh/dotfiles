@@ -8,47 +8,63 @@
 #
 # Run ./set-defaults.sh and you'll be good to go.
 
-# 禁用动画（提升响应速度）
-defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool false
+function setup_finder() {
+	# 禁用动画（提升响应速度）
+	defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool false
 
-# 不显示隐藏文件
-defaults write com.apple.finder AppleShowAllFiles -bool false
+	# 不显示隐藏文件
+	defaults write com.apple.finder AppleShowAllFiles -bool false
 
-# Always open everything in Finder's list view. This is important.
-defaults write com.apple.Finder FXPreferredViewStyle Nlsv
+	# Always open everything in Finder's list view. This is important.
+	defaults write com.apple.Finder FXPreferredViewStyle Nlsv
 
-# Show the ~/Library folder.
-chflags nohidden ~/Library
+	# Show the ~/Library folder.
+	chflags nohidden ~/Library
 
-# Set a really fast key repeat.
-defaults write NSGlobalDomain KeyRepeat -int 1
+	# Set a really fast key repeat.
+	defaults write NSGlobalDomain KeyRepeat -int 1
 
-# Set the Finder prefs for showing a few different volumes on the Desktop.
-defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
-defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
+	# Set the Finder prefs for showing a few different volumes on the Desktop.
+	defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
+	defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
 
-# Run the screensaver if we're in the bottom-left hot corner.
-defaults write com.apple.dock wvous-bl-corner -int 5
-defaults write com.apple.dock wvous-bl-modifier -int 0
+	# Run the screensaver if we're in the bottom-left hot corner.
+	defaults write com.apple.dock wvous-bl-corner -int 5
+	defaults write com.apple.dock wvous-bl-modifier -int 0
 
-# Set up Safari for development.
-defaults write com.apple.Safari.SandboxBroker ShowDevelopMenu -bool true
-defaults write com.apple.Safari.plist IncludeDevelopMenu -bool true
-defaults write com.apple.Safari.plist WebKitDeveloperExtrasEnabledPreferenceKey -bool true
-defaults write com.apple.Safari.plist "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" -bool true
-defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
+	# Set up Safari for development.
+	defaults write com.apple.Safari.SandboxBroker ShowDevelopMenu -bool true
+	defaults write com.apple.Safari.plist IncludeDevelopMenu -bool true
+	defaults write com.apple.Safari.plist WebKitDeveloperExtrasEnabledPreferenceKey -bool true
+	defaults write com.apple.Safari.plist "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" -bool true
+	defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
 
-# Finder: show all filename extensions
-defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+	# Finder: show all filename extensions
+	defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 
-# Avoid creating .DS_Store files on network or USB volumes
-defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
-defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
+	# Avoid creating .DS_Store files on network or USB volumes
+	defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+	defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
-# Use list view in all Finder windows by default
-# Four-letter codes for the other view modes: `icnv`, `clmv`, `glyv`
-defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
+	# Use list view in all Finder windows by default
+	# Four-letter codes for the other view modes: `icnv`, `clmv`, `glyv`
+	defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
 
-# 重启 Finder 和 Dock
-killall Finder
-killall Dock
+	# 重启 Finder 和 Dock
+	killall Finder
+	killall Dock
+}
+
+function setup_iterm2() {
+	# 通过命令行设置配置路径
+	defaults write com.googlecode.iterm2 PrefsCustomFolder -string "$HOME/.config/iterm2"
+	killall iTerm2
+}
+
+setup_finder
+
+if command -v iTerm2 &>/dev/null; then
+	setup_iterm2
+else
+	echo "iTerm2 not installed, skipping iTerm2 setup."
+fi
