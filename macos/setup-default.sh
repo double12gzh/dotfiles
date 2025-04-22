@@ -62,7 +62,8 @@ function setup_iterm2() {
 }
 
 function setup_autologin() {
-	ln -sf $(PWD)/autologin $HOME/.auto_login
+	script_dir=$(dirname "$(readlink -f "$0")")
+	ln -sf $script_dir/autologin $HOME/.auto_login
 }
 
 setup_finder
