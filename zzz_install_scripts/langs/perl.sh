@@ -37,9 +37,9 @@ if [[ ! -f "$PERL_DIR/bin/perl" ]]; then
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
         cat <<EOT >>"$RC_FILE"
-alias perl='~/tools/perl/bin/perl'
-alias cpan='~/tools/perl/bin/cpan'
-alias cpanm='~/tools/perl/bin/cpanm'
+alias perl='$HOME/tools/perl/bin/perl'
+alias cpan='$HOME/tools/perl/bin/cpan'
+alias cpanm='$HOME/tools/perl/bin/cpanm'
 export PATH="$PATH:$HOME/tools/perl/bin"
 export PERL_CPANM_HOME="$HOME/tools/cpanm"
 EOT

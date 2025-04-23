@@ -27,7 +27,7 @@ if [[ ! -f "$LUA_DIR/src/lua" ]]; then
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
         cat <<EOT >>"$RC_FILE"
-alias lua='~/tools/lua/src/lua'
+alias lua='$HOME/tools/lua/src/lua'
 export PATH="$PATH:$HOME/tools/lua/src"
 EOT
     fi
@@ -61,7 +61,7 @@ if [[ ! -f "$LUAJIT_DIR/src/luajit" ]]; then
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
         cat <<EOT >>"$RC_FILE"
-alias luajit='~/tools/luajit/src/luajit'
+alias luajit='$HOME/tools/luajit/src/luajit'
 export PATH="$PATH:$HOME/tools/luajit/src"
 export LUA_LIBRARY="$HOME/tools/luajit/src/libluajit.so"
 EOT
@@ -93,7 +93,7 @@ if [[ ! -f "$LUAROCKS_DIR/luarocks" ]]; then
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
         cat <<EOT >>"$RC_FILE"
-alias luarocks='~/tools/luarocks/luarocks'
+alias luarocks='$HOME/tools/luarocks/luarocks'
 export PATH="$PATH:$HOME/tools/luarocks"
 EOT
     fi

@@ -29,9 +29,9 @@ if [[ ! -f "$NODE_DIR/bin/node" ]]; then
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
         cat <<EOT >>"$RC_FILE"
-alias node='~/tools/nodejs/bin/node'
-alias npm='~/tools/nodejs/bin/npm'
-alias npx='~/tools/nodejs/bin/npx'
+alias node='$HOME/tools/nodejs/bin/node'
+alias npm='$HOME/tools/nodejs/bin/npm'
+alias npx='$HOME/tools/nodejs/bin/npx'
 export PATH="$PATH:$HOME/tools/nodejs/bin"
 EOT
     fi

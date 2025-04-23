@@ -12,7 +12,7 @@ if [[ -z "$(command -v cargo)" ]]; then
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
         cat <<EOT >>"$RC_FILE"
-[ -f ~/.cargo/env ] && source "$HOME/.cargo/env"
+[ -f $HOME/.cargo/env ] && source "$HOME/.cargo/env"
 EOT
     fi
 else
