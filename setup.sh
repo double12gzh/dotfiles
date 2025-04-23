@@ -142,14 +142,16 @@ function install_langs() {
 	fi
 }
 
-function setup_local_configs() {
+function local_custom_configs() {
 	blue_echo "----------------------------"
 	blue_echo "可能需要的本地定制化配置..."
 	blue_echo "----------------------------"
-	
+
 	echo "按需要配置本地其它文件"
 	echo "本地 alias: $HOME/.local_aliases.zsh"
+	yellow_echo "    $HOME/.local_aliases.zsh 中的配置会覆盖 $HOME/.zsh/aliases.zsh 中的配置"
 	echo "本地 ssh: $HOME/.ssh/config.d/*.conf"
+	yellow_echo "    $HOME/.ssh/config.d/*.conf 中的配置覆盖 $HOME/.ssh/config 中的配置"
 }
 
 install_sys_apps
@@ -160,4 +162,4 @@ check_nerd_fonts
 setup_macos
 stow_configs
 
-setup_local_configs
+local_custom_configs
