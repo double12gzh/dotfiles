@@ -29,7 +29,7 @@ git clone git@github.com:double12gzh/dotfiles.git ~
 ```bash
 stow */
 
-# or 
+# or
 
 stow Git
 ```
@@ -39,3 +39,4 @@ stow Git
 - -D: remove the created symlink.
 - -S: create assigned symlink.
 - -R: remove & recreate assigned symlink.
+- -n: dry-run
