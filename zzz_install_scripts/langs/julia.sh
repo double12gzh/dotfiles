@@ -29,11 +29,10 @@ if [[ ! -f "$JULIA_DIR/bin/julia" ]]; then
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
         cat <<EOT >>"$RC_FILE"
-alias julia='~/tools/julia/bin/julia'
+alias julia='$HOME/tools/julia/bin/julia'
 export PATH="$PATH:$HOME/tools/julia/bin"
 EOT
     fi
 else
     printf "${tty_blue}Julia${tty_reset} is already installed, skip it.\n"
-
 fi

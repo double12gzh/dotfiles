@@ -46,7 +46,7 @@ if [[ -z "$(command -v php)" ]]; then
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
         cat <<EOT >>"$RC_FILE"
-alias php='~/tools/php/bin/php'
+alias php='$HOME/tools/php/bin/php'
 export PATH="$PATH:$HOME/tools/php/bin"
 EOT
     fi
@@ -55,4 +55,4 @@ else
     printf "    ${tty_blue}Composer${tty_reset} is already installed, skip it.\n"
 fi
 
-cd ~/dotfiles/zzz_install_scripts/
+cd "$SCRIPT_DIR"

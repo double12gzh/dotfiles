@@ -33,7 +33,7 @@ if [[ ! -f "$RUBY_DIR/bin/ruby" ]]; then
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
         cat <<EOT >>"$RC_FILE"
-alias ruby='~/tools/ruby/bin/ruby'
+alias ruby='$HOME/tools/ruby/bin/ruby'
 export PATH="$PATH:$HOME/tools/ruby/bin"
 EOT
     fi
@@ -41,5 +41,3 @@ else
     printf "${tty_blue}Ruby${tty_reset} is already installed, skip it.\n"
     printf "\t${tty_blue}Gem${tty_reset} is already installed, skip it.\n"
 fi
-
-cd ~/dotfiles/zzz_install_scripts/
