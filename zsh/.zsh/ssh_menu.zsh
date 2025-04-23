@@ -86,5 +86,5 @@ mycolorfulssh ()
     remote=$(awk -v SEC=0 -v HOST=$host -f $ssh_config_awk $ssh_config | awk -F ':'  '{sub(/^ +/, "", $2);if ($1 == "remote") print $2}')
 
     # .auto_login: https://www.notion.so/double12gzh/expect-d393087103fd49f78107d1cf2979b4c4?pvs=4#d61977f8769a435bb829e0750c142558
-    [ $? -eq 0 ] && $HOME/.auto_login $username $host $passwd $remote $passwd $cmd
+    [ $? -eq 0 ] && $HOME/.auto_login $username $host $port $passwd $remote $passwd $cmd
 }
