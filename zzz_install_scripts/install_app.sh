@@ -3,45 +3,48 @@
 set -e
 set -o pipefail
 
-source ./config.sh
+# 获取脚本所在目录的绝对路径
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source ./apps/ascii-image-converter.sh
-source ./apps/batcat.sh
-source ./apps/btop.sh
-# source ./apps/chafa.sh
-source ./apps/cpufetch.sh
-source ./apps/delta.sh
-# source ./apps/direnv.sh
-source ./apps/dua.sh
-source ./apps/exa.sh
-source ./apps/fdfind.sh
-source ./apps/fzf.sh
-source ./apps/fzy.sh
-source ./apps/glow.sh
-source ./apps/jq.sh
-source ./apps/lazygit.sh
-source ./apps/lf.sh
-source ./apps/lnav.sh
-# source ./apps/magick.sh
-source ./apps/navi.sh
-source ./apps/nvim.sh
-# source ./apps/pistol.sh
-source ./apps/qfc.sh
-source ./apps/ripgrep.sh
-# source ./apps/sheldon.sh
-# source ./apps/silicon.sh
-source ./apps/starship.sh
-source ./apps/stow.sh
-source ./apps/termpix.sh
-source ./apps/tmux.sh
-# source ./apps/trashy.sh
-source ./apps/treesitter.sh
-source ./apps/ugrep.sh
-source ./apps/viu.sh
-source ./apps/xplr.sh
-source ./apps/zoxide.sh
-#source ./apps/zplug.sh
-source ./apps/zinit.sh
+source "${SCRIPT_DIR}/config.sh"
+
+source "${SCRIPT_DIR}/apps/ascii-image-converter.sh"
+source "${SCRIPT_DIR}/apps/batcat.sh"
+source "${SCRIPT_DIR}/apps/btop.sh"
+# source "${SCRIPT_DIR}/apps/chafa.sh"
+source "${SCRIPT_DIR}/apps/cpufetch.sh"
+source "${SCRIPT_DIR}/apps/delta.sh"
+# source "${SCRIPT_DIR}/apps/direnv.sh"
+source "${SCRIPT_DIR}/apps/dua.sh"
+source "${SCRIPT_DIR}/apps/exa.sh"
+source "${SCRIPT_DIR}/apps/fdfind.sh"
+source "${SCRIPT_DIR}/apps/fzf.sh"
+source "${SCRIPT_DIR}/apps/fzy.sh"
+source "${SCRIPT_DIR}/apps/glow.sh"
+source "${SCRIPT_DIR}/apps/jq.sh"
+source "${SCRIPT_DIR}/apps/lazygit.sh"
+source "${SCRIPT_DIR}/apps/lf.sh"
+source "${SCRIPT_DIR}/apps/lnav.sh"
+# source "${SCRIPT_DIR}/apps/magick.sh"
+source "${SCRIPT_DIR}/apps/navi.sh"
+source "${SCRIPT_DIR}/apps/nvim.sh"
+# source "${SCRIPT_DIR}/apps/pistol.sh"
+source "${SCRIPT_DIR}/apps/qfc.sh"
+source "${SCRIPT_DIR}/apps/ripgrep.sh
+# source "${SCRIPT_DIR}/apps/sheldon.sh"
+# source "${SCRIPT_DIR}/apps/silicon.sh"
+source "${SCRIPT_DIR}/apps/starship.sh"
+source "${SCRIPT_DIR}/apps/stow.sh"
+source "${SCRIPT_DIR}/apps/termpix.sh"
+source "${SCRIPT_DIR}/apps/tmux.sh"
+# source "${SCRIPT_DIR}/apps/trashy.sh"
+source "${SCRIPT_DIR}/apps/treesitter.sh"
+source "${SCRIPT_DIR}/apps/ugrep.sh"
+source "${SCRIPT_DIR}/apps/viu.sh"
+source "${SCRIPT_DIR}/apps/xplr.sh"
+source "${SCRIPT_DIR}/apps/zoxide.sh
+#source "${SCRIPT_DIR}/apps/zplug.sh"
+source "${SCRIPT_DIR}/apps/zinit.sh"
 
 printf "\n${tty_yellow}====================Script ends====================${tty_reset}\n\n"
 printf "Remember ${tty_yellow}\"source ~/.bashrc or source ~/.zshrc\"${tty_reset} to make \$PATH valid.\n"

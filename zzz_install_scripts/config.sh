@@ -4,15 +4,15 @@
 set -e
 set -o pipefail
 
-script_path=$(readlink -f "$0")
-SCRIPT_DIR=$(dirname "$script_path")
+# 获取脚本所在目录的绝对路径
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOT_DIR=$(dirname "$SCRIPT_DIR")
 
 USERNAME="Jeffrey Guan"
 EMAIL="double12gzh@gmail.com"
 
 # Import var & func from `util.sh`
-source ./util.sh
+source "$SCRIPT_DIR/util.sh"
 
 cat <<EOS
 

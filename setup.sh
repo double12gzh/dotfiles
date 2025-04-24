@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 # 检查 bash 版本
 if [ "${BASH_VERSINFO[0]}" -lt 5 ]; then
 	echo "错误: 需要 bash 5.0 或更高版本"
@@ -8,7 +10,68 @@ if [ "${BASH_VERSINFO[0]}" -lt 5 ]; then
 	exit 1
 fi
 
-set -e
+# 定义所有支持的操作
+declare -a SUPPORTED_OPERATIONS=(
+	"sys-apps"
+	"langs"
+	"apps"
+	"nerd-fonts"
+	"macos"
+	"configs"
+	"custom"
+)
+
+# 定义操作对应的函数
+declare -A OPERATION_FUNCTIONS=(
+	["sys-apps"]="install_sys_apps"
+	["langs"]="install_langs"
+	["apps"]="install_apps"
+	["nerd-fonts"]="check_nerd_fonts"
+	["macos"]="setup_macos"
+	["configs"]="stow_configs"
+	["custom"]="local_custom_configs"
+)
+
+# 定义命令行选项和对应的操作
+declare -A OPTION_MAP=(
+	["help"]="-h --help"
+	["all"]="-a --all"
+	["sys-apps"]="-s --sys-apps"
+	["langs"]="-l --langs"
+	["apps"]="-p --apps"
+	["nerd-fonts"]="-n --nerd-fonts"
+	["macos"]="-m --macos"
+	["configs"]="-c --configs"
+	["custom"]="-u --custom"
+)
+
+# 定义需要链接的配置
+declare -a stow_configs=(
+	bash
+	batcat
+	conda
+	fdfind
+	git
+	lazygit
+	lf
+	local
+	luarocks
+	starship
+	ssh
+	tmux
+	tmuxp
+	zsh
+	wezterm
+	gotests
+)
+
+#======================#
+#        main          #
+#======================#
+
+# 定义操作状态常量
+readonly OP_ENABLE="enable"
+readonly OP_DISABLE="disable"
 
 SCRIPT_PATH=$(cd "$(dirname "$0")" && pwd)
 
@@ -28,30 +91,71 @@ function blue_echo() {
 	echo -e "\033[34m$1\033[0m"
 }
 
+function gray_echo() {
+	echo -e "\033[90m$1\033[0m"
+}
+
 function show_help() {
 	echo "用法: $0 [选项]"
 	echo
 	echo "选项:"
-	echo "  -h, --help              显示帮助信息"
-	echo "  -a, --all               执行所有操作（默认）"
+	echo "  -h, --help              显示帮助信息（默认）"
+	echo "  -a, --all               执行所有操作"
 	echo "  -s, --sys-apps          仅安装系统应用"
 	echo "  -l, --langs             仅安装编程语言"
 	echo "  -p, --apps              仅安装应用"
 	echo "  -n, --nerd-fonts        仅检查 nerd fonts"
 	echo "  -m, --macos             仅配置 macOS 环境"
 	echo "  -c, --configs           仅链接配置"
-	echo "  --custom                仅显示本地定制化配置信息"
+	echo "  -u, --custom            仅显示本地定制化配置信息"
 	echo
 	echo "示例:"
-	echo "  $0                      # 执行所有操作"
+	echo "  $0                      # 显示帮助信息"
 	echo "  $0 -s -l                # 安装系统应用和编程语言"
 	echo "  $0 --configs --macos    # 链接配置并配置 macOS 环境"
+	echo
+	echo "================================================"
+	blue_echo "添加新操作步骤:"
+	blue_echo "  1. 在 SUPPORTED_OPERATIONS 数组中添加新操作名称"
+	blue_echo "     例如: declare -a SUPPORTED_OPERATIONS=(\"docker\")"
+	blue_echo
+	blue_echo "  2. 在 OPERATION_FUNCTIONS 中添加对应的函数映射"
+	blue_echo "     例如: declare -A OPERATION_FUNCTIONS=([\"docker\"]=\"setup_docker\")"
+	blue_echo
+	blue_echo "  3. 在 OPTION_MAP 中指定选项映射"
+	blue_echo "     例如: declare -A OPTION_MAP=([\"docker\"]=\"-d --docker\")"
+	blue_echo
+	blue_echo "  4. 实现对应的操作函数"
+	blue_echo "     例如:"
+	blue_echo "     function setup_docker() {"
+	blue_echo "         local operation=\$1"
+	blue_echo "         blue_echo \"----------------------------\""
+	blue_echo "         blue_echo \"\$operation: 开始配置 Docker 环境...\""
+	blue_echo "         blue_echo \"----------------------------\""
+	blue_echo "         # 添加具体的配置命令"
+	blue_echo "         if [[ \$? -eq 0 ]]; then"
+	blue_echo "             green_echo \"Docker 环境配置成功\""
+	blue_echo "         else"
+	blue_echo "             red_echo \"Docker 环境配置失败\""
+	blue_echo "         fi"
+	blue_echo "     }"
+	blue_echo
+	blue_echo "  5. 在 show_help 函数中添加新选项的说明"
+	blue_echo "     例如:"
+	blue_echo "     echo \"  -d, --docker            仅配置 Docker 环境\""
+	blue_echo
+	blue_echo "  6. 在示例部分添加新选项的使用示例"
+	blue_echo "     例如:"
+	blue_echo "     echo \"  \$0 --docker             # 仅配置 Docker 环境\""
+	blue_echo "     echo \"  \$0 -d -m                # 配置 Docker 和 macOS 环境\""
+	echo
 	exit 0
 }
 
 function setup_macos() {
+	local operation=$1
 	blue_echo "----------------------------"
-	blue_echo "开始配置 macOS 环境..."
+	blue_echo "$operation: 开始配置 macOS 环境..."
 	blue_echo "----------------------------"
 	if [[ "$OSTYPE" == "darwin"* ]]; then
 		source ${SCRIPT_PATH}/macos/setup-default.sh
@@ -61,8 +165,9 @@ function setup_macos() {
 }
 
 function check_nerd_fonts() {
+	local operation=$1
 	blue_echo "----------------------------"
-	blue_echo "检查 nerd fonts 是否安装..."
+	blue_echo "$operation: 检查 nerd fonts 是否安装..."
 	blue_echo "----------------------------"
 
 	# 检查是否安装了Nerd Font
@@ -90,29 +195,12 @@ function check_nerd_fonts() {
 }
 
 function stow_configs() {
+	local operation=$1
 	blue_echo "----------------------------"
-	blue_echo "开始链接配置..."
+	blue_echo "$operation: 开始链接配置..."
 	blue_echo "----------------------------"
-	local configs=(
-		bash
-		batcat
-		conda
-		fdfind
-		git
-		lazygit
-		lf
-		local
-		luarocks
-		starship
-		ssh
-		tmux
-		tmuxp
-		zsh
-		wezterm
-		gotests
-	)
 
-	for config in "${configs[@]}"; do
+	for config in "${stow_configs[@]}"; do
 		echo "正在链接 $config 配置..."
 
 		# 检查配置目录是否存在
@@ -131,8 +219,9 @@ function stow_configs() {
 }
 
 function install_sys_apps() {
+	local operation=$1
 	blue_echo "----------------------------"
-	blue_echo "开始安装系统应用..."
+	blue_echo "$operation: 开始安装系统应用..."
 	blue_echo "----------------------------"
 	if [[ "$OSTYPE" == "darwin"* ]]; then
 		yellow_echo "macOS 系统，跳过安装系统应用"
@@ -148,8 +237,9 @@ function install_sys_apps() {
 }
 
 function install_apps() {
+	local operation=$1
 	blue_echo "----------------------------"
-	blue_echo "开始安装应用..."
+	blue_echo "$operation: 开始安装应用..."
 	blue_echo "----------------------------"
 	source ${SCRIPT_PATH}/zzz_install_scripts/install_app.sh
 	if [[ $? -eq 0 ]]; then
@@ -160,8 +250,9 @@ function install_apps() {
 }
 
 function install_langs() {
+	local operation=$1
 	blue_echo "----------------------------"
-	blue_echo "开始安装编程语言..."
+	blue_echo "$operation: 开始安装编程语言..."
 	blue_echo "----------------------------"
 	source ${SCRIPT_PATH}/zzz_install_scripts/install_lang.sh
 	if [[ $? -eq 0 ]]; then
@@ -172,95 +263,121 @@ function install_langs() {
 }
 
 function local_custom_configs() {
+	local operation=$1
 	blue_echo "----------------------------"
-	blue_echo "可能需要的本地定制化配置..."
+	blue_echo "$operation: 可能需要的本地定制化配置..."
 	blue_echo "----------------------------"
 
-	echo "按需要配置本地其它文件"
-	echo "本地 alias: $HOME/.local_aliases.zsh"
-	yellow_echo "    $HOME/.local_aliases.zsh 中的配置会覆盖 $HOME/.zsh/aliases.zsh 中的配置"
-	echo "本地 ssh: $HOME/.ssh/config.d/*.conf"
-	yellow_echo "    $HOME/.ssh/config.d/*.conf 中的配置覆盖 $HOME/.ssh/config 中的配置"
+	gray_echo "按需要配置本地其它文件"
+	gray_echo "本地 alias: $HOME/.local_aliases.zsh"
+	gray_echo "    $HOME/.local_aliases.zsh 中的配置会覆盖 $HOME/.zsh/aliases.zsh 中的配置"
+	gray_echo "本地 ssh: $HOME/.ssh/config.d/*.conf"
+	gray_echo "    $HOME/.ssh/config.d/*.conf 中的配置覆盖 $HOME/.ssh/config 中的配置"
 }
 
-# 默认执行所有操作
-declare -A OPERATIONS=(
-	["sys-apps"]=0
-	["langs"]=0
-	["apps"]=0
-	["nerd-fonts"]=0
-	["macos"]=0
-	["configs"]=0
-	["custom"]=0
-	["all"]=0
-)
-
-# 函数映射表 - 将操作名映射到对应的函数
-declare -A OPERATION_FUNCTIONS=(
-	["sys-apps"]="install_sys_apps"
-	["langs"]="install_langs"
-	["apps"]="install_apps"
-	["nerd-fonts"]="check_nerd_fonts"
-	["macos"]="setup_macos"
-	["configs"]="stow_configs"
-	["custom"]="local_custom_configs"
-)
+# 初始化操作映射
+function init_operation_map() {
+	# 初始化 OPERATIONS 数组
+	declare -gA OPERATIONS=(
+		["all"]="$OP_DISABLE"
+	)
+	
+	# 基于 SUPPORTED_OPERATIONS 生成 OPERATIONS
+	for operation in "${SUPPORTED_OPERATIONS[@]}"; do
+		# 初始化 OPERATIONS
+		OPERATIONS["$operation"]="$OP_DISABLE"
+	done
+}
 
 # 执行指定操作的函数
-execute_operation() {
+function execute_operation() {
 	local operation=$1
 	local function_name=${OPERATION_FUNCTIONS[$operation]}
+	$function_name "$operation"
+}
 
-	if [ ${OPERATIONS["all"]} -eq 1 ] || [ ${OPERATIONS[$operation]} -eq 1 ]; then
-		$function_name
-	fi
+init_operation_map
+
+# 显示操作状态的函数
+function show_operation_status() {
+	# 计算最长的操作名长度
+	local max_len=0
+	for op in "${!OPERATIONS[@]}"; do
+		if [ ${#op} -gt $max_len ]; then
+			max_len=${#op}
+		fi
+	done
+	
+	# 先显示 enable 的操作
+	for op in "${!OPERATIONS[@]}"; do
+		if [ "${OPERATIONS[$op]}" = "$OP_ENABLE" ]; then
+			local formatted=$(printf "  %-${max_len}s: %s" "$op" "${OPERATIONS[$op]}")
+			green_echo "$formatted"
+		fi
+	done
+	
+	# 再显示 disable 的操作
+	for op in "${!OPERATIONS[@]}"; do
+		if [ "${OPERATIONS[$op]}" = "$OP_DISABLE" ]; then
+			printf "  %-${max_len}s: %s\n" "$op" "${OPERATIONS[$op]}"
+		fi
+	done
 }
 
 # 解析命令行参数
 if [ $# -gt 0 ]; then
 	while [ $# -gt 0 ]; do
-		case "$1" in
-		-h | --help)
-			show_help
-			;;
-		-a | --all)
-			OPERATIONS["all"]=1
-			;;
-		-s | --sys-apps)
-			OPERATIONS["sys-apps"]=1
-			;;
-		-l | --langs)
-			OPERATIONS["langs"]=1
-			;;
-		-p | --apps)
-			OPERATIONS["apps"]=1
-			;;
-		-n | --nerd-fonts)
-			OPERATIONS["nerd-fonts"]=1
-			;;
-		-m | --macos)
-			OPERATIONS["macos"]=1
-			;;
-		-c | --configs)
-			OPERATIONS["configs"]=1
-			;;
-		--custom)
-			OPERATIONS["custom"]=1
-			;;
-		*)
-			red_echo "未知选项: $1"
+		option="$1"
+		# 查找对应的操作
+		operation=""
+		for op in "${!OPTION_MAP[@]}"; do
+			if [[ "${OPTION_MAP[$op]}" =~ $option ]]; then
+				operation="$op"
+				break
+			fi
+		done
+		
+		if [ -z "$operation" ]; then
+			red_echo "未知选项: $option"
 			echo "使用 '$0 --help' 查看帮助信息"
 			exit 1
-			;;
-		esac
+		fi
+		
+		if [ "$operation" = "help" ]; then
+			show_help
+		elif [ "$operation" = "all" ]; then
+			OPERATIONS["all"]="$OP_ENABLE"
+		else
+			OPERATIONS["$operation"]="$OP_ENABLE"
+		fi
+		
 		shift
 	done
+	
+	echo "当前 OPERATIONS 状态:"
+	show_operation_status
+	echo -e "\n开始执行...\n"
 else
-	# 不提供参数时显示帮助信息
 	show_help
 fi
 
-# 执行所有选定的操作
-for operation in "${!OPERATION_FUNCTIONS[@]}"; do
-	execute_operation "$operation"
-done
+# 执行选定的操作
+if [ "${OPERATIONS['all']}" = "$OP_ENABLE" ]; then
+	# 如果指定了 all，则执行所有操作
+	for operation in "${SUPPORTED_OPERATIONS[@]}"; do
+		execute_operation "$operation"
+	done
+	green_echo "\n所有操作执行成功\n"
+else
+	# 否则只执行指定的操作
+	for operation in "${SUPPORTED_OPERATIONS[@]}"; do
+		if [ "${OPERATIONS[$operation]}" = "$OP_ENABLE" ]; then
+			execute_operation "$operation"
+			if [ $? -eq 0 ]; then
+				green_echo "\n操作 $operation 执行成功\n"
+			else
+				red_echo "\n操作 $operation 执行失败\n"
+			fi
+		fi
+	done
+fi

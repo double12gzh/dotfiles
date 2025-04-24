@@ -58,7 +58,11 @@ function setup_finder() {
 function setup_iterm2() {
 	# 通过命令行设置配置路径
 	defaults write com.googlecode.iterm2 PrefsCustomFolder -string "$HOME/.config/iterm2"
-	killall iTerm2
+	
+	# 检查 iTerm2 进程是否存在
+	if pgrep -x "iTerm2" > /dev/null; then
+		killall iTerm2
+	fi
 }
 
 function setup_autologin() {
@@ -69,7 +73,7 @@ function setup_autologin() {
 setup_finder
 setup_autologin
 
-if command -v iTerm2 &>/dev/null; then
+if [ -d "/Applications/iTerm 2.app" ]; then
 	setup_iterm2
 else
 	echo "iTerm2 not installed, skipping iTerm2 setup."
