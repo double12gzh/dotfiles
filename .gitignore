@@ -46,7 +46,14 @@ luac.out
 *.x86_64
 *.hex
 
+# macOS system files
+.DS_Store
+**/.DS_Store
+*.localized
+.Spotlight-V100
+.Trashes
 
+# others
 my_nvim/plugin/packer_compiled.lua
 nvim/plugin/packer_compiled.lua
 java-debug/
