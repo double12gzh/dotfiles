@@ -11,14 +11,14 @@ if [ "${BASH_VERSINFO[0]}" -lt 5 ]; then
 fi
 
 # 定义所有支持的操作
-declare -a SUPPORTED_OPERATIONS=(
-	"sys-apps"
-	"langs"
-	"apps"
-	"nerd-fonts"
-	"macos"
-	"configs"
-	"custom"
+declare -A SUPPORTED_OPERATIONS=(
+	["sys-apps"]="仅安装系统应用"
+	["langs"]="仅安装编程语言"
+	["apps"]="仅安装应用"
+	["nerd-fonts"]="仅检查 nerd fonts"
+	["macos"]="仅配置 macOS 环境"
+	["configs"]="仅链接配置"
+	["custom"]="仅显示本地定制化配置信息"
 )
 
 # 定义操作对应的函数
@@ -99,25 +99,45 @@ function show_help() {
 	echo "用法: $0 [选项]"
 	echo
 	echo "选项:"
+	
+	# 显示帮助和全部选项
 	echo "  -h, --help              显示帮助信息（默认）"
 	echo "  -a, --all               执行所有操作"
-	echo "  -s, --sys-apps          仅安装系统应用"
-	echo "  -l, --langs             仅安装编程语言"
-	echo "  -p, --apps              仅安装应用"
-	echo "  -n, --nerd-fonts        仅检查 nerd fonts"
-	echo "  -m, --macos             仅配置 macOS 环境"
-	echo "  -c, --configs           仅链接配置"
-	echo "  -u, --custom            仅显示本地定制化配置信息"
+	echo 
+	
+	# 根据 SUPPORTED_OPERATIONS 和 OPTION_MAP 自动生成选项说明
+	for operation in "${!SUPPORTED_OPERATIONS[@]}"; do
+		local options="${OPTION_MAP[$operation]}"
+		local short_opt=$(echo "$options" | awk '{print $1}')
+		local long_opt=$(echo "$options" | awk '{print $2}')
+		local description="${SUPPORTED_OPERATIONS[$operation]}"
+		
+		# 使用 printf 格式化输出，确保对齐
+		printf "  %-2s %-20s %s\n" "$short_opt," "$long_opt" "$description"
+	done | sort -k2  # 按长选项名排序
+	
 	echo
 	echo "示例:"
-	echo "  $0                      # 显示帮助信息"
-	echo "  $0 -s -l                # 安装系统应用和编程语言"
-	echo "  $0 --configs --macos    # 链接配置并配置 macOS 环境"
+	printf "  %-30s # 显示帮助信息\n" "$0"
+	
+	# 生成示例命令
+	local example_cmd=""
+	for operation in "${!SUPPORTED_OPERATIONS[@]}"; do
+		local short_opt=$(echo "${OPTION_MAP[$operation]}" | awk '{print $1}')
+		if [ -z "$example_cmd" ]; then
+			example_cmd="$0 $short_opt"
+		else
+			printf "  %-30s # 组合使用多个选项\n" "$example_cmd $short_opt"
+			break
+		fi
+	done
+	
+	printf "  %-30s # 执行所有操作\n" "$0 --all"
 	echo
 	echo "================================================"
 	blue_echo "添加新操作步骤:"
-	blue_echo "  1. 在 SUPPORTED_OPERATIONS 数组中添加新操作名称"
-	blue_echo "     例如: declare -a SUPPORTED_OPERATIONS=(\"docker\")"
+	blue_echo "  1. 在 SUPPORTED_OPERATIONS 数组中添加新操作名称和描述"
+	blue_echo "     例如: declare -A SUPPORTED_OPERATIONS=([\"docker\"]=\"仅配置 Docker 环境\")"
 	blue_echo
 	blue_echo "  2. 在 OPERATION_FUNCTIONS 中添加对应的函数映射"
 	blue_echo "     例如: declare -A OPERATION_FUNCTIONS=([\"docker\"]=\"setup_docker\")"
@@ -139,15 +159,6 @@ function show_help() {
 	blue_echo "             red_echo \"Docker 环境配置失败\""
 	blue_echo "         fi"
 	blue_echo "     }"
-	blue_echo
-	blue_echo "  5. 在 show_help 函数中添加新选项的说明"
-	blue_echo "     例如:"
-	blue_echo "     echo \"  -d, --docker            仅配置 Docker 环境\""
-	blue_echo
-	blue_echo "  6. 在示例部分添加新选项的使用示例"
-	blue_echo "     例如:"
-	blue_echo "     echo \"  \$0 --docker             # 仅配置 Docker 环境\""
-	blue_echo "     echo \"  \$0 -d -m                # 配置 Docker 和 macOS 环境\""
 	echo
 	exit 0
 }
@@ -283,7 +294,7 @@ function init_operation_map() {
 	)
 	
 	# 基于 SUPPORTED_OPERATIONS 生成 OPERATIONS
-	for operation in "${SUPPORTED_OPERATIONS[@]}"; do
+	for operation in "${!SUPPORTED_OPERATIONS[@]}"; do
 		# 初始化 OPERATIONS
 		OPERATIONS["$operation"]="$OP_DISABLE"
 	done
@@ -364,13 +375,13 @@ fi
 # 执行选定的操作
 if [ "${OPERATIONS['all']}" = "$OP_ENABLE" ]; then
 	# 如果指定了 all，则执行所有操作
-	for operation in "${SUPPORTED_OPERATIONS[@]}"; do
+	for operation in "${!SUPPORTED_OPERATIONS[@]}"; do
 		execute_operation "$operation"
 	done
 	green_echo "\n所有操作执行成功\n"
 else
 	# 否则只执行指定的操作
-	for operation in "${SUPPORTED_OPERATIONS[@]}"; do
+	for operation in "${!SUPPORTED_OPERATIONS[@]}"; do
 		if [ "${OPERATIONS[$operation]}" = "$OP_ENABLE" ]; then
 			execute_operation "$operation"
 			if [ $? -eq 0 ]; then
