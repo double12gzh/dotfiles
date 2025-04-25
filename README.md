@@ -40,9 +40,9 @@
      例如:
      function setup_docker() {
          local operation=$1
-         blue_echo "----------------------------"
+         blue_echo "---------------------------------"
          blue_echo "$operation: 开始配置 Docker 环境..."
-         blue_echo "----------------------------"
+         blue_echo "---------------------------------"
          # 添加具体的配置命令
          if [[ $? -eq 0 ]]; then
              green_echo "Docker 环境配置成功"
