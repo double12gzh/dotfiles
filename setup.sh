@@ -149,9 +149,9 @@ function show_help() {
 	blue_echo "     例如:"
 	blue_echo "     function setup_docker() {"
 	blue_echo "         local operation=\$1"
-	blue_echo "         blue_echo \"----------------------------\""
+	blue_echo "         blue_echo \"----------------------------------\""
 	blue_echo "         blue_echo \"\$operation: 开始配置 Docker 环境...\""
-	blue_echo "         blue_echo \"----------------------------\""
+	blue_echo "         blue_echo \"----------------------------------\""
 	blue_echo "         # 添加具体的配置命令"
 	blue_echo "         if [[ \$? -eq 0 ]]; then"
 	blue_echo "             green_echo \"Docker 环境配置成功\""
@@ -165,9 +165,9 @@ function show_help() {
 
 function setup_macos() {
 	local operation=$1
-	blue_echo "----------------------------"
+	blue_echo "--------------------------------"
 	blue_echo "$operation: 开始配置 macOS 环境..."
-	blue_echo "----------------------------"
+	blue_echo "--------------------------------"
 	if [[ "$OSTYPE" == "darwin"* ]]; then
 		source ${SCRIPT_PATH}/macos/setup-default.sh
 	else
@@ -177,9 +177,9 @@ function setup_macos() {
 
 function check_nerd_fonts() {
 	local operation=$1
-	blue_echo "----------------------------"
+	blue_echo "-------------------------------------"
 	blue_echo "$operation: 检查 nerd fonts 是否安装..."
-	blue_echo "----------------------------"
+	blue_echo "-------------------------------------"
 
 	# 检查是否安装了Nerd Font
 	if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -208,7 +208,7 @@ function check_nerd_fonts() {
 function stow_configs() {
 	local operation=$1
 	blue_echo "----------------------------"
-	blue_echo "$operation: 开始链接配置..."
+	blue_echo "$operation: 开始链接配置...   "
 	blue_echo "----------------------------"
 
 	for config in "${stow_configs[@]}"; do
@@ -224,9 +224,9 @@ function stow_configs() {
 		stow "$config"
 	done
 
-	green_echo "----------------------------"
+	green_echo "-----------------------------------------"
 	green_echo "所有配置已链接完成。链接目录为 ~/.config/ 和 ~"
-	green_echo "----------------------------"
+	green_echo "-----------------------------------------"
 }
 
 function install_sys_apps() {
@@ -250,7 +250,7 @@ function install_sys_apps() {
 function install_apps() {
 	local operation=$1
 	blue_echo "----------------------------"
-	blue_echo "$operation: 开始安装应用..."
+	blue_echo "$operation: 开始安装应用...   "
 	blue_echo "----------------------------"
 	source ${SCRIPT_PATH}/zzz_install_scripts/install_app.sh
 	if [[ $? -eq 0 ]]; then
@@ -275,9 +275,9 @@ function install_langs() {
 
 function local_custom_configs() {
 	local operation=$1
-	blue_echo "----------------------------"
+	blue_echo "-----------------------------------"
 	blue_echo "$operation: 可能需要的本地定制化配置..."
-	blue_echo "----------------------------"
+	blue_echo "-----------------------------------"
 
 	gray_echo "按需要配置本地其它文件"
 	gray_echo "本地 alias: $HOME/.local_aliases.zsh"
