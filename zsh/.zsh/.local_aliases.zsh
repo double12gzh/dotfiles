@@ -97,6 +97,7 @@ __help() {
     echo "  -d, --destroy                           Teardown proxies ENVs"
     echo "  -c, --check                             Check proxies status"
     echo "  -i, --ip                                Check ip"
+    echo "  --gen-pwd [length]                      Generate random password"
     echo "  -g, --gangsters [start|stop|status|aone_status|aone_disable|aone_enable] Kill gangsters process"
 }
 
@@ -112,6 +113,11 @@ __ip() {
      curl cip.cc
 }
 
+__gen_pwd() {
+    pwd_len=$1
+    pwgen -s -y -1 $pwd_len 6
+}
+
 cmds() {
     cmd "$@"
 }
@@ -124,6 +130,11 @@ cmd() {
 
     while [[ "$#" -gt 0 ]]; do
         case "$1" in
+            --gen-pwd)
+                shift
+                __gen_pwd $1
+                break
+                ;;
             -p|--proxy)
                 shift
                 __setup_system_proxies $1 $2
