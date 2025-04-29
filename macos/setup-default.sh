@@ -1,3 +1,17 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC2059,SC2154
+set -e
+set -o pipefail
+
+# Get the dotfiles directory
+DOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+# Colors for output
+tty_blue=$(tput setaf 4)
+tty_yellow=$(tput setaf 3)
+tty_red=$(tput setaf 1)
+tty_reset=$(tput sgr0)
+
 # Sets reasonable macOS defaults.
 #
 # Or, in other words, set shit how I like in macOS.
@@ -70,6 +84,27 @@ function setup_autologin() {
 	ln -sf $script_dir/auto_login $HOME/.auto_login
 }
 
+function install_apps() {
+	printf "\n${tty_yellow}Installing apps from Brewfile...${tty_reset}\n"
+	
+	# Check if Brewfile exists
+	BREWFILE_PATH="$DOT_DIR/brew/Brewfile"
+	if [[ ! -f "$BREWFILE_PATH" ]]; then
+		printf "${tty_red}Error: Brewfile not found at $BREWFILE_PATH${tty_reset}\n"
+		printf "${tty_yellow}Current directory: $(pwd)${tty_reset}\n"
+		printf "${tty_yellow}Dot directory: $DOT_DIR${tty_reset}\n"
+		return 1
+	fi
+	
+	# Install apps from Brewfile
+	if brew bundle --file="$BREWFILE_PATH"; then
+		printf "${tty_blue}Successfully installed apps from Brewfile${tty_reset}\n"
+	else
+		printf "${tty_red}Failed to install some apps from Brewfile${tty_reset}\n"
+		return 1
+	fi
+}
+
 setup_finder
 setup_autologin
 
@@ -77,4 +112,12 @@ if [ -d "/Applications/iTerm 2.app" ]; then
 	setup_iterm2
 else
 	echo "iTerm2 not installed, skipping iTerm2 setup."
+fi
+
+# Main execution
+if [[ "$(uname)" == "Darwin" ]]; then
+	install_apps
+else
+	printf "${tty_yellow}This script is only for macOS${tty_reset}\n"
+	exit 1
 fi
