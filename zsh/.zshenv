@@ -1,5 +1,10 @@
 #!/usr/bin/zsh
 
+# Add Homebrew bin to PATH on macOS
+if [[ "$(uname)" == "Darwin" ]]; then
+    export PATH="/opt/homebrew/bin:$PATH"
+fi
+
 # for profiling zsh
 # https://unix.stackexchange.com/a/329719/27109
 #
@@ -119,7 +124,7 @@ eval "$(zoxide init zsh)" || echo "zoxide not found!"
 
 # Init Starship
 # [ -x ~/tools/starship/starship ] && eval "$(starship init zsh)" || echo "starship not found!"]
-eval "$(starship init zsh)" || echo "starship not found!"]
+eval "$(starship init zsh)" || echo "starship not found!"
 
 # Init direnv
 # eval "$(direnv hook zsh)"

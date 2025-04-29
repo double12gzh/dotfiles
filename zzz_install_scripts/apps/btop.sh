@@ -6,9 +6,15 @@ set -o pipefail
 ######################################################################
 #                            Btop++ Part                             #
 ######################################################################
-BTOP_DIR=$HOME/tools/btop
-BTOP_SRC_NAME=$HOME/packages/btop.tbz
-BTOP_LINK="https://github.com/aristocratos/btop/releases/download/v1.2.13/btop-x86_64-linux-musl.tbz"
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    printf "${tty_blue}Btop++${tty_reset} is not supported on macOS, skip it.\n"
+    return 0
+else
+    BTOP_DIR=$HOME/tools/btop
+    BTOP_SRC_NAME=$HOME/packages/btop.tbz
+    BTOP_LINK="https://github.com/aristocratos/btop/releases/download/v1.2.13/btop-x86_64-linux-musl.tbz"
+fi
+
 if [[ -z $(command -v btop) ]]; then
     echo "Install btop"
     if [[ ! -f $BTOP_SRC_NAME ]]; then

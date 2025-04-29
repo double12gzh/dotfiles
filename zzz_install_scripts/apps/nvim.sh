@@ -8,7 +8,11 @@ set -o pipefail
 ######################################################################
 NVIM_DIR=$HOME/tools/nvim
 NVIM_SRC_NAME=$HOME/packages/nvim-linux64.tar.gz
-NVIM_LINK="https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.tar.gz"
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    NVIM_LINK="https://github.com/neovim/neovim/releases/download/v0.9.5/nvim-macos.tar.gz"
+else
+    NVIM_LINK="https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.tar.gz"
+fi
 if [[ ! -f "$NVIM_DIR/bin/nvim" ]]; then
     echo "Installing Nvim"
     echo "Creating nvim directory under tools directory"
