@@ -108,7 +108,8 @@ function install_apps() {
 setup_finder
 setup_autologin
 
-if [ -d "/Applications/iTerm 2.app" ]; then
+# Check for iTerm2 using ls and grep
+if ls -d "/Applications/iTerm"*".app" >/dev/null 2>&1; then
 	setup_iterm2
 else
 	echo "iTerm2 not installed, skipping iTerm2 setup."
