@@ -8,9 +8,9 @@ set -o pipefail
 ######################################################################
 TS_DIR=$HOME/tools/treesitter
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    TS_SRC_NAME=$HOME/packages/tree-sitter-macos-x64.gz
+    TS_SRC_NAME=$HOME/packages/tree-sitter-macos-arm64.gz
     TS_BIN_NAME=tree-sitter-macos-arm64
-    TS_LINK="https://github.com/tree-sitter/tree-sitter/releases/download/v0.20.7/tree-sitter-macos-x64.gz"
+    TS_LINK="https://github.com/tree-sitter/tree-sitter/releases/download/v0.25.3/tree-sitter-macos-arm64.gz"
 else
     TS_SRC_NAME=$HOME/packages/tree-sitter-linux-x64.gz
     TS_BIN_NAME=tree-sitter-linux-x64

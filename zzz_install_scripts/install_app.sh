@@ -30,7 +30,7 @@ source "${SCRIPT_DIR}/apps/navi.sh"
 source "${SCRIPT_DIR}/apps/nvim.sh"
 # source "${SCRIPT_DIR}/apps/pistol.sh"
 source "${SCRIPT_DIR}/apps/qfc.sh"
-source "${SCRIPT_DIR}/apps/ripgrep.sh
+source "${SCRIPT_DIR}/apps/ripgrep.sh"
 # source "${SCRIPT_DIR}/apps/sheldon.sh"
 # source "${SCRIPT_DIR}/apps/silicon.sh"
 source "${SCRIPT_DIR}/apps/starship.sh"
@@ -42,7 +42,7 @@ source "${SCRIPT_DIR}/apps/treesitter.sh"
 source "${SCRIPT_DIR}/apps/ugrep.sh"
 source "${SCRIPT_DIR}/apps/viu.sh"
 source "${SCRIPT_DIR}/apps/xplr.sh"
-source "${SCRIPT_DIR}/apps/zoxide.sh
+source "${SCRIPT_DIR}/apps/zoxide.sh"
 #source "${SCRIPT_DIR}/apps/zplug.sh"
 source "${SCRIPT_DIR}/apps/zinit.sh"
 

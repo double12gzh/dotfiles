@@ -37,7 +37,8 @@ fi
 
 LUAJIT_DIR=$HOME/tools/luajit
 LUAJIT_SRC_NAME=$HOME/packages/luajit.tar.gz
-LUAJIT_LINK="https://luajit.org/download/LuaJIT-2.0.5.tar.gz"
+#LUAJIT_LINK="https://luajit.org/download/LuaJIT-2.0.5.tar.gz"
+LUAJIT_LINK="https://github.com/LuaJIT/LuaJIT/archive/refs/tags/v2.0.5.tar.gz"
 if [[ ! -f "$LUAJIT_DIR/src/luajit" ]]; then
     echo "Install LuaJIT"
     if [[ ! -f $LUAJIT_SRC_NAME ]]; then
@@ -56,7 +57,7 @@ if [[ ! -f "$LUAJIT_DIR/src/luajit" ]]; then
             export MACOSX_DEPLOYMENT_TARGET=14.2.1
         fi
 
-        make
+        make clean && make
     fi
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then

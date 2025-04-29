@@ -23,7 +23,9 @@ if [[ ! -f $TMUX_DIR/tmux ]]; then
 		echo "Extracting to $HOME/tools/tmux directory"
 		tar zxvf "$TMUX_SRC_NAME" -C "$TMUX_DIR" --strip-components 1
 		cd "$TMUX_DIR"
-		./configure --prefix="$TMUX_DIR" --enable-utf8proc
+		./configure --prefix="$TMUX_DIR" --enable-utf8proc \
+			CPPFLAGS="-I/opt/homebrew/Cellar/utf8proc/2.10.0/include" \
+			LDFLAGS="-L/opt/homebrew/Cellar/utf8proc/2.10.0/lib"
 		make
 		make install
 		cd "${SCRIPT_DIR}"

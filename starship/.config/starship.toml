@@ -83,7 +83,7 @@ format = "[IP:$localipv4]($style) "
 
 [cmd_duration]
 min_time = 500
-format = '\[[羽 $duration]($style)\]'
+format = '\[[⏳ $duration]($style)\]'
 
 [memory_usage]
 disabled = false

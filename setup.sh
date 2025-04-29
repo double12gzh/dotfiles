@@ -56,6 +56,7 @@ declare -a stow_configs=(
 	lf
 	local
 	luarocks
+	iterm2
 	starship
 	ssh
 	tmux
@@ -187,7 +188,6 @@ function check_nerd_fonts() {
 		if ! fc-list | grep -i "nerd" >/dev/null; then
 			red_echo "错误: 未检测到Nerd Font字体！请先安装Nerd Font字体。"
 			yellow_echo "可以通过以下命令安装:"
-			yellow_echo "brew tap homebrew/cask-fonts"
 			yellow_echo "brew install --cask font-hack-nerd-font"
 			exit 1
 		fi
