@@ -117,7 +117,8 @@ symbol = " "
 format = '\[[$symbol$context]($style)\]'
 
 [git_branch]
-symbol = " "
+symbol = " "
+#symbol = " "
 truncation_symbol = "…/"
 style = "bold purple"
 always_show_remote = false
