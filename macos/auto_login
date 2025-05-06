@@ -67,6 +67,16 @@ proc log_error {message} {
 proc ssh_to_target {host password cmd} {
     global JUMPER_HOST
     
+    # 如果 host 为 '0'，跳过 ssh 连接，但如果 cmd 不为空，仍然执行 cmd
+    if {"$host" == "0"} {
+        log_info "host 为 '0'，跳过目标主机连接"
+        if {"$cmd" != ""} {
+            send "$cmd\r"
+            log_info "执行命令: $cmd"
+        }
+        return 1
+    }
+    
     # 确定SSH参数
     set ssh_options "-o GSSAPIAuthentication=no"
     
