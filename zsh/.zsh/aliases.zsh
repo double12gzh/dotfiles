@@ -9,6 +9,7 @@ alias py='python'
 alias nvf='nvim `fzf`'
 alias ls='ls --color=auto'
 alias l='exa -l'
+alias lt='exa -l -T'
 alias ll='exa -1 -l -T -F --colour always --icons -a -L=1 \
     --group-directories-first -b -h --git --time-style long-iso --no-permissions --octal-permissions'
 #alias rm='trash' # mv to trash bin
