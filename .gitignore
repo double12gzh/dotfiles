@@ -61,3 +61,6 @@ vscode-java-test/
 
 lazygit/.config/lazygit/state.yml
 iterm2/.config/iterm2/AppSupport
+# SpecStory explanation file
+.specstory/.what-is-this.md
+.specstory/
