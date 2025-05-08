@@ -7,6 +7,11 @@ PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magent
 HISTSIZE=10000
 SAVEHIST=10000
 HISTFILE=/cwaidev/000GZH/.cache/zsh/history
+# 可选：实时追加历史记录（而不是退出时写入）
+setopt inc_append_history
+
+# 可选：共享不同终端间的历史记录
+setopt share_history
 
 fpath=(~/.zfunc $fpath)
 
