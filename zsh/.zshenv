@@ -19,6 +19,10 @@ HISTSIZE=1000
 SAVEHIST=1000
 setopt extendedglob nomatch notify
 unsetopt autocd beep
+# 可选：实时追加历史记录（而不是退出时写入）
+setopt inc_append_history
+# 可选：共享不同终端间的历史记录
+setopt share_history
 bindkey -v
 # End of lines configured by zsh-newuser-install
 
