@@ -4,6 +4,8 @@
 
 # Usage
 
+clone this repo to `$HOME` and exec `./setup.sh -h` to check params.
+
 ```bash
 ./setup.sh -h
 用法: ./setup.sh [选项]
