@@ -14,7 +14,9 @@ alias k8s='server_me="$(\cat $HOME/.zsh/sshs/hosts/k8s | fzf)" && $HOME/.auto_lo
 ##  1.2.3.5
 
 # 定义别名动态更新 KUBECONFIG
-export KUBECONFIG=$(find $HOME/Library/Mobile\ Documents/com~apple~CloudDocs/k8s/kubeconfig $HOME/.kube -type f \( -name "config" -o -name "*.yaml" -o -name "*.yml" \) -print0 | xargs -0 printf "%s:" | sed 's/:$//')
+if [[ -d "$HOME/Library/Mobile Documents/com~apple~CloudDocs/k8s/kubeconfig" ]] || [[ -d "$HOME/.kube" ]]; then
+    export KUBECONFIG=$(find $HOME/Library/Mobile\ Documents/com~apple~CloudDocs/k8s/kubeconfig $HOME/.kube -type f \( -name "config" -o -name "*.yaml" -o -name "*.yml" \) -print0 | xargs -0 printf "%s:" | sed 's/:$//')
+fi
 alias kx='kubectx'
 # }}
 

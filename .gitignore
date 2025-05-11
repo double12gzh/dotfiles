@@ -64,3 +64,12 @@ iterm2/.config/iterm2/AppSupport
 # SpecStory explanation file
 .specstory/.what-is-this.md
 .specstory/
+
+.cursorindexingignore
+local/.local/bin/
+
+# ignore file without example prefix
+ssh/.ssh/config.d/*
+!ssh/.ssh/config.d/example*
+zsh/.zsh/sshs/hosts/*
+!zsh/.zsh/sshs/hosts/example*
