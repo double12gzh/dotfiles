@@ -72,21 +72,16 @@ function setup_finder() {
 function setup_iterm2() {
 	# 通过命令行设置配置路径
 	defaults write com.googlecode.iterm2 PrefsCustomFolder -string "$HOME/.config/iterm2"
-	
+
 	# 检查 iTerm2 进程是否存在
-	if pgrep -x "iTerm2" > /dev/null; then
+	if pgrep -x "iTerm2" >/dev/null; then
 		killall iTerm2
 	fi
 }
 
-function setup_autologin() {
-	script_dir=$(dirname "$(readlink -f "$0")")
-	ln -sf $script_dir/macos/auto_login $HOME/.auto_login
-}
-
 function install_apps() {
 	printf "\n${tty_yellow}Installing apps from Brewfile...${tty_reset}\n"
-	
+
 	# Check if Brewfile exists
 	BREWFILE_PATH="$DOT_DIR/brew/Brewfile"
 	if [[ ! -f "$BREWFILE_PATH" ]]; then
@@ -95,7 +90,7 @@ function install_apps() {
 		printf "${tty_yellow}Dot directory: $DOT_DIR${tty_reset}\n"
 		return 1
 	fi
-	
+
 	# Install apps from Brewfile
 	if brew bundle --file="$BREWFILE_PATH"; then
 		printf "${tty_blue}Successfully installed apps from Brewfile${tty_reset}\n"
@@ -106,7 +101,6 @@ function install_apps() {
 }
 
 setup_finder
-setup_autologin
 
 # Check for iTerm2 using ls and grep
 if ls -d "/Applications/iTerm"*".app" >/dev/null 2>&1; then
