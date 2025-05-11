@@ -42,7 +42,7 @@ alias zxgrep='ugrep -zW' # search (ERE) compressed files/archives and output tex
 alias xdump='ugrep -X ""' # hexdump files without searching
 
 alias sshh='server_me="$(cat $HOME/.zsh/sshs/hosts/host_lists | fzf)" && ssh root@$server_me'
-alias vimz='vim $(fzf --height=100% --layout=reverse --info=inline --border --margin=1 --padding=1 --preview-window "70%,wrap" --preview "bat --color=always --style=numbers --line-range=:500 {}")'
+alias vimz='nvim $(fzf --height=100% --layout=reverse --info=inline --border --margin=1 --padding=1 --preview-window "70%,wrap" --preview "bat --color=always --style=numbers --line-range=:500 {}")'
 alias f='fzf --bind "enter:execute:vim {}" --height=100% --layout=reverse --info=inline --border --margin=1 --padding=1 --preview-window "70%,wrap" --preview "bat --color=always --style=numbers --line-range=:500 {}"'
 
 alias cdh='cd /home/AFiles'
