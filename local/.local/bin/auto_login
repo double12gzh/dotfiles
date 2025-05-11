@@ -187,3 +187,5 @@ exit
 #alias dev3='autologin root@host 22 "密码"'
 #alias dev4='autologin user jumper 22 pass host "" "cd /home/work && clear"'
 #alias dev5='autologin user jumper 22 pass work@host'
+# not ssh to remote target
+#alias dev6='autologin user jumper 22 pass "0"
