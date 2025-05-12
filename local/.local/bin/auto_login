@@ -14,6 +14,15 @@ trap {
     stty rows $rows columns $cols < $spawn_out(slave,name)
 } WINCH
 
+# 定义不需要密码的主机列表
+set no_password_hosts {
+    "150.223.248*"
+    "cwai*"
+    "123"
+    "172.18*"
+    "127.0.0.1"
+}
+
 # 显示帮助信息的函数
 proc show_help {} {
     global script_name version
@@ -65,7 +74,7 @@ proc log_error {message} {
 
 # SSH到目标机器的函数
 proc ssh_to_target {host password cmd} {
-    global JUMPER_HOST
+    global JUMPER_HOST no_password_hosts
     
     # 如果 host 为 '0'，跳过 ssh 连接，但如果 cmd 不为空，仍然执行 cmd
     if {"$host" == "0"} {
@@ -84,14 +93,20 @@ proc ssh_to_target {host password cmd} {
     if {[string first "172.17" "$host"] != -1} {
         # 对特定IP段使用不同的SSH参数
         set ssh_cmd "ssh $host"
-    } elseif {[string match "150.223.248*" "$JUMPER_HOST"] || \
-             [string match "cwai*" "$JUMPER_HOST"] || \
-             "$host" == "123" || \
-             "$host" == "127.0.0.1"} {
-        set ssh_cmd "ssh $ssh_options $host"
-        set password ""
     } else {
+        # 检查主机是否在不需要密码的列表中
+        set needs_password 1
+        foreach pattern $no_password_hosts {
+            if {[string match $pattern "$host"] || [string match $pattern "$JUMPER_HOST"]} {
+                set needs_password 0
+                break
+            }
+        }
+        
         set ssh_cmd "ssh $ssh_options $host"
+        if {!$needs_password} {
+            set password ""
+        }
     }
     
     # 发送SSH命令
