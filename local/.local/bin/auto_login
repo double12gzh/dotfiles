@@ -75,7 +75,7 @@ proc log_error {message} {
 # SSH到目标机器的函数
 proc ssh_to_target {host password cmd} {
     global JUMPER_HOST no_password_hosts
-    
+
     # 如果 host 为 '0'，跳过 ssh 连接，但如果 cmd 不为空，仍然执行 cmd
     if {"$host" == "0"} {
         log_info "host 为 '0'，跳过目标主机连接"
@@ -85,10 +85,10 @@ proc ssh_to_target {host password cmd} {
         }
         return 1
     }
-    
+
     # 确定SSH参数
     set ssh_options "-o GSSAPIAuthentication=no"
-    
+
     # 根据目标主机特性选择SSH命令
     if {[string first "172.17" "$host"] != -1} {
         # 对特定IP段使用不同的SSH参数
@@ -102,58 +102,58 @@ proc ssh_to_target {host password cmd} {
                 break
             }
         }
-        
+
         set ssh_cmd "ssh $ssh_options $host"
         if {!$needs_password} {
             set password ""
         }
     }
-    
+
     # 发送SSH命令
     send "$ssh_cmd\r"
     log_info "连接到目标主机: $host"
-    
+
     # 如果提供了密码则处理密码提示
     if {"$password" != ""} {
         expect {
             -re "password:" { 
                 send "$password\r"
-                log_info "已发送目标主机密码" 
+                log_info "已发送目标主机密码"
             }
-            timeout { 
-                log_error "等待密码提示超时" 
+            timeout {
+                log_error "等待密码提示超时"
                 return 0
             }
         }
     }
-    
+
     # 等待shell提示符并设置环境
     expect {
         -re {[#\$%>]} {
             # 设置环境变量
             send "export LANG=en_US.UTF-8; export LC_ALL=en_US.UTF-8; export LC_CTYPE=en_US.UTF-8\r"
-            
+
             # 等待命令执行完成
             expect -re {[#\$%>]}
-            
+
             # 执行自定义命令
             if {"$cmd" != ""} {
                 send "$cmd\r"
                 log_info "执行命令: $cmd"
             }
         }
-        
+
         eof {
             log_error "连接到 $host 意外关闭"
             exit 1
         }
-        
+
         timeout {
             log_error "等待 $host 提示符超时"
             exit 1
         }
     }
-    
+
     return 1
 }
 
@@ -167,23 +167,23 @@ expect {
         log_info "已确认主机指纹"
         exp_continue
     }
-    
+
     -re "password:" {
         send "$JUMPER_PASSWORD\r"
         log_info "已发送跳板机密码"
         exp_continue
     }
-    
+
     eof {
         log_error "SSH连接意外关闭"
         exit 1
     }
-    
+
     timeout {
         log_error "SSH连接超时"
         exit 1
     }
-    
+
     -re "@.*(\\\$|#|%|>)" {
         if {"$HOST" != ""} {
             ssh_to_target $HOST $PASSWORD $CMD
