@@ -15,14 +15,16 @@ skip_global_compinit=1
 
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=100000
+SAVEHIST=100000
 setopt extendedglob nomatch notify
 unsetopt autocd beep
+setopt extended_history
 # 可选：实时追加历史记录（而不是退出时写入）
 setopt inc_append_history
 # 可选：共享不同终端间的历史记录
 setopt share_history
+setopt hist_ignore_dups
 bindkey -v
 # End of lines configured by zsh-newuser-install
 
