@@ -100,27 +100,27 @@ function show_help() {
 	echo "用法: $0 [选项]"
 	echo
 	echo "选项:"
-	
+
 	# 显示帮助和全部选项
 	echo "  -h, --help              显示帮助信息（默认）"
 	echo "  -a, --all               执行所有操作"
-	echo 
-	
+	echo
+
 	# 根据 SUPPORTED_OPERATIONS 和 OPTION_MAP 自动生成选项说明
 	for operation in "${!SUPPORTED_OPERATIONS[@]}"; do
 		local options="${OPTION_MAP[$operation]}"
 		local short_opt=$(echo "$options" | awk '{print $1}')
 		local long_opt=$(echo "$options" | awk '{print $2}')
 		local description="${SUPPORTED_OPERATIONS[$operation]}"
-		
+
 		# 使用 printf 格式化输出，确保对齐
 		printf "  %-2s %-20s %s\n" "$short_opt," "$long_opt" "$description"
-	done | sort -k2  # 按长选项名排序
-	
+	done | sort -k2 # 按长选项名排序
+
 	echo
 	echo "示例:"
 	printf "  %-30s # 显示帮助信息\n" "$0"
-	
+
 	# 生成示例命令
 	local example_cmd=""
 	for operation in "${!SUPPORTED_OPERATIONS[@]}"; do
@@ -132,7 +132,7 @@ function show_help() {
 			break
 		fi
 	done
-	
+
 	printf "  %-30s # 执行所有操作\n" "$0 --all"
 	echo
 	echo "================================================"
@@ -292,7 +292,7 @@ function init_operation_map() {
 	declare -gA OPERATIONS=(
 		["all"]="$OP_DISABLE"
 	)
-	
+
 	# 基于 SUPPORTED_OPERATIONS 生成 OPERATIONS
 	for operation in "${!SUPPORTED_OPERATIONS[@]}"; do
 		# 初始化 OPERATIONS
@@ -318,7 +318,7 @@ function show_operation_status() {
 			max_len=${#op}
 		fi
 	done
-	
+
 	# 先显示 enable 的操作
 	for op in "${!OPERATIONS[@]}"; do
 		if [ "${OPERATIONS[$op]}" = "$OP_ENABLE" ]; then
@@ -326,7 +326,7 @@ function show_operation_status() {
 			green_echo "$formatted"
 		fi
 	done
-	
+
 	# 再显示 disable 的操作
 	for op in "${!OPERATIONS[@]}"; do
 		if [ "${OPERATIONS[$op]}" = "$OP_DISABLE" ]; then
@@ -342,18 +342,18 @@ if [ $# -gt 0 ]; then
 		# 查找对应的操作
 		operation=""
 		for op in "${!OPTION_MAP[@]}"; do
-			if [[ "${OPTION_MAP[$op]}" =~ $option ]]; then
+			if [[ " ${OPTION_MAP[$op]} " =~ " $option " ]]; then
 				operation="$op"
 				break
 			fi
 		done
-		
+
 		if [ -z "$operation" ]; then
 			red_echo "未知选项: $option"
 			echo "使用 '$0 --help' 查看帮助信息"
 			exit 1
 		fi
-		
+
 		if [ "$operation" = "help" ]; then
 			show_help
 		elif [ "$operation" = "all" ]; then
@@ -361,10 +361,10 @@ if [ $# -gt 0 ]; then
 		else
 			OPERATIONS["$operation"]="$OP_ENABLE"
 		fi
-		
+
 		shift
 	done
-	
+
 	echo "当前 OPERATIONS 状态:"
 	show_operation_status
 	echo -e "\n开始执行...\n"
