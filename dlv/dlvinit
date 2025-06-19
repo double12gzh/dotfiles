@@ -1,0 +1,67 @@
+# =============================
+# Delve CLI 高频使用配置
+# =============================
+
+# 增加打印字符串最大长度，避免变量被截断
+config max-string-len 1000
+
+# 增加打印数组切片最大元素数量
+config max-array-values 1000
+
+# -----------------------------
+# 常用命令别名
+# -----------------------------
+
+# 显示当前位置及其后30行源码
+alias ll list $1 30
+
+# 显示指定函数的全部源码
+alias lf list $1
+
+# 在指定位置设置断点并继续执行
+alias bc break $1; continue
+
+# 条件断点示例，格式：bcif <位置> <条件>
+alias bcif break $1 if $2; continue
+
+# 查看所有断点
+alias bl breakpoints
+
+# 继续执行并显示当前位置源码
+alias c continue; list
+
+# 单步执行并显示当前位置源码
+alias n next; list
+
+# 进入函数执行并显示当前位置源码
+alias s step; list
+
+# 打印当前调用栈
+alias bt stack
+
+# 打印当前函数的本地变量
+alias lv locals
+
+# 打印当前函数的参数
+alias av args
+
+# 添加 watch 表达式
+alias wa watch $1
+
+# 删除 watch 表达式，格式：wd <watch-id>
+alias wd watch delete $1
+
+# 列出所有 watch 表达式
+alias wl watch list
+
+# 重置程序并继续执行
+alias restart reset; continue
+
+# 打印所有 goroutine
+alias gr goroutines
+
+# 显示所有线程信息
+alias th threads
+
+# 退出调试
+alias q quit
