@@ -106,8 +106,6 @@
     # # list all aliases
     la = "!git config -l | grep alias | cut -c 7-"
 
-    cane = commit --amend --no-edit
-
     # gh commands
     browse = "!gh repo view --web"
 
@@ -123,9 +121,6 @@
 
     # show all deleted files in the repo
     deleted = "!git log --diff-filter=D --summary | grep delete"
-
-    # current branch
-    cbr = rev-parse --abbrev-ref HEAD
 
     # show number of commits per contributer, sorted
     count = shortlog -sn
@@ -178,8 +173,19 @@
     # Show the diff between the latest commit and the current state.
     d = !"git diff-index --quiet HEAD -- || clear; git --no-pager diff --patch-with-stat"
 
+    # diff alias
     # `git di $number` shows the diff between the state `$number` revisions ago and the current state.
     di = !"d() { git diff --patch-with-stat HEAD~$1; }; git diff-index --quiet HEAD -- || clear; d"
+    # check diff
+    dsp = diff --stat -p
+    # compare two branches
+    dbr = "!f() { git diff --stat -p \"$1\" \"$2\"; }; f"
+    # compare with remote branch
+    dorigin = "!f() { git fetch origin && git diff --stat -p origin/$(git symbolic-ref --short HEAD) HEAD; }; f"
+
+    # check history for the file
+    hfilevvv = "!f() { git log -p -- \"$1\"; }; f"
+    hfile = "!f() { git log --follow -- \"$1\"; }; f"
 
     # clone code and setup username and email for current repository
     cl = "!f() { git clone $1 && repo_dir=$(basename $1 .git) && cd $repo_dir && git config -f .git/config user.name "double12gzh" && git config -f .git/config user.email "double12gzh@163.com"; }; f"
