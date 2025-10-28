@@ -21,6 +21,7 @@ set no_password_hosts {
     "123"
     "172.18*"
     "127.0.0.1"
+    "dev-aiplatform-gpu-4*"
 }
 
 # 显示帮助信息的函数
@@ -129,12 +130,12 @@ proc ssh_to_target {host password cmd} {
 
     # 等待shell提示符并设置环境
     expect {
-        -re {[#\$%>]} {
+        -re {[#\$%>❯]} {
             # 设置环境变量
             send "export LANG=en_US.UTF-8; export LC_ALL=en_US.UTF-8; export LC_CTYPE=en_US.UTF-8\r"
 
             # 等待命令执行完成
-            expect -re {[#\$%>]}
+            expect -re {[#\$%>❯]}
 
             # 执行自定义命令
             if {"$cmd" != ""} {
@@ -184,7 +185,7 @@ expect {
         exit 1
     }
 
-    -re "@.*(\\\$|#|%|>)" {
+    -re "@.*(\\\$|#|%|>|❯)" {
         if {"$HOST" != ""} {
             ssh_to_target $HOST $PASSWORD $CMD
         }
