@@ -137,11 +137,12 @@
     # show the last tag
     lt = describe --tags --abbrev=0
     lrt = ls-remote --tags --sort=refname origin 
+    tt = for-each-ref --sort=-creatordate --format '| %(objectname:short) | %(creatordate:format:%Y-%m-%d %H:%M:%S) | %(align:width=20)%(refname:short)%(end) | %(align:width=50)%(contents:subject)%(end) |' refs/tags
 
     # show the most recently touched branches
     recent = "!git for-each-ref --sort='-committerdate' --format='%(color:red)%(refname)%(color:reset)%09%(committerdate)' refs/heads | sed -e 's-refs/heads/--' | less -XFR"
     latest = "!git for-each-ref --sort='-committerdate' --format='%(color:red)%(refname)%(color:reset)%09%(committerdate)' refs/remotes | sed -e 's-refs/remotes/origin/--' | less -XFR"
-    lrb = git ls-remote --heads --sort=-v:refname origin
+    lrb = ls-remote --heads --sort=-v:refname origin
     # grep commands
 
     # 'diff grep'
