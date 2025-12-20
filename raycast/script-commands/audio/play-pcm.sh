@@ -29,8 +29,9 @@ fi
 
 # Documentation:
 # @raycast.description Enhanced PCM audio player with file picker support
-# @raycast.author YourName
+# @raycast.author double12gzh
 # @raycast.currentDirectoryPath ~
+# @raycast.authorURL https://github.com/double12gzh
 
 # ============================================================================
 # 常量定义
