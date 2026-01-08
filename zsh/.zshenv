@@ -177,4 +177,7 @@ export XMODIFIERS=@im=fcitx
 # [[ -f ~/.zsh/proxies.zsh ]] && source ~/.zsh/proxies.zsh
 # [[ -f ~/.bash/wayland.zsh ]] && source ~/.zsh/wayland.zsh
 
+[[ -f ~/.zsh/aliases_audio.zsh ]] && source ~/.zsh/aliases_audio.zsh
+[[ -f ~/.zsh/aliases_golang.zsh ]] && source ~/.zsh/aliases_golang.zsh
+
 [[ -f ~/.local_aliases.zsh ]] && source ~/.local_aliases.zsh
