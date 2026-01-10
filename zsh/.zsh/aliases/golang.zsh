@@ -1,58 +1,13 @@
 #!/usr/bin/zsh
 
-go_test() {
-    local test_path="./..."
-    local cover_file="coverage.out"
-    local goarch="amd64"
-    local open_report=true
-    local skip_race=false
-    local cover_mode="atomic"
-    local skip_cover=false
-    local verbose=false
-    local extra_args 
+########################################################
+# 功能说明：
+#   Go 测试工具，支持覆盖率报告和竞态检测
+########################################################
 
-    # 解析参数
-    while [[ $# -gt 0 ]]; do
-        case $1 in
-            -p|--path)
-                test_path="$2"
-                shift 2
-                ;;
-            -o|--output)
-                cover_file="$2"
-                shift 2
-                ;;
-            -a|--arch)
-                goarch="$2"
-                shift 2
-                ;;
-            -m|--cover-mode)
-                cover_mode="$2"
-                shift 2
-                ;;
-            -v|--verbose)
-                verbose=true
-                shift
-                ;;
-            --no-race)
-                skip_race=true
-                shift
-                ;;
-            --no-cover)
-                skip_cover=true
-                shift
-                ;;
-            --no-open)
-                open_report=false
-                shift
-                ;;
-            --)
-                shift
-                extra_args="$@"
-                break
-                ;;
-            -h|--help)
-                cat << EOF
+# 帮助信息
+_go_test_help() {
+    cat << EOF
 用法: go_test [选项] [额外的 go test 参数...]
 
 功能: 运行 Go 测试，支持覆盖率报告和竞态检测
@@ -79,36 +34,98 @@ go_test() {
 
 注意: 使用 '--' 分隔符可以传递额外的 go test 参数
 EOF
+}
+
+# 解析命令行参数
+_go_test_parse_args() {
+    local -A config
+    config[test_path]="./..."
+    config[cover_file]="coverage.out"
+    config[goarch]="amd64"
+    config[open_report]=true
+    config[skip_race]=false
+    config[cover_mode]="atomic"
+    config[skip_cover]=false
+    config[verbose]=false
+    config[extra_args]=""
+    
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            -p|--path)
+                config[test_path]="$2"
+                shift 2
+                ;;
+            -o|--output)
+                config[cover_file]="$2"
+                shift 2
+                ;;
+            -a|--arch)
+                config[goarch]="$2"
+                shift 2
+                ;;
+            -m|--cover-mode)
+                config[cover_mode]="$2"
+                shift 2
+                ;;
+            -v|--verbose)
+                config[verbose]=true
+                shift
+                ;;
+            --no-race)
+                config[skip_race]=true
+                shift
+                ;;
+            --no-cover)
+                config[skip_cover]=true
+                shift
+                ;;
+            --no-open)
+                config[open_report]=false
+                shift
+                ;;
+            --)
+                shift
+                config[extra_args]="$@"
+                break
+                ;;
+            -h|--help)
+                _go_test_help
                 return 0
                 ;;
             *)
-                # 如果参数以 - 开头，可能是未知选项
                 if [[ "$1" == -* ]]; then
                     echo "错误: 未知选项 '$1'"
                     echo "使用 'go_test --help' 查看帮助"
                     return 1
                 else
-                    # 否则作为额外的 go test 参数
-                    extra_args="$extra_args $1"
+                    config[extra_args]="${config[extra_args]} $1"
                     shift
                 fi
                 ;;
         esac
     done
     
-    # 构建命令
-    local cmd="GOARCH=$goarch go test"
+    typeset -gA _go_test_config
+    _go_test_config=("${(@kv)config}")
+}
+
+# 构建 go test 命令
+_go_test_build_cmd() {
+    local -A config
+    config=("${(@kv)_go_test_config}")
+    
+    local cmd="GOARCH=${config[goarch]} go test"
     
     # 添加基础参数
     cmd="$cmd -v -count=1 -failfast"
     
     # 条件添加覆盖率
-    if [[ $skip_cover != true ]]; then
-        cmd="$cmd -cover -covermode=$cover_mode -coverprofile=\"$cover_file\""
+    if [[ ${config[skip_cover]} != true ]]; then
+        cmd="$cmd -cover -covermode=${config[cover_mode]} -coverprofile=\"${config[cover_file]}\""
     fi
     
     # 条件添加竞态检测
-    if [[ $skip_race != true ]]; then
+    if [[ ${config[skip_race]} != true ]]; then
         cmd="$cmd -race"
     fi
     
@@ -117,12 +134,21 @@ EOF
     cmd="$cmd -gcflags='-N -l'"
     
     # 添加测试路径
-    cmd="$cmd $test_path"
+    cmd="$cmd ${config[test_path]}"
     
     # 添加额外参数
-    if [[ -n "$extra_args" ]]; then
-        cmd="$cmd $extra_args"
+    if [[ -n "${config[extra_args]}" ]]; then
+        cmd="$cmd ${config[extra_args]}"
     fi
+    
+    echo "$cmd"
+}
+
+# 执行测试并处理结果
+_go_test_execute() {
+    local cmd="$1"
+    local -A config
+    config=("${(@kv)_go_test_config}")
     
     # 显示命令
     echo "🚀 执行命令: $cmd"
@@ -133,16 +159,16 @@ EOF
         local test_result=$?
         
         # 条件打开报告
-        if [[ $skip_cover != true ]] && [[ $open_report == true ]]; then
+        if [[ ${config[skip_cover]} != true ]] && [[ ${config[open_report]} == true ]]; then
             echo ""
             echo "✅ 测试通过，打开覆盖率报告..."
-            go tool cover -html="$cover_file"
-        elif [[ $skip_cover != true ]]; then
+            go tool cover -html="${config[cover_file]}"
+        elif [[ ${config[skip_cover]} != true ]]; then
             echo ""
             echo "✅ 测试通过"
-            echo "📊 覆盖率报告: $cover_file"
-            echo "📈 查看报告: go tool cover -html=$cover_file"
-            echo "📋 文本报告: go tool cover -func=$cover_file | tail -1"
+            echo "📊 覆盖率报告: ${config[cover_file]}"
+            echo "📈 查看报告: go tool cover -html=${config[cover_file]}"
+            echo "📋 文本报告: go tool cover -func=${config[cover_file]} | tail -1"
         else
             echo ""
             echo "✅ 测试通过 (未收集覆盖率)"
@@ -155,6 +181,20 @@ EOF
         echo "❌ 测试失败 (退出码: $test_result)"
         return $test_result
     fi
+}
+
+# 主函数
+go_test() {
+    # 解析参数
+    if ! _go_test_parse_args "$@"; then
+        return $?
+    fi
+    
+    # 构建命令
+    local cmd=$(_go_test_build_cmd)
+    
+    # 执行测试
+    _go_test_execute "$cmd"
 }
 
 # === 自动补全函数 ===
