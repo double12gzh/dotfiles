@@ -120,6 +120,9 @@ _playpcm_parse_args() {
                 ;;
             -h|--help)
                 _playpcm_help
+                # 设置帮助标志，表示已显示帮助信息
+                typeset -gA _playpcm_config
+                _playpcm_config[show_help]=true
                 return 0
                 ;;
             -*)
@@ -161,31 +164,43 @@ _playpcm_detect_file_type() {
     if [[ -n "$force_type" ]]; then
         file_type="$force_type"
         if [[ $silent == false ]]; then
-            echo "使用用户指定的文件类型: $file_type"
+            echo "使用用户指定的文件类型: $file_type" >&2
         fi
     else
-        if command -v file >/dev/null 2>&1; then
+        # 先检查文件扩展名，如果是 .wav，直接识别为 wav
+        local file_ext="${file##*.}"
+        file_ext="${file_ext:l}"
+        if [[ "$file_ext" == "wav" ]]; then
+            file_type="wav"
+            if [[ $silent == false ]]; then
+                echo "根据文件扩展名识别为 WAV 格式" >&2
+            fi
+        elif command -v file >/dev/null 2>&1; then
             local file_info=$(file -b "$file")
             if [[ $silent == false ]]; then
-                echo "文件检测信息: $file_info"
+                echo "文件检测信息: $file_info" >&2
             fi
             
             if [[ "$file_info" == *"WAVE audio"* ]] || \
-               [[ "$file_info" == *"RIFF"* && "$file_info" == *"WAVE"* ]]; then
+               [[ "$file_info" == *"RIFF"* && "$file_info" == *"WAVE"* ]] || \
+               [[ "$file_info" == *"WAVE"* && "$file_info" == *"audio"* ]] || \
+               [[ "$file_info" == *"RIFF"* && "$file_info" == *"audio"* && "$file_info" == *"PCM"* ]]; then
                 file_type="wav"
-            elif [[ "$file_info" == *"Audio file"* ]] || [[ "$file_info" == *"audio"* ]]; then
+            # 检测其他音频格式（但要排除WAV，因为WAV已经在上面的条件中处理了）
+            elif [[ "$file_info" == *"Audio file"* ]] || \
+                 ([[ "$file_info" == *"audio"* ]] && [[ "$file_info" != *"WAVE"* ]] && [[ "$file_info" != *"RIFF"* ]]); then
                 file_type="audio"
+            # 检测原始数据
             elif [[ "$file_info" == *"data"* ]] || [[ "$file_info" == *"raw"* ]]; then
                 file_type="raw"
+            # 默认当作PCM处理
             else
                 file_type="pcm"
             fi
         else
             if [[ $silent == false ]]; then
-                echo "警告: 未找到 file 命令，使用文件扩展名判断类型"
+                echo "警告: 未找到 file 命令，使用文件扩展名判断类型" >&2
             fi
-            local file_ext="${file##*.}"
-            file_ext="${file_ext:l}"
             
             case "$file_ext" in
                 wav) file_type="wav" ;;
@@ -193,7 +208,7 @@ _playpcm_detect_file_type() {
                 *)
                     file_type="pcm"
                     if [[ $silent == false ]]; then
-                        echo "警告: 未知的文件扩展名 '.$file_ext'，假定为PCM格式"
+                        echo "警告: 未知的文件扩展名 '.$file_ext'，假定为PCM格式" >&2
                     fi
                     ;;
             esac
@@ -249,27 +264,45 @@ _playpcm_handle_pcm_params() {
             if [[ ${config[channels_set]} == false ]]; then
                 local selected=$(_playpcm_show_dialog \
                     "PCM参数 - 声道数" "选择声道数:" "1" "1" "2")
-                if [[ -n "$selected" && "$selected" != "cancel" ]]; then
-                    config[channels]="$selected"
+                if [[ -z "$selected" || "$selected" == "cancel" ]]; then
+                    if [[ ${config[silent]} == false ]]; then
+                        echo "已取消播放"
+                    fi
+                    config[cancelled]=true
+                    _playpcm_config=("${(@kv)config}")
+                    return 1
                 fi
+                config[channels]="$selected"
             fi
             
             if [[ ${config[format_set]} == false ]]; then
                 local selected=$(_playpcm_show_dialog \
                     "PCM参数 - 采样格式" "选择采样格式:" "s16le" \
                     "s16le" "s32le" "f32le" "s16be" "s32be" "f32be")
-                if [[ -n "$selected" && "$selected" != "cancel" ]]; then
-                    config[format]="$selected"
+                if [[ -z "$selected" || "$selected" == "cancel" ]]; then
+                    if [[ ${config[silent]} == false ]]; then
+                        echo "已取消播放"
+                    fi
+                    config[cancelled]=true
+                    _playpcm_config=("${(@kv)config}")
+                    return 1
                 fi
+                config[format]="$selected"
             fi
             
             if [[ ${config[rate_set]} == false ]]; then
                 local selected=$(_playpcm_show_dialog \
                     "PCM参数 - 采样率" "选择采样率:" "48000" \
                     "16000" "24000" "44100" "48000" "96000")
-                if [[ -n "$selected" && "$selected" != "cancel" ]]; then
-                    config[rate]="$selected"
+                if [[ -z "$selected" || "$selected" == "cancel" ]]; then
+                    if [[ ${config[silent]} == false ]]; then
+                        echo "已取消播放"
+                    fi
+                    config[cancelled]=true
+                    _playpcm_config=("${(@kv)config}")
+                    return 1
                 fi
+                config[rate]="$selected"
             fi
         fi
     fi
@@ -332,6 +365,11 @@ ffmplayme() {
     local -A config
     config=("${(@kv)_playpcm_config}")
     
+    # 如果显示了帮助信息，直接返回
+    if [[ "${config[show_help]}" == "true" ]]; then
+        return 0
+    fi
+    
     # 检测文件类型
     local file_type=$(_playpcm_detect_file_type \
         "${config[pcm_file]}" \
@@ -340,7 +378,10 @@ ffmplayme() {
     
     # 如果是PCM格式，处理参数选择
     if [[ "$file_type" == "pcm" || "$file_type" == "raw" ]]; then
-        _playpcm_handle_pcm_params
+        if ! _playpcm_handle_pcm_params; then
+            # 用户取消了参数选择
+            return 1
+        fi
         config=("${(@kv)_playpcm_config}")
     fi
     
