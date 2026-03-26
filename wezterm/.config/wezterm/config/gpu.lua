@@ -1,39 +1,28 @@
-local M = {}
+local wezterm = require("wezterm")
+local config = {}
 
--- enumerate_gpus has bug: https://github.com/gfx-rs/wgpu/issues/3813
--- after the bug is fixed, uncomment the following codes and remove code
--- l26 ~ l37
---
--- local has_vulkan = function()
--- 	local gpus = wezterm.gui.enumerate_gpus()
--- 	for _, gpu in ipairs(gpus) do
--- 		if gpu.backend == 'Vulkan' and gpu.device_type == 'DiscreteGpu' then
--- 			return gpu
--- 		end
--- 	end
+-- Rendering options
+config.front_end = "WebGpu"
+config.max_fps = 120
 
--- 	return false
--- end
+-- Font settings
+config.font = wezterm.font("Hack Nerd Font Mono")  -- use the font variable
+config.freetype_load_flags = "NO_HINTING"          -- disable hinting
 
--- local vulkan = has_vulkan()
--- if vulkan then
--- 	M.webgpu_power_preference = "HighPerformance"
--- 	M.webgpu_preferred_adapter = vulkan
--- 	M.front_end = 'WebGpu'
--- 	M.max_fps = 144
--- end
+-- Platform-specific GPU preferences (your earlier snippet)
+if wezterm.target_triple:find("windows") then
+    config.webgpu_power_preference = "HighPerformance"
+    config.webgpu_preferred_adapter = {
+        backend = "Vulkan",
+        device = 7171,
+        device_type = "DiscreteGpu",
+        driver = "NVIDIA",
+        driver_info = "516.94",
+        name = "NVIDIA GeForce GTX 1060 6GB",
+        vendor = 4318,
+    }
+end
 
-M.webgpu_power_preference = "HighPerformance"
-M.max_fps = 144
-M.front_end = "WebGpu"
-M.webgpu_preferred_adapter = {
-	backend = "Vulkan",
-	device = 7171,
-	device_type = "DiscreteGpu",
-	driver = "NVIDIA",
-	driver_info = "516.94",
-	name = "NVIDIA GeForce GTX 1060 6GB",
-	vendor = 4318,
-}
+-- (Remove any line that says prefer_egl = true)
 
-return M
+return config

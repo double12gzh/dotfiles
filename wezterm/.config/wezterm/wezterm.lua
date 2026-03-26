@@ -7,7 +7,7 @@ local gpus = require("config.gpu")
 require("config.right-status").setup()
 require("config.tab-title").setup()
 
-local font = "Hack Nerd Font"
+local font = "Hack Nerd Font Mono"
 local color_scheme = "Gruvbox dark, medium (base16)"
 
 return {
@@ -19,7 +19,6 @@ return {
 	window_decorations = "NONE | RESIZE",
 	disable_default_mouse_bindings = false,
 	audible_bell = "Disabled",
-	prefer_egl = true,
 	native_macos_fullscreen_mode = true,
 	enable_tab_bar = true,
 	use_fancy_tab_bar = false,
@@ -33,7 +32,7 @@ return {
 	font_size = 14,
 	bold_brightens_ansi_colors = false,
 	freetype_load_target = "Normal",
-	freetype_load_flags = "NO_HINTING|MONOCHROME",
+	freetype_load_flags = "NO_HINTING",
 	color_scheme = color_scheme,
 	tab_max_width = 135,
 	initial_rows = 35,
