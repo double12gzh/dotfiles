@@ -50,6 +50,8 @@ if {[llength $argv] < 4} {
     show_help
 }
 
+
+
 # 处理帮助参数
 if {[lindex $argv 0] == "-h" || [lindex $argv 0] == "--help"} {
     show_help
@@ -188,6 +190,10 @@ expect {
     -re "@.*(\\\$|#|%|>|❯)" {
         if {"$HOST" != ""} {
             ssh_to_target $HOST $PASSWORD $CMD
+        } else {
+            if {"$CMD" != ""} {
+                send "$CMD\r"
+            }
         }
     }
 }
