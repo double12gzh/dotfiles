@@ -28,7 +28,11 @@ return {
 	default_cursor_style = "SteadyBlock",
 	force_reverse_video_cursor = false,
 	use_cap_height_to_scale_fallback_fonts = true,
-	font = wezterm.font(font),
+	font = wezterm.font_with_fallback({
+		font,
+		"Sarasa Mono SC",
+		"Heiti SC",
+	}),
 	font_size = 14,
 	bold_brightens_ansi_colors = false,
 	freetype_load_target = "Normal",

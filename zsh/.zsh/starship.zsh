@@ -24,7 +24,7 @@ case $_distro in
     *gentoo*)                ICON="" ;;
     *kali*)                  ICON="ﴣ" ;;
     *linuxmint*)             ICON="" ;;
-    *macos*)                 ICON="" ;;
+    *macos*)                 ICON="🍏" ;;
     *mageia*)                ICON="" ;;
     *manjaro*)               ICON="" ;;
     *nixos*)                 ICON="" ;;
