@@ -131,7 +131,9 @@ eval "$(zoxide init zsh)" || echo "zoxide not found!"
 
 # Init Starship
 # [ -x ~/tools/starship/starship ] && eval "$(starship init zsh)" || echo "starship not found!"]
-eval "$(starship init zsh)" || echo "starship not found!"
+if [[ -o interactive ]] && [[ "$TERM" != "dumb" ]]; then
+    eval "$(starship init zsh)" || echo "starship not found!"
+fi
 
 # Init direnv
 # eval "$(direnv hook zsh)"
