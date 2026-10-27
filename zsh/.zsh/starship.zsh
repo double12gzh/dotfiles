@@ -1,10 +1,8 @@
 # find out which distribution we are running on
-LFILE="/etc/os-release"
-MFILE="/System/Library/CoreServices/SystemVersion.plist"
-if [[ -f $LFILE ]]; then
-    _distro=$(awk '/^ID=/' /etc/*-release | awk -F'=' '{ print tolower($2) }' | tr -d '"')
-elif [[ -f $MFILE ]]; then
+if [[ "$OSTYPE" == darwin* ]]; then
     _distro="macos"
+elif [[ -f /etc/os-release ]]; then
+    _distro=$(awk -F'=' '/^ID=/ { gsub(/"/, "", $2); print tolower($2) }' /etc/os-release)
 else
     echo "Unsupported distribution"
 fi

@@ -1,7 +1,7 @@
 #!/usr/bin/zsh
 
 # Alias
-alias sozsh='source ~/.zshenv && source ~/.zshrc'
+alias sozsh='source ${ZDOTDIR:-$HOME}/.zshenv && source ${ZDOTDIR:-$HOME}/.zshrc'
 alias nvzsh='nvim ~/.zshrc'
 alias nv='nvim'
 alias cat='bat'  # wrapper for bat
@@ -18,7 +18,11 @@ alias CA='conda activate'
 alias CD='conda deactivate'
 alias tb='tensorboard --logdir'
 [[ $TMUX != "" ]] && export TERM="tmux-256color"
-alias tmux="~/tools/tmux/tmux -f ~/.config/tmux/tmux.conf"
+if [[ -x ~/tools/tmux/tmux ]]; then
+    alias tmux="~/tools/tmux/tmux -f ~/.config/tmux/tmux.conf"
+else
+    alias tmux="tmux -f ~/.config/tmux/tmux.conf"
+fi
 
 # upgrep Alias
 alias uq='ug -Q'  # short & quick query TUI (interactive, uses .ugrep config)
