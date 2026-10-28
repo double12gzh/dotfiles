@@ -21,10 +21,12 @@ myssh ()
     [ $# -eq 1 ] && ssh_config=$custom_ssh_config/$1 || ssh_config=$default_ssh_config
 
     host=$(grep '^[[:space:]]*Host[[:space:]]' $ssh_config | cut -d ' ' -f 2 | fzf --height=20% --reverse --prompt="SSH > " --preview="awk -v SEC=1  -v HOST={} -f $ssh_config_awk $ssh_config")
+    [[ -z "$host" ]] && return 0
+
     cmd=$(awk -v SEC=0 -v HOST=$host -f $ssh_config_awk $ssh_config | awk -F ':'  '{sub(/^ +/, "", $2);if ($1 == "cmd") print $2}')
     passwd=$(awk -v SEC=0 -v HOST=$host -f $ssh_config_awk $ssh_config | awk -F ':'  '{sub(/^ +/, "", $2);if ($1 == "password") print $2}')
 
-    [ $? -eq 0 ] && sshpass -p "$passwd" ssh "$host" "$cmd"
+    sshpass -p "$passwd" ssh "$host" "$cmd"
 }
 
 mycolorfulssh ()
@@ -78,6 +80,7 @@ mycolorfulssh ()
     done
     host=$(echo -ne "$formatted_options" | fzf --ansi --height=20% --reverse --prompt="SSH > " --preview="awk -v SEC=1  -v HOST={} -f $ssh_config_awk $ssh_config")
     # end: with color
+    [[ -z "$host" ]] && return 0
 
     cmd=$(awk -v SEC=0 -v HOST=$host -f $ssh_config_awk $ssh_config | awk -F ':'  '{sub(/^ +/, "", $2);if ($1 == "cmd") print $2}')
     passwd=$(awk -v SEC=0 -v HOST=$host -f $ssh_config_awk $ssh_config | awk -F ':'  '{sub(/^ +/, "", $2);if ($1 == "password") print $2}')
@@ -86,5 +89,5 @@ mycolorfulssh ()
     remote=$(awk -v SEC=0 -v HOST=$host -f $ssh_config_awk $ssh_config | awk -F ':'  '{sub(/^ +/, "", $2);if ($1 == "remote") print $2}')
 
     # .auto_login: https://www.notion.so/double12gzh/expect-d393087103fd49f78107d1cf2979b4c4?pvs=4#d61977f8769a435bb829e0750c142558
-    [ $? -eq 0 ] && $HOME/.bin/auto_login "$username" "$host" "$port" "$passwd" "$remote" "$passwd" "$cmd"
+    $HOME/.bin/auto_login "$username" "$host" "$port" "$passwd" "$remote" "$passwd" "$cmd"
 }

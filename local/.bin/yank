@@ -30,7 +30,7 @@ set -eu
 # Written in 2014 by Suraj N. Kurapati <https://github.com/sunaku>
 # Also documented at https://sunaku.github.io/tmux-yank-osc52.html
 
-input=$(cat "$@")
+input=$(command cat "$@")
 input() { printf %s "$input"; }
 known() { command -v "$1" >/dev/null; }
 maybe() { known "$1" && input | "$@"; }

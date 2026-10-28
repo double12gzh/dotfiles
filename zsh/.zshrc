@@ -115,6 +115,7 @@ if [[ -d "$_zsh_mod_dir/aliases" ]]; then
         [[ -f "$file" ]] && source "$file"
     done
 fi
+[[ -f "$_zsh_mod_dir/.local_aliases.zsh" ]] && source "$_zsh_mod_dir/.local_aliases.zsh"
 unset _zsh_mod_dir
 
 [[ -f ~/.local_aliases.zsh ]] && source ~/.local_aliases.zsh

@@ -7,7 +7,7 @@
 
 # 帮助信息
 _go_test_help() {
-    cat << EOF
+    \cat << EOF
 用法: go_test [选项] [额外的 go test 参数...]
 
 功能: 运行 Go 测试，支持覆盖率报告和竞态检测
@@ -264,7 +264,7 @@ _go_test() {
                 if [[ -f "$cache_file" ]] && \
                    [[ $(($(date +%s) - $(stat -f%m "$cache_file" 2>/dev/null || stat -c%Y "$cache_file" 2>/dev/null || echo 0))) -lt $cache_age ]]; then
                     # 使用缓存
-                    compadd $(cat "$cache_file")
+                    compadd $(\cat "$cache_file")
                 else
                     # 获取测试函数列表
                     echo "🔍 获取测试函数列表..." >&2

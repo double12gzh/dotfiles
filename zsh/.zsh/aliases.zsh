@@ -7,11 +7,22 @@ alias nv='nvim'
 alias cat='bat'  # wrapper for bat
 alias py='python'
 alias nvf='nvim `fzf`'
-alias ls='ls --color=auto'
-alias l='exa -l'
-alias lt='exa -l -T'
-alias ll='exa -1 -l -T -F --colour always --icons -a -L=1 \
-    --group-directories-first -b -h --git --time-style long-iso --no-permissions --octal-permissions'
+if [[ "$OSTYPE" == darwin* ]]; then
+    alias ls='ls -G'
+else
+    alias ls='ls --color=auto'
+fi
+if (( $+commands[eza] )); then
+    alias l='eza -l'
+    alias lt='eza -l -T'
+    alias ll='eza -1 -l -T -F --colour always --icons -a -L=1 \
+        --group-directories-first -b -h --git --time-style long-iso --no-permissions --octal-permissions'
+else
+    alias l='exa -l'
+    alias lt='exa -l -T'
+    alias ll='exa -1 -l -T -F --colour always --icons -a -L=1 \
+        --group-directories-first -b -h --git --time-style long-iso --no-permissions --octal-permissions'
+fi
 #alias rm='trash' # mv to trash bin
 alias lg='lazygit'
 alias CA='conda activate'
@@ -34,7 +45,7 @@ alias ugit='ug -R --ignore-files' # works like git-grep & define your preference
 alias grep='ugrep -G'  # search with basic regular expressions (BRE)
 alias egrep='ugrep -E' # search with extended regular expressions (ERE)
 alias fgrep='ugrep -F' # find string(s)
-alias pgrep='ugrep -P' # search with Perl regular expressions
+alias upg='ugrep -P'   # search with Perl regular expressions (avoid overriding system pgrep)
 alias xgrep='ugrep -W' # search (ERE) and output text or hex for binary
 
 alias zgrep='ugrep -zG'  # search compressed files and archives with BRE
@@ -45,7 +56,7 @@ alias zxgrep='ugrep -zW' # search (ERE) compressed files/archives and output tex
 
 alias xdump='ugrep -X ""' # hexdump files without searching
 
-alias sshh='server_me="$(cat $HOME/.zsh/sshs/hosts/host_lists | fzf)" && ssh root@$server_me'
+alias sshh='server_me="$(\cat $HOME/.zsh/sshs/hosts/host_lists | fzf)" && [[ -n "$server_me" ]] && ssh root@$server_me'
 alias vimz='nvim $(fzf --height=100% --layout=reverse --info=inline --border --margin=1 --padding=1 --preview-window "70%,wrap" --preview "bat --color=always --style=numbers --line-range=:500 {}")'
 alias f='fzf --bind "enter:execute:vim {}" --height=100% --layout=reverse --info=inline --border --margin=1 --padding=1 --preview-window "70%,wrap" --preview "bat --color=always --style=numbers --line-range=:500 {}"'
 
@@ -58,8 +69,7 @@ alias vdir='vdir --color=auto'
 alias ccat='highlight --line-numbers -O ansi --force'
 alias tp='tmuxp load ~/.config/tmuxp/tmuxp.yaml'
 alias tpr='export TERM=xterm && tmuxp load ~/.config/tmuxp/tmuxp.yaml'
-alias expect='export LC_CTYPE=en_US && expect'
 
-alias p="BAT_THEME=GitHub fzf --height=100% --info=right --border=thinblock --preview-window=border-thinblock \
-    --margin=3 --scrollbar=▏▕ --preview='bat --color=always --style=numbers {}' --preview-window "90%,wrap" \
-    --color=light,query:238,fg:238,bg:251,bg+:249,gutter:251,border:248,preview-bg:253"
+alias p='BAT_THEME=GitHub fzf --height=100% --info=right --border=thinblock \
+    --margin=3 --scrollbar=▏▕ --preview="bat --color=always --style=numbers {}" --preview-window="90%,wrap,border-thinblock" \
+    --color=light,query:238,fg:238,bg:251,bg+:249,gutter:251,border:248,preview-bg:253'

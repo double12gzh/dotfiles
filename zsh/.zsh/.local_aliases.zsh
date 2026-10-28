@@ -74,7 +74,7 @@ __setup_proxies() {
     export https_proxy="http://${proxy_ip}:${proxy_port}"
     export all_proxy="socks5://${proxy_ip}:${proxy_port}"
 
-    export no_proxy=$(IFS=,; echo "${DEFAULT_NOPROXY}")
+    export no_proxy="${(j:,:)DEFAULT_NOPROXY}"
 }
 
 __teardown_proxies() {
