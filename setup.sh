@@ -229,6 +229,9 @@ function stow_configs() {
 	blue_echo "$operation: 开始链接配置...   "
 	blue_echo "----------------------------"
 
+	# 预先创建标准目录，避免 stow 将整个 ~/.config 或 ~/.local/share 折叠为目录软链
+	mkdir -p "${HOME}/.config" "${HOME}/.local/bin" "${HOME}/.local/share"
+
 	for config in "${stow_configs[@]}"; do
 		echo "正在链接 $config 配置..."
 
@@ -239,7 +242,7 @@ function stow_configs() {
 		fi
 
 		# 实际执行链接操作
-		stow -d "${SCRIPT_PATH}" -t "${HOME}" "$config"
+		stow -R -d "${SCRIPT_PATH}" -t "${HOME}" "$config"
 	done
 
 	green_echo "-----------------------------------------"

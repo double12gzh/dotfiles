@@ -38,6 +38,7 @@ for _tool_dir in \
     "$HOME/tools/perl/bin" \
     "$HOME/tools/php/bin" \
     "$HOME/tools/ruby/bin" \
+    "$HOME/.bin" \
     "$HOME/.local/bin" \
     "$HOME/tools/btop/bin" \
     "$HOME/tools/cpufetch" \

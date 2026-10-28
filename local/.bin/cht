@@ -9,9 +9,9 @@ not_in_tmux() {
 }
 
 if not_in_tmux; then
-    selected=$(cat ~/.local/bin/tmux-cht-languages ~/.local/bin/tmux-cht-command | fzf --border-label="╣ lang/core-util chtsh ╠" --header="Enter to select, Ctrl-C to cancel" --preview="")
+    selected=$(cat ~/.bin/tmux-cht-languages ~/.bin/tmux-cht-command | fzf --border-label="╣ lang/core-util chtsh ╠" --header="Enter to select, Ctrl-C to cancel" --preview="")
 else
-    selected=$(cat ~/.local/bin/tmux-cht-languages ~/.local/bin/tmux-cht-command | fzf --height 100% --preview="")
+    selected=$(cat ~/.bin/tmux-cht-languages ~/.bin/tmux-cht-command | fzf --height 100% --preview="")
 fi
 if [[ -z $selected ]]; then
     exit 0
@@ -19,7 +19,7 @@ fi
 
 read -r -p "Enter Query: " query
 
-if grep -qsw "$selected" ~/.local/bin/tmux-cht-languages; then
+if grep -qsw "$selected" ~/.bin/tmux-cht-languages; then
     query=$(echo "$query" | tr ' ' '+')
     curl -s "cht.sh/$selected/$query" | less -r
 else
