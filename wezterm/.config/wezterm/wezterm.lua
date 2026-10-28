@@ -73,7 +73,7 @@ return {
 	default_prog = wsl_domains.is_windows and { "wsl.exe" } or nil,
 	--launch_menu = wsl_domains.is_windows and { { args = { "wsl.exe" }, domain = { DomainName = "local" } } } or nil,
 	set_environment_variables = {
-		TERMINFO_DIRS = "/home/" .. (os.getenv("USERNAME") or os.getenv("USER")) .. "/.nix-profile/share/terminfo",
+		TERMINFO_DIRS = (os.getenv("HOME") or wezterm.home_dir) .. "/.nix-profile/share/terminfo",
 		WSLENV = "TERMINFO_DIRS",
 		prompt = wsl_domains.is_windows and "$E]7;file://localhost/$P$E\\$E[32m$T$E[0m $E[35m$P$E[36m$_$G$E[0m " or nil,
 	},

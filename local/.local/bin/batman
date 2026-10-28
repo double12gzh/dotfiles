@@ -1,3 +1,7 @@
 #!/bin/sh
 
-col -bx <"$1" | bat --language man -p
+if [ $# -ge 1 ]; then
+    col -bx <"$1" | bat --language man -p
+else
+    col -bx | bat --language man -p
+fi

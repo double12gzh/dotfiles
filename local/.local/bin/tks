@@ -4,7 +4,7 @@
 #               Pipe `tmux ls` to fzf to kill session                #
 ######################################################################
 fzf_tks=$(
-    tmux ls | awk '{print $1}' | rg ':' -r '' | fzf -m \
+    tmux list-sessions -F "#{session_name}" | fzf -m \
         --border-label="╣ Tmux Kill ╠" \
         --header="Tab to select, Ctrl-C to cancel"
 )

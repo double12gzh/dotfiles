@@ -3,6 +3,13 @@
 ######################################################################
 #         Select multiple files in fzf and copy to given fir         #
 ######################################################################
-results=$(fzf -m --border-label="╣ Copy multiple files ╠" --header="Tab to select, Ctrl-C to cancel" | tr '\n' ' ')
-echo "cp -r ${results::-1} $1"
-eval "cp -r $results $1"
+results=$(fzf -m --border-label="╣ Copy multiple files ╠" --header="Tab to select, Ctrl-C to cancel")
+[[ -z "$results" ]] && exit 0
+
+files=()
+while IFS= read -r line; do
+    [[ -n "$line" ]] && files+=("$line")
+done <<<"$results"
+
+echo "cp -r ${files[*]} $1"
+cp -r "${files[@]}" "$1"

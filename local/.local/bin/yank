@@ -37,7 +37,7 @@ maybe() { known "$1" && input | "$@"; }
 alive() { known "$1" && "$@" >/dev/null 2>&1; }
 
 # copy to tmux
-test -n "$TMUX" && maybe tmux load-buffer -
+test -n "${TMUX:-}" && maybe tmux load-buffer -
 
 # copy via X11
 # test -n "$DISPLAY" && alive xhost && {
@@ -47,7 +47,7 @@ test -n "$TMUX" && maybe tmux load-buffer -
 # copy via OSC 52
 printf_escape() {
     esc=$1
-    test -n "$TMUX" -o -z "${TERM##screen*}" && esc="\033Ptmux;\033$esc\033\\"
+    test -n "${TMUX:-}" -o -z "${TERM##screen*}" && esc="\033Ptmux;\033$esc\033\\"
     printf "$esc"
 }
 len=$(input | wc -c) max=74994

@@ -77,7 +77,7 @@ _wavs_merge_extract_prefixes() {
         fi
     done
     
-    echo "${(u)prefixes[@]}"
+    (( ${#prefixes[@]} > 0 )) && print -rl -- "${(u)prefixes[@]}"
 }
 
 # 处理单个前缀组
@@ -93,7 +93,8 @@ _wavs_merge_process_group() {
     [[ -z "$prefix" ]] && return 1
     
     # 获取文件列表
-    local group_files=($(ls -v ${prefix}_*.wav 2>/dev/null | grep -v '_merged\.wav$'))
+    local group_files=( ${prefix}_*.wav(nNon) )
+    group_files=( "${(@)group_files:#*_merged.wav}" )
     
     if [[ ${#group_files[@]} -le 1 ]]; then
         echo "   ⚠️  跳过: $prefix ($([[ ${#group_files[@]} -eq 0 ]] && echo "无文件" || echo "只有一个文件"))"
@@ -206,6 +207,11 @@ wavs_merge() {
             -k|--keep-list) keep_list=true; shift ;;
             --dry-run) dry_run=true; shift ;;
             -h|--help) _wavs_merge_help; return 0 ;;
+            -*)
+                echo "错误: 未知选项 '$1'" >&2
+                echo "使用 'wavs_merge --help' 查看帮助" >&2
+                return 1
+                ;;
             *)
                 if [[ "$input_dir" == "." ]]; then
                     input_dir="$1"
@@ -236,7 +242,7 @@ wavs_merge() {
         echo ""
         
         # 查找匹配的文件
-        local files=( $~pattern )
+        local files=( $~pattern(N) )
         if [[ ${#files[@]} -eq 0 ]]; then
             echo "⚠️  该目录下没有匹配模式 '$pattern' 的文件"
             exit 0
@@ -245,7 +251,7 @@ wavs_merge() {
         echo "📊 找到 ${#files[@]} 个匹配的文件"
         
         # 提取前缀
-        local prefixes=($(_wavs_merge_extract_prefixes "${files[@]}"))
+        local prefixes=( ${(f)"$(_wavs_merge_extract_prefixes "${files[@]}")"} )
         if [[ ${#prefixes[@]} -eq 0 ]]; then
             echo "⚠️  没有找到可合并的文件组"
             exit 0

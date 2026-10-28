@@ -32,6 +32,17 @@ declare -A OPERATION_FUNCTIONS=(
 	["custom"]="local_custom_configs"
 )
 
+# 定义操作执行顺序
+declare -a OPERATION_ORDER=(
+	"sys-apps"
+	"langs"
+	"apps"
+	"configs"
+	"nerd-fonts"
+	"macos"
+	"custom"
+)
+
 # 定义命令行选项和对应的操作
 declare -A OPTION_MAP=(
 	["help"]="-h --help"
@@ -170,7 +181,7 @@ function setup_macos() {
 	blue_echo "$operation: 开始配置 macOS 环境..."
 	blue_echo "--------------------------------"
 	if [[ "$OSTYPE" == "darwin"* ]]; then
-		source ${SCRIPT_PATH}/macos/setup-default.sh
+		source "${SCRIPT_PATH}/macos/setup-default.sh"
 	else
 		yellow_echo "当前系统不是 macOS，跳过配置"
 	fi
@@ -185,7 +196,14 @@ function check_nerd_fonts() {
 	# 检查是否安装了Nerd Font
 	if [[ "$OSTYPE" == "darwin"* ]]; then
 		# macOS系统，检查字体目录
-		if ! fc-list | grep -i "nerd" >/dev/null; then
+		if command -v fc-list >/dev/null 2>&1; then
+			if ! fc-list | grep -qi "nerd"; then
+				red_echo "错误: 未检测到Nerd Font字体！请先安装Nerd Font字体。"
+				yellow_echo "可以通过以下命令安装:"
+				yellow_echo "brew install --cask font-hack-nerd-font"
+				exit 1
+			fi
+		elif ! ls "$HOME/Library/Fonts" /Library/Fonts 2>/dev/null | grep -qi "nerd"; then
 			red_echo "错误: 未检测到Nerd Font字体！请先安装Nerd Font字体。"
 			yellow_echo "可以通过以下命令安装:"
 			yellow_echo "brew install --cask font-hack-nerd-font"
@@ -193,14 +211,14 @@ function check_nerd_fonts() {
 		fi
 	else
 		# Linux系统
-		if ! fc-list | grep -i "nerd" >/dev/null; then
+		if command -v fc-list >/dev/null 2>&1 && ! fc-list | grep -qi "nerd"; then
 			red_echo "错误: 未检测到Nerd Font字体！请先安装Nerd Font字体。"
 			yellow_echo "可以参考: https://www.nerdfonts.com/font-downloads"
 			exit 1
 		fi
 	fi
 
-	source $SCRIPT_PATH/nerd-font-smoke-test.sh
+	source "${SCRIPT_PATH}/nerd-font-smoke-test.sh"
 
 	green_echo "✓ Nerd Font已安装"
 }
@@ -215,13 +233,13 @@ function stow_configs() {
 		echo "正在链接 $config 配置..."
 
 		# 检查配置目录是否存在
-		if [ ! -d "$config" ]; then
+		if [ ! -d "${SCRIPT_PATH}/$config" ]; then
 			yellow_echo "警告: 配置目录 $config 不存在，跳过"
 			continue
 		fi
 
 		# 实际执行链接操作
-		stow "$config"
+		stow -d "${SCRIPT_PATH}" -t "${HOME}" "$config"
 	done
 
 	green_echo "-----------------------------------------"
@@ -237,7 +255,7 @@ function install_sys_apps() {
 	if [[ "$OSTYPE" == "darwin"* ]]; then
 		yellow_echo "macOS 系统，跳过安装系统应用"
 	else
-		source ${SCRIPT_PATH}/zzz_install_scripts/sys-apps/apt_install.sh
+		source "${SCRIPT_PATH}/zzz_install_scripts/sys-apps/apt_install.sh"
 	fi
 
 	if [[ $? -eq 0 ]]; then
@@ -252,7 +270,7 @@ function install_apps() {
 	blue_echo "----------------------------"
 	blue_echo "$operation: 开始安装应用...   "
 	blue_echo "----------------------------"
-	source ${SCRIPT_PATH}/zzz_install_scripts/install_app.sh
+	source "${SCRIPT_PATH}/zzz_install_scripts/install_app.sh"
 	if [[ $? -eq 0 ]]; then
 		green_echo "应用安装成功"
 	else
@@ -265,7 +283,7 @@ function install_langs() {
 	blue_echo "----------------------------"
 	blue_echo "$operation: 开始安装编程语言..."
 	blue_echo "----------------------------"
-	source ${SCRIPT_PATH}/zzz_install_scripts/install_lang.sh
+	source "${SCRIPT_PATH}/zzz_install_scripts/install_lang.sh"
 	if [[ $? -eq 0 ]]; then
 		green_echo "编程语言安装成功"
 	else
@@ -375,13 +393,13 @@ fi
 # 执行选定的操作
 if [ "${OPERATIONS['all']}" = "$OP_ENABLE" ]; then
 	# 如果指定了 all，则执行所有操作
-	for operation in "${!SUPPORTED_OPERATIONS[@]}"; do
+	for operation in "${OPERATION_ORDER[@]}"; do
 		execute_operation "$operation"
 	done
 	green_echo "\n所有操作执行成功\n"
 else
 	# 否则只执行指定的操作
-	for operation in "${!SUPPORTED_OPERATIONS[@]}"; do
+	for operation in "${OPERATION_ORDER[@]}"; do
 		if [ "${OPERATIONS[$operation]}" = "$OP_ENABLE" ]; then
 			execute_operation "$operation"
 			if [ $? -eq 0 ]; then

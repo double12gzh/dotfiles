@@ -24,7 +24,7 @@ fi
 
 if [ -d "$HOME"/.zplug ]; then
         echo "skipped"
-        exit 0
+        return 0 2>/dev/null || exit 0
 fi
 
 ZPLUG_HOME="$HOME"/.zplug

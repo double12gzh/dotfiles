@@ -3,6 +3,13 @@
 ######################################################################
 #          Select multiple files in fzf and open with nvim           #
 ######################################################################
-results=$(fzf -m --border-label="╣ Open multiple files with Neovim ╠" --header="Tab to select, Ctrl-C to cancel" | tr '\n' ' ')
-echo "nvim ${results::-1}"
-eval nvim "$results"
+results=$(fzf -m --border-label="╣ Open multiple files with Neovim ╠" --header="Tab to select, Ctrl-C to cancel")
+[[ -z "$results" ]] && exit 0
+
+files=()
+while IFS= read -r line; do
+    [[ -n "$line" ]] && files+=("$line")
+done <<<"$results"
+
+echo "nvim ${files[*]}"
+nvim "${files[@]}"

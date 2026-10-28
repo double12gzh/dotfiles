@@ -1,7 +1,7 @@
 #######################################################################
 #                         Basic Settings                              #
 #######################################################################
-set shell sh
+set shell bash
 set shellopts '-eu'
 set ifs "\n"
 set scrolloff 10
@@ -20,7 +20,7 @@ set timefmt '2006-01-02 15:04:05 -0700'
 # &ctpvquit $id
 
 # Pistol preview
-set previewer ~/go/bin/pistol
+set previewer pistol
 
 #######################################################################
 #                         cmds/functions                              #
@@ -37,9 +37,9 @@ cmd open ${{
     esac
 }}
 
-cmd mkdir $mkdir -p "$(echo $* | tr ' ' '\ ')"
+cmd mkdir %mkdir -p "$@"
 
-cmd mkfile $touch "$(echo $* | tr ' ' '\ ')"
+cmd mkfile $nvim "$*"
 
 cmd chmod ${{
   printf "Mode Bits: "
@@ -59,7 +59,7 @@ cmd extract ${{
 	printf "%s\n\t" "$fx"
 	printf "extract?[y/N]"
 	read ans
-	[ $ans = "y" ] && atool -x $fx
+	[ "$ans" = "y" ] && atool -x $fx
 }}
 
 cmd delete ${{
@@ -152,7 +152,6 @@ cmd zip ${{
 map <enter> shell
 
 # execute current file (must be executable)
-map x $$f
 map X !$f
 
 # dedicated keys for file opener actions
