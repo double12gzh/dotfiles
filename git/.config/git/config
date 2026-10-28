@@ -45,16 +45,13 @@
 [push]
     default = simple
 
-[remote "origin"]
-    prune = true
-
 [pull]
     rebase = false
 
 [diff]
     wsErrorHighlight = all
     tool = vimdiff
-    algorithm = patience
+    algorithm = histogram
     indentHeuristic = true
     wordRegex = [a-zA-Z0-9_]+|[^[:space:]]
     mnemonicPrefix = true
@@ -64,7 +61,7 @@
     trustExitCode = true
 
 [diff "json"]
-    textconv = gojq '.' $1
+    textconv = gojq .
 
 [merge]
     tool = vimdiff
@@ -95,7 +92,6 @@
 
     last = log -1 HEAD --stat
     contrib = shortlog -e --summary --numbered
-    recent = branch --sort=-committerdate
     branch-progress = for-each-ref --sort='authordate:iso8601' --format=' %(color:green)%(authordate:relative)%09%(color:white)%(refname:short)' refs/heads
 
     # Show conflict-only diff patches.
@@ -156,7 +152,7 @@
     # add grep
     ag = "!sh -c 'git ls-files -m -o --exclude-standard | grep $1 | xargs git add --all' -"
     # add all
-    aa = !git ls-files -d | xargs git rm && git ls-files -m -o --exclude-standard | xargs git add
+    aa = "!git add -u && files=$(git ls-files -m -o --exclude-standard) && [ -z \"$files\" ] || printf '%s\\n' \"$files\" | xargs git add"
     # remove grep - Remove found files that are NOT under version control
     rg = "!sh -c 'git ls-files --others --exclude-standard | grep $1 | xargs rm' -"
 
@@ -192,7 +188,7 @@
     hfile = "!f() { git log --follow -- \"$1\"; }; f"
 
     # clone code and setup username and email for current repository
-    cl = "!f() { git clone $1 && repo_dir=$(basename $1 .git) && cd $repo_dir && git config -f .git/config user.name "double12gzh" && git config -f .git/config user.email "double12gzh@163.com"; }; f"
+    cl = "!f() { git clone \"$1\" && repo_dir=$(basename \"$1\" .git) && cd \"$repo_dir\" && git config -f .git/config user.name \"double12gzh\" && git config -f .git/config user.email \"double12gzh@163.com\"; }; f"
 
 [gpg]
     format = ssh

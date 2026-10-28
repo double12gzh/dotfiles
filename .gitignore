@@ -2,8 +2,6 @@
 sessions
 .netrwhist
 undo
-./nvim/plugin/
-./nvim/plugin/packer_compiled.lua
 .luarc.json
 # Compiled Lua sources
 luac.out
@@ -68,7 +66,7 @@ iterm2/.config/iterm2/AppSupport
 .cursorindexingignore
 
 # ignore file without example prefix
-#ssh/.ssh/config.d/*
-#!ssh/.ssh/config.d/example*
-#zsh/.zsh/sshs/hosts/*
-#!zsh/.zsh/sshs/hosts/example*
+ssh/.ssh/config.d/*
+!ssh/.ssh/config.d/example*
+zsh/.zsh/sshs/hosts/*
+!zsh/.zsh/sshs/hosts/example*

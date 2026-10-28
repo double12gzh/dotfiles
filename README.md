@@ -73,7 +73,7 @@ bash zzz_install_scripts/apps/stow.sh
 - clone this repo
 
 ```bash
-git clone git@github.com:double12gzh/dotfiles.git ~
+git clone git@github.com:double12gzh/dotfiles.git ~/dotfiles
 ```
 
 - create symlink
@@ -83,7 +83,7 @@ stow */
 
 # or
 
-stow Git
+stow git
 ```
 
 ## Ref

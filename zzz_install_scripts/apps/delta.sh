@@ -7,7 +7,7 @@ set -o pipefail
 #                           Git-delta Part                           #
 ######################################################################
 # Url: https://github.com/dandavison/delta
-if [[ -z $(command -v delta) ]] && [[ ! -f $GITDELTA_DIR/delta ]]; then
+if [[ -z $(command -v delta) ]] && [[ ! -f $DELTA_DIR/delta ]]; then
     echo "Install Git-delta"
     cargo install git-delta
 else

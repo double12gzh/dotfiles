@@ -15,7 +15,7 @@ _go_test_help() {
 选项:
   -p, --path PATH      测试路径 (默认: ./...)
   -o, --output FILE    覆盖率文件 (默认: coverage.out)
-  -a, --arch ARCH      目标架构 (默认: amd64)
+  -a, --arch ARCH      目标架构 (默认: $(go env GOARCH 2>/dev/null || echo amd64))
   -m, --cover-mode MODE
                        覆盖率模式: atomic, count, set (默认: atomic)
   -v, --verbose        显示详细输出
@@ -41,7 +41,7 @@ _go_test_parse_args() {
     local -A config
     config[test_path]="./..."
     config[cover_file]="coverage.out"
-    config[goarch]="amd64"
+    config[goarch]="$(go env GOARCH 2>/dev/null || echo amd64)"
     config[open_report]=true
     config[skip_race]=false
     config[cover_mode]="atomic"
@@ -90,7 +90,7 @@ _go_test_parse_args() {
                 ;;
             -h|--help)
                 _go_test_help
-                return 0
+                return 2
                 ;;
             *)
                 if [[ "$1" == -* ]]; then
@@ -117,7 +117,10 @@ _go_test_build_cmd() {
     local cmd="GOARCH=${config[goarch]} go test"
     
     # 添加基础参数
-    cmd="$cmd -v -count=1 -failfast"
+    cmd="$cmd -count=1 -failfast"
+    if [[ "${_go_test_config[verbose]}" == "true" ]]; then
+        cmd="$cmd -v"
+    fi
     
     # 条件添加覆盖率
     if [[ ${config[skip_cover]} != true ]]; then
@@ -130,7 +133,9 @@ _go_test_build_cmd() {
     fi
     
     # 添加其他固定参数
-    cmd="$cmd -mod=vendor"
+    if [[ -d "vendor" ]]; then
+        cmd="$cmd -mod=vendor"
+    fi
     cmd="$cmd -gcflags='-N -l'"
     
     # 添加测试路径
@@ -186,8 +191,12 @@ _go_test_execute() {
 # 主函数
 go_test() {
     # 解析参数
-    if ! _go_test_parse_args "$@"; then
-        return $?
+    _go_test_parse_args "$@"
+    local parse_ret=$?
+    if [[ $parse_ret -eq 2 ]]; then
+        return 0
+    elif [[ $parse_ret -ne 0 ]]; then
+        return 1
     fi
     
     # 构建命令
@@ -247,12 +256,13 @@ _go_test() {
                 done
                 
                 # 运行 go test -list 获取测试函数列表（缓存结果）
-                local cache_file="/tmp/go_test_completion_$$.txt"
+                local cache_key="${PWD//\//_}"
+                local cache_file="/tmp/go_test_completion_${$$}_${cache_key}.txt"
                 local cache_age=300  # 5分钟缓存
                 
                 # 检查是否有有效的缓存
                 if [[ -f "$cache_file" ]] && \
-                   [[ $(($(date +%s) - $(stat -f%m "$cache_file" 2>/dev/null || echo 0))) -lt $cache_age ]]; then
+                   [[ $(($(date +%s) - $(stat -f%m "$cache_file" 2>/dev/null || stat -c%Y "$cache_file" 2>/dev/null || echo 0))) -lt $cache_age ]]; then
                     # 使用缓存
                     compadd $(cat "$cache_file")
                 else

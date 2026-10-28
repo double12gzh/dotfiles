@@ -117,6 +117,7 @@ check_dependencies() {
 
 open_file_picker() {
     local selected_file
+    local osa_exit_code
     
     # 系统检查已在主函数中完成，这里直接使用
     selected_file=$(osascript <<EOF 2>/dev/null
@@ -131,11 +132,12 @@ open_file_picker() {
         end try
 EOF
 )
+    osa_exit_code=$?
     
     # 清理路径：移除前后空白字符和换行符
     selected_file=$(echo "$selected_file" | tr -d '\r\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
     
-    if [ $? -eq 0 ] && [ -n "$selected_file" ]; then
+    if [ $osa_exit_code -eq 0 ] && [ -n "$selected_file" ]; then
         echo "$selected_file"
         return 0
     else
@@ -341,7 +343,10 @@ display_technical_info() {
     
     local bits_per_sample=$(get_bits_per_sample "$format")
     local bitrate=$(echo "scale=0; $sample_rate * $channels * $bits_per_sample / 1000" | bc)
-    local data_rate=$(echo "scale=1; $filesize / $total_seconds / 1000" | bc)
+    local data_rate="0"
+    if [ -n "$total_seconds" ] && (( $(echo "$total_seconds > 0" | bc -l) )); then
+        data_rate=$(echo "scale=1; $filesize / $total_seconds / 1000" | bc)
+    fi
     
     echo -e "${BLUE}📊 TECHNICAL INFO${NC}"
     echo -e "  ${CYAN}Bitrate:${NC} ${GREEN}$bitrate kbps${NC}"
@@ -434,7 +439,11 @@ main() {
     echo ""
     
     local duration=$(calculate_duration "$filesize" "$sample_rate" "$channels" "$sample_format")
-    local total_seconds=$(echo "scale=2; $filesize / ($(get_bytes_per_sample "$sample_format") * $channels * $sample_rate)" | bc)
+    local denom=$(( $(get_bytes_per_sample "$sample_format") * channels * sample_rate ))
+    local total_seconds="0"
+    if [ "$denom" -gt 0 ]; then
+        total_seconds=$(echo "scale=2; $filesize / $denom" | bc)
+    fi
     
     display_playback_settings "$sample_rate" "$channels" "$sample_format" "$duration"
     echo ""
@@ -469,7 +478,7 @@ main() {
 trap 'log_error "脚本在行 $LINENO 处发生错误，退出码: $?"' ERR
 
 main "${1:-}" "${2:-}" "${3:-}" || {
-    local exit_code=$?
+    exit_code=$?
     log_error "主函数执行失败，退出码: $exit_code"
     exit $exit_code
 }

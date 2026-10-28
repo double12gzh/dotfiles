@@ -12,8 +12,8 @@
 # style:    Formatting, linting, etc. No production code change.
 # refactor: A code change that neither fixes a bug nor adds a feature.
 # test:     adding missing tests or refactoring them.
-# perf      Performance improvements.
-# chore     Other changes that don't modify source or test files
-# build     Changes that affect the build system or external dependencies.
-# ci        Changes to our CI configuration files and scripts.
-# revert    Reverts a previous commit.
+# perf:     Performance improvements.
+# chore:    Other changes that don't modify source or test files
+# build:    Changes that affect the build system or external dependencies.
+# ci:       Changes to our CI configuration files and scripts.
+# revert:   Reverts a previous commit.

@@ -1,4 +1,4 @@
-#!/Users/jeguan/tools/anaconda/bin/python3
+#!/usr/bin/env python3
 
 # Raycast Script Command Template
 #
@@ -13,14 +13,7 @@
 # @raycast.currentDirectoryPath ~
 # @raycast.needsConfirmation false
 #
-# @raycast.argument1 {
-#     "type": "dropdown",
-#     "placeholder": "Input Source",
-#     "default": "picker",
-#     "data": [
-#         {"title": "File Picker (Dialog)", "value": "picker"},
-#         {"title": "Finder Selection", "value": "selection"}
-#     ]
+# @raycast.argument1 { "type": "text", "placeholder": "Path to audio file (optional)", "optional": true }
 #
 # Documentation:
 # @raycast.description Generate waveform or comparison. Select 1 or 2 files.
@@ -72,21 +65,12 @@ def compute_audio_stats(original_data, normalized_data, sample_rate):
     rms_original = np.sqrt(np.mean(original_data.astype(np.float32) ** 2))
     rms_normalized = np.sqrt(np.mean(normalized_data.astype(np.float32) ** 2))
 
-    y = normalized_data
-    y_sign = np.sign(y)
-    y_sign_nozero = y_sign.copy()
-    for i in range(1, len(y_sign_nozero)):
-        if y_sign_nozero[i] == 0:
-            y_sign_nozero[i] = y_sign_nozero[i - 1]
-    zero_crossings = np.sum(y_sign_nozero[1:] != y_sign_nozero[:-1])
-
     return {
         "sample_rate": sample_rate,
         "duration": duration,
         "n_samples": n_samples,
         "rms_original": rms_original,
         "rms_normalized": rms_normalized,
-        "zero_crossings": zero_crossings,
     }
 
 
@@ -103,11 +87,12 @@ def load_and_normalize(wav_path):
     if data.ndim > 1:
         data = data[:, 0]  # Use left channel
 
-    current_max = np.abs(data).max()
-    y_norm = data / current_max if current_max > 0 else data
+    data_f32 = data.astype(np.float32)
+    current_max = np.abs(data_f32).max()
+    y_norm = data_f32 / current_max if current_max > 0 else data_f32
 
-    stats = compute_audio_stats(data, y_norm, sr)
-    x = np.linspace(0, stats["duration"], len(data), dtype=np.float32)
+    stats = compute_audio_stats(data_f32, y_norm, sr)
+    x = np.linspace(0, stats["duration"], len(data_f32), dtype=np.float32)
     return x, y_norm, stats
 
 
