@@ -198,6 +198,9 @@ expect {
     }
 }
 
+# 进入交互模式前将通道设为 binary，避免 macOS 自带 expect (Tcl 8.5) 破坏 4 字节 UTF-8 字符（如 Nerd Font 图标）
+fconfigure $spawn_id -encoding binary
+fconfigure $user_spawn_id -encoding binary
 interact
 exit
 
