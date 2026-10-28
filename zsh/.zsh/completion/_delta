@@ -1,0 +1,3 @@
+#compdef delta
+
+_gnu_generic "$@"

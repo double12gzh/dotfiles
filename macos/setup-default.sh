@@ -7,10 +7,10 @@ set -o pipefail
 DOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # Colors for output
-tty_blue=$(tput setaf 4)
-tty_yellow=$(tput setaf 3)
-tty_red=$(tput setaf 1)
-tty_reset=$(tput sgr0)
+tty_blue=$(tput setaf 4 2>/dev/null || true)
+tty_yellow=$(tput setaf 3 2>/dev/null || true)
+tty_red=$(tput setaf 1 2>/dev/null || true)
+tty_reset=$(tput sgr0 2>/dev/null || true)
 
 # Sets reasonable macOS defaults.
 #
@@ -29,9 +29,6 @@ function setup_finder() {
 	# 不显示隐藏文件
 	defaults write com.apple.finder AppleShowAllFiles -bool false
 
-	# Always open everything in Finder's list view. This is important.
-	defaults write com.apple.Finder FXPreferredViewStyle Nlsv
-
 	# Show the ~/Library folder.
 	chflags nohidden ~/Library
 
@@ -47,11 +44,11 @@ function setup_finder() {
 	defaults write com.apple.dock wvous-bl-modifier -int 0
 
 	# Set up Safari for development.
-	defaults write com.apple.Safari.SandboxBroker ShowDevelopMenu -bool true
-	defaults write com.apple.Safari.plist IncludeDevelopMenu -bool true
-	defaults write com.apple.Safari.plist WebKitDeveloperExtrasEnabledPreferenceKey -bool true
-	defaults write com.apple.Safari.plist "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" -bool true
-	defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
+	defaults write com.apple.Safari.SandboxBroker ShowDevelopMenu -bool true 2>/dev/null || true
+	defaults write com.apple.Safari.plist IncludeDevelopMenu -bool true 2>/dev/null || true
+	defaults write com.apple.Safari.plist WebKitDeveloperExtrasEnabledPreferenceKey -bool true 2>/dev/null || true
+	defaults write com.apple.Safari.plist "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled" -bool true 2>/dev/null || true
+	defaults write NSGlobalDomain WebKitDeveloperExtras -bool true 2>/dev/null || true
 
 	# Finder: show all filename extensions
 	defaults write NSGlobalDomain AppleShowAllExtensions -bool true
@@ -65,13 +62,14 @@ function setup_finder() {
 	defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
 
 	# 重启 Finder 和 Dock
-	killall Finder
-	killall Dock
+	killall Finder 2>/dev/null || true
+	killall Dock 2>/dev/null || true
 }
 
 function setup_iterm2() {
 	# 通过命令行设置配置路径
 	defaults write com.googlecode.iterm2 PrefsCustomFolder -string "$HOME/.config/iterm2"
+	defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
 
 	# 检查 iTerm2 进程是否存在
 	if pgrep -x "iTerm2" >/dev/null; then
@@ -79,7 +77,7 @@ function setup_iterm2() {
 	fi
 }
 
-function install_apps() {
+function install_macos_brew_bundle() {
 	printf "\n${tty_yellow}Installing apps from Brewfile...${tty_reset}\n"
 
 	# Check if Brewfile exists
@@ -100,18 +98,18 @@ function install_apps() {
 	fi
 }
 
-setup_finder
-
-# Check for iTerm2 using ls and grep
-if ls -d "/Applications/iTerm"*".app" >/dev/null 2>&1; then
-	setup_iterm2
-else
-	echo "iTerm2 not installed, skipping iTerm2 setup."
-fi
-
 # Main execution
 if [[ "$(uname)" == "Darwin" ]]; then
-	install_apps
+	setup_finder
+
+	# Check for iTerm2 using ls and grep
+	if ls -d "/Applications/iTerm"*".app" >/dev/null 2>&1; then
+		setup_iterm2
+	else
+		echo "iTerm2 not installed, skipping iTerm2 setup."
+	fi
+
+	install_macos_brew_bundle
 else
 	printf "${tty_yellow}This script is only for macOS${tty_reset}\n"
 	exit 1

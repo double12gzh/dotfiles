@@ -2,14 +2,14 @@
 
 # di=:\
 export LF_ICONS="\
-di=:\
+di=:\
 fi=:\
 ln=:\
 or=:\
 ex=:\
 *.vimrc=:\
 *.viminfo=:\
-*.gitignore=:\
+*.gitignore=:\
 *.c=:\
 *.cc=:\
 *.clj=:\

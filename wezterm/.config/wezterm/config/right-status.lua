@@ -42,8 +42,8 @@ end
 
 M.set_battery = function()
 	-- ref: https://wezfurlong.org/wezterm/config/lua/wezterm/battery_info.html
-	local discharging_icons = { "", "", "", "", "", "", "", "", "", "" }
-	local charging_icons = { "", "", "", "", "", "", "", "", "", "" }
+	local discharging_icons = { "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹" }
+	local charging_icons = { "󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅" }
 
 	local charge = ""
 	local icon = ""
@@ -69,6 +69,12 @@ end
 
 M.setup = function()
 	wezterm.on("update-right-status", function(window, pane)
+		local name = window:active_key_table()
+		if name then
+			name = "MODE: " .. name
+		end
+		window:set_left_status(name or "")
+
 		M.cells = {}
 		M.set_active_workspace(window)
 		M.set_date()

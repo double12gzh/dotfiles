@@ -8,8 +8,8 @@ local GLYPH_SEMI_CIRCLE_RIGHT = ""
 -- local GLYPH_SEMI_CIRCLE_RIGHT = utf8.char(0xe0b4)
 local GLYPH_CIRCLE = ""
 -- local GLYPH_CIRCLE = utf8.char(0xf111)
-local GLYPH_ADMIN = "ﱾ"
--- local GLYPH_ADMIN = utf8.char(0xfc7e)
+local GLYPH_ADMIN = "󰞀"
+-- local GLYPH_ADMIN = utf8.char(0xf0780)
 
 local M = {}
 
@@ -46,9 +46,9 @@ M.set_title = function(process_name, base_title, max_width, inset, index)
 		title = index .. ". " .. base_title
 	end
 
-	if title:len() > max_width - inset then
-		local diff = title:len() - max_width + inset
-		title = wezterm.truncate_right(title, title:len() - diff)
+	if wezterm.column_width(title) > max_width - inset then
+		local diff = wezterm.column_width(title) - max_width + inset
+		title = wezterm.truncate_right(title, wezterm.column_width(title) - diff)
 	end
 
 	return title

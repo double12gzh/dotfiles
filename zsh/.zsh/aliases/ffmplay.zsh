@@ -225,6 +225,11 @@ _playpcm_show_dialog() {
     local default="$3"
     shift 3
     local options=("$@")
+
+    if [[ "$OSTYPE" != darwin* ]] || ! command -v osascript &>/dev/null; then
+        echo "${default:-1,s16le,48000}"
+        return 0
+    fi
     
     # 构建选项列表字符串
     local options_list=""
@@ -320,11 +325,11 @@ _playpcm_play_wav() {
     
     if [[ $silent == false ]]; then
         echo "播放音频文件: $file"
-        echo "命令: ffplay -autoexit -showmode 1 -stats -x $width -y $height -autoexit $alwaysontop -i \"$file\""
+        echo "命令: ffplay -autoexit -showmode 1 -stats -x $width -y $height $alwaysontop -i \"$file\""
     fi
     
     ffplay -autoexit \
-        -showmode 1 -stats -x $width -y $height -autoexit $alwaysontop \
+        -showmode 1 -stats -x $width -y $height $alwaysontop \
         -i "$file"
 }
 
@@ -344,12 +349,12 @@ _playpcm_play_pcm() {
     if [[ $silent == false ]]; then
         echo "播放原始PCM数据: $file"
         echo "参数: 格式=$format, 采样率=$rate, 声道=$channels ($ch_layout)"
-        echo "命令: ffplay -autoexit -ch_layout $ch_layout -showmode 1 -stats -x $width -y $height -autoexit $alwaysontop -f $format -ar $rate -i \"$file\""
+        echo "命令: ffplay -autoexit -ch_layout $ch_layout -showmode 1 -stats -x $width -y $height $alwaysontop -f $format -ar $rate -i \"$file\""
     fi
     
     ffplay -autoexit \
         -ch_layout $ch_layout \
-        -showmode 1 -stats -x $width -y $height -autoexit $alwaysontop \
+        -showmode 1 -stats -x $width -y $height $alwaysontop \
         -f $format \
         -ar $rate \
         -i "$file"
@@ -441,5 +446,9 @@ _playpcm() {
         '*:file:_files'
 }
 
+alias playpcm='ffmplayme'
+
 # 注册自动补全
-compdef _playpcm playpcm
+if type compdef &>/dev/null; then
+    compdef _playpcm ffmplayme playpcm
+fi

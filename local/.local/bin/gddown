@@ -13,9 +13,12 @@ download_from_gdrive() {
         "https://drive.google.com/uc?export=download&id=$file_id" >/tmp/intermezzo.html
 
     # second stage to extract the download link from html above
-    download_link=$(cat </tmp/intermezzo.html |
-        grep -Po 'uc-download-link" [^>]* href="\K[^"]*' |
-    sed 's/\&amp;/\&/g')
+    download_link=$(sed -n 's/.*uc-download-link"[^>]*href="\([^"]*\)".*/\1/p' /tmp/intermezzo.html |
+        sed 's/\&amp;/\&/g')
     curl -L -b /tmp/cookies \
         "https://drive.google.com$download_link" >"$file_name"
 }
+
+if [ $# -ge 2 ]; then
+    download_from_gdrive "$@"
+fi
