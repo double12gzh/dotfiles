@@ -231,8 +231,18 @@ function cleanup_legacy_stow_links() {
 		fi
 	done < <(
 		find "${HOME}" -maxdepth 1 -type l 2>/dev/null
-		find "${HOME}/.config" "${HOME}/.ssh" "${HOME}/.local/share" -maxdepth 3 -type l 2>/dev/null
+		find "${HOME}/.config" "${HOME}/.ssh" "${HOME}/.local/share" "${HOME}/.cargo" -maxdepth 3 -type l 2>/dev/null
 	)
+
+	# 若旧版子模块目录已在本地存在，直接迁移至 ~/.config 对应位置，免去重复网络克隆
+	if [ -d "${SCRIPT_PATH}/tmux/.config/tmux/.tmux/.git" ] && [ ! -d "${HOME}/.config/tmux/.tmux" ]; then
+		mkdir -p "${HOME}/.config/tmux"
+		mv "${SCRIPT_PATH}/tmux/.config/tmux/.tmux" "${HOME}/.config/tmux/.tmux"
+	fi
+	if [ -d "${SCRIPT_PATH}/gotests/.config/gotest/gotest-template/.git" ] && [ ! -d "${HOME}/.config/gotest/gotest-template" ]; then
+		mkdir -p "${HOME}/.config/gotest"
+		mv "${SCRIPT_PATH}/gotests/.config/gotest/gotest-template" "${HOME}/.config/gotest/gotest-template"
+	fi
 }
 
 function restore_legacy_local_configs() {
@@ -246,6 +256,13 @@ function restore_legacy_local_configs() {
 		find "${backup_dir}/zsh_hosts" -maxdepth 1 -type f -exec cp -np {} "${HOME}/.zsh/sshs/hosts/" \; 2>/dev/null || true
 	fi
 	rm -rf "${backup_dir}"
+
+	# 迁移完成后清理旧版 Stow 残留的空目录结构
+	for legacy_dir in "${SCRIPT_PATH}/ssh" "${SCRIPT_PATH}/zsh" "${SCRIPT_PATH}/tmux" "${SCRIPT_PATH}/gotests"; do
+		if [ -d "$legacy_dir" ]; then
+			rm -rf "$legacy_dir"
+		fi
+	done
 }
 
 function apply_configs() {
