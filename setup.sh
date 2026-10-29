@@ -326,10 +326,11 @@ function local_custom_configs() {
 	blue_echo "-----------------------------------"
 
 	gray_echo "按需要配置本地其它文件"
-	gray_echo "本地 alias: $HOME/.local_aliases.zsh"
-	gray_echo "    $HOME/.local_aliases.zsh 中的配置会覆盖 $HOME/.zsh/aliases.zsh 中的配置"
+	gray_echo "本地 alias: $HOME/.zsh/.local_aliases.zsh"
+	gray_echo "    $HOME/.zsh/.local_aliases.zsh 中的配置会覆盖 $HOME/.zsh/aliases.zsh 中的配置"
 	gray_echo "本地 ssh: $HOME/.ssh/config.d/*.conf"
 	gray_echo "    $HOME/.ssh/config.d/*.conf 中的配置覆盖 $HOME/.ssh/config 中的配置"
+	gray_echo "本地 ssh_menu 主机: $HOME/.zsh/sshs/hosts/*"
 }
 
 # 初始化操作映射

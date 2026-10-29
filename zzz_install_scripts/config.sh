@@ -74,10 +74,10 @@ CheckDir() {
 printf "All downloaded files will be placed in ${tty_blue}%s/packages${tty_reset}.\n" "$HOME"
 printf "All installed apps will be placed in ${tty_blue}%s/tools${tty_reset}.\n\n" "$HOME"
 
-MAN_PATH=$DOT_DIR/local/.local/share/man/man1
+MAN_PATH=$DOT_DIR/home/dot_local/share/man/man1
 LOCAL_MAN=$HOME/.local/share/man/man1
 printf "All man docs will be placed in ${tty_blue}%s${tty_reset}.\n" "$MAN_PATH"
-printf "Use ${tty_yellow}\"cd $DOT_DIR && stow local\"${tty_reset} to link it to ${tty_blue}%s${tty_reset}.\n\n" "$LOCAL_MAN"
+printf "Use ${tty_yellow}\"chezmoi apply --source $DOT_DIR\"${tty_reset} to sync it to ${tty_blue}%s${tty_reset}.\n\n" "$LOCAL_MAN"
 
 wait_for_user
 printf "\n${tty_yellow}====================Script starts====================${tty_reset}\n\n"
