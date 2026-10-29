@@ -35,7 +35,7 @@ if [[ -z $(command -v stow) ]]; then
     fi
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<EOT >>"$RC_FILE"
+        cat <<'EOT' >>"$RC_FILE"
 export PATH="$PATH:$HOME/tools/stow/bin"
 EOT
     fi

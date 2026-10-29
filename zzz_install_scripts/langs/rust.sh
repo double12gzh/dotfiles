@@ -11,7 +11,7 @@ if [[ -z "$(command -v cargo)" ]]; then
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<EOT >>"$RC_FILE"
+        cat <<'EOT' >>"$RC_FILE"
 [ -f $HOME/.cargo/env ] && source "$HOME/.cargo/env"
 EOT
     fi

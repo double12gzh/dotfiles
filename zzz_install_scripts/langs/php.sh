@@ -45,7 +45,7 @@ if [[ -z "$(command -v php)" ]]; then
     mv composer.phar "$PHP_DIR/bin/composer"
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<EOT >>"$RC_FILE"
+        cat <<'EOT' >>"$RC_FILE"
 alias php='$HOME/tools/php/bin/php'
 export PATH="$PATH:$HOME/tools/php/bin"
 EOT

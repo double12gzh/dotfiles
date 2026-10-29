@@ -36,7 +36,7 @@ if [[ ! -f "$PERL_DIR/bin/perl" ]]; then
     fi
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<EOT >>"$RC_FILE"
+        cat <<'EOT' >>"$RC_FILE"
 alias perl='$HOME/tools/perl/bin/perl'
 alias cpan='$HOME/tools/perl/bin/cpan'
 alias cpanm='$HOME/tools/perl/bin/cpanm'

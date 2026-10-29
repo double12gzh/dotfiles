@@ -38,7 +38,7 @@ if [[ -z $(command -v tree-sitter) ]] && [[ ! -f $TS_DIR/tree-sitter ]]; then
         export PATH="$TS_DIR:$PATH"
     fi
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<EOT >>"$RC_FILE"
+        cat <<'EOT' >>"$RC_FILE"
 export PATH="$PATH:$HOME/tools/treesitter"
 EOT
     fi

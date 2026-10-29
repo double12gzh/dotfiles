@@ -229,6 +229,9 @@ function stow_configs() {
 	blue_echo "$operation: 开始链接配置...   "
 	blue_echo "----------------------------"
 
+	# 初始化并更新子模块（如 tmux/.config/tmux/.tmux）
+	git -C "${SCRIPT_PATH}" submodule update --init --recursive
+
 	# 预先创建标准目录，避免 stow 将整个 ~/.config 或 ~/.local/share 折叠为目录软链
 	mkdir -p "${HOME}/.config" "${HOME}/.local/bin" "${HOME}/.local/share"
 

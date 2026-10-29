@@ -26,7 +26,7 @@ if [[ -z $(command -v fzy) ]] && [[ ! -f $FZY_DIR/fzy ]]; then
     fi
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<EOT >>"$RC_FILE"
+        cat <<'EOT' >>"$RC_FILE"
 export PATH="$PATH:$HOME/tools/fzy"
 EOT
     fi

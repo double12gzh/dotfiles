@@ -16,7 +16,7 @@ if [[ ! -d $QFC_DIR ]]; then
     git clone --depth=1 "$QFC_LINK" "$QFC_DIR"
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<EOT >>"$RC_FILE"
+        cat <<'EOT' >>"$RC_FILE"
 # Init qfc
 [[ -s $HOME/tools/qfc/bin/qfc.sh ]] && source "$HOME/tools/qfc/bin/qfc.sh"
 qfc_quick_command 'cd' '\C-b' 'cd $0'

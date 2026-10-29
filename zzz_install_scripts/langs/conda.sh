@@ -39,7 +39,7 @@ if [[ ! -d $CONDA_DIR ]]; then
     bash "$HOME/packages/$CONDA_NAME" -b -p "$CONDA_DIR"
 
     if [[ $ADD_TO_SYSTEM_PATH = true ]]; then
-        cat <<EOT >>"$RC_FILE"
+        cat <<'EOT' >>"$RC_FILE"
 # >>> conda initialize >>>
 if [ -f $HOME/tools/anaconda/etc/profile.d/conda.sh ]; then
     . "$HOME/tools/anaconda/etc/profile.d/conda.sh"

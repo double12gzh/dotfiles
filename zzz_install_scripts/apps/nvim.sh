@@ -7,11 +7,19 @@ set -o pipefail
 #                           Install Neovim                           #
 ######################################################################
 NVIM_DIR=$HOME/tools/nvim
-NVIM_SRC_NAME=$HOME/packages/nvim-linux64.tar.gz
+NVIM_SRC_NAME=$HOME/packages/nvim.tar.gz
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    NVIM_LINK="https://github.com/neovim/neovim/releases/download/v0.9.5/nvim-macos.tar.gz"
+    if [[ "$(uname -m)" == "arm64" ]]; then
+        NVIM_LINK="https://github.com/neovim/neovim/releases/latest/download/nvim-macos-arm64.tar.gz"
+    else
+        NVIM_LINK="https://github.com/neovim/neovim/releases/latest/download/nvim-macos-x86_64.tar.gz"
+    fi
 else
-    NVIM_LINK="https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.tar.gz"
+    if [[ "$(uname -m)" == "aarch64" || "$(uname -m)" == "arm64" ]]; then
+        NVIM_LINK="https://github.com/neovim/neovim/releases/latest/download/nvim-linux-arm64.tar.gz"
+    else
+        NVIM_LINK="https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz"
+    fi
 fi
 if [[ ! -f "$NVIM_DIR/bin/nvim" ]]; then
     echo "Installing Nvim"
@@ -29,7 +37,7 @@ if [[ ! -f "$NVIM_DIR/bin/nvim" ]]; then
     tar zxvf "$NVIM_SRC_NAME" --strip-components 1 -C "$NVIM_DIR"
 
     if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<EOT >>"$RC_FILE"
+        cat <<'EOT' >>"$RC_FILE"
 export PATH="$PATH:$HOME/tools/nvim/bin"
 EOT
     fi

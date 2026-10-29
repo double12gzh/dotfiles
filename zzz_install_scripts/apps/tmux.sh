@@ -32,7 +32,7 @@ if [[ ! -f $TMUX_DIR/tmux ]]; then
 	fi
 
 	if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-		cat <<EOT >>"$RC_FILE"
+		cat <<'EOT' >>"$RC_FILE"
 alias tmux='TERM=tmux-256color ~/tools/tmux/tmux -f ~/.config/tmux/tmux.conf'
 export PATH="$PATH:$HOME/tools/tmux"
 EOT
