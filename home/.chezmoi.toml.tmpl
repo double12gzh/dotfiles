@@ -5,6 +5,8 @@
 {{-   $email = promptStringOnce . "email" "Git user.email" $email -}}
 {{- end -}}
 
+sourceDir = {{ .chezmoi.workingTree | quote }}
+
 [data]
     name = {{ $name | quote }}
     email = {{ $email | quote }}
