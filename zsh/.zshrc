@@ -118,4 +118,6 @@ fi
 [[ -f "$_zsh_mod_dir/.local_aliases.zsh" ]] && source "$_zsh_mod_dir/.local_aliases.zsh"
 unset _zsh_mod_dir
 
-[[ -f ~/.local_aliases.zsh ]] && source ~/.local_aliases.zsh
+if [[ -f ~/.local_aliases.zsh ]]; then
+    source ~/.local_aliases.zsh
+fi

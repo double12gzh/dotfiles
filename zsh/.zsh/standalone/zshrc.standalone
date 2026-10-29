@@ -1,19 +1,28 @@
+# Standalone full-featured Zsh configuration (auto-detects optional tools)
+# Usage: scp ~/.zsh/standalone/zshrc.standalone user@host:~/.zshrc
+
+typeset -U path PATH fpath FPATH
+
 # Enable colors and change prompt:
 autoload -U colors && colors
 PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
-#PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
 
 # History in cache directory:
 HISTSIZE=10000
 SAVEHIST=10000
-HISTFILE=/cwaidev/000GZH/.cache/zsh/history
-# 可选：实时追加历史记录（而不是退出时写入）
+if [[ -d "/cwaidev/000GZH" ]]; then
+    [[ -d "/cwaidev/000GZH/.cache/zsh" ]] || mkdir -p "/cwaidev/000GZH/.cache/zsh"
+    HISTFILE="/cwaidev/000GZH/.cache/zsh/history"
+else
+    [[ -d "$HOME/.cache/zsh" ]] || mkdir -p "$HOME/.cache/zsh"
+    HISTFILE="$HOME/.cache/zsh/history"
+fi
+# 实时追加与多终端共享历史记录
 setopt inc_append_history
-
-# 可选：共享不同终端间的历史记录
 setopt share_history
+setopt hist_ignore_dups
 
-fpath=(~/.zfunc $fpath)
+[[ -d ~/.zfunc ]] && fpath=(~/.zfunc $fpath)
 
 # Basic auto/tab complete:
 autoload -Uz compinit
@@ -40,35 +49,47 @@ bindkey  "^[[2~"  vi-insert
 bindkey  "^[[3~"  delete-char
 bindkey  "^A"     beginning-of-line
 bindkey  "^E"     end-of-line
-bindkey  "^P"     history-substring-search-up
-bindkey  "^N"     history-substring-search-down
+bindkey  "^P"     up-line-or-search
+bindkey  "^N"     down-line-or-search
 bindkey  "^R"     history-incremental-search-backward
 
-# Edit line in vim with ctrl-e:
+# Edit line in vim with ctrl-o:
 autoload edit-command-line; zle -N edit-command-line
 bindkey '^o' edit-command-line
 
-path=($HOME/.go/go/bin $path)
-path=($HOME/.bin $path)
-path=($HOME/tools/nvim/bin $path)
-path=($HOME/.local/bin $path)
-path=($HOME/tools/miniconda/bin $path)
-path=($HOME/.cargo/bin $path)
-path=($HOME/tools/nodejs/bin $path)
-path=($HOME/tools/luajit/src $path)
-path=($HOME/tools/luarocks $path)
-path=($HOME/tools/lua/src $path)
-path=($HOME/tools/treesitter $path)
+for _tool_dir in \
+    "$HOME/tools/treesitter" \
+    "$HOME/tools/lua/src" \
+    "$HOME/tools/luarocks" \
+    "$HOME/tools/luajit/src" \
+    "$HOME/tools/nodejs/bin" \
+    "$HOME/.cargo/bin" \
+    "$HOME/tools/miniconda/bin" \
+    "$HOME/.local/bin" \
+    "$HOME/tools/nvim/bin" \
+    "$HOME/.bin" \
+    "$HOME/.go/go/bin"
+do
+    [[ -d "$_tool_dir" ]] && path=("$_tool_dir" $path)
+done
+unset _tool_dir
 
-source <(kubectl completion zsh)
-source <(fzf --zsh)
+(( $+commands[kubectl] )) && source <(kubectl completion zsh)
+if (( $+commands[fzf] )) && fzf --zsh &>/dev/null; then
+    source <(fzf --zsh)
+elif [[ -f ~/.fzf.zsh ]]; then
+    source ~/.fzf.zsh
+fi
 
 # Load aliases and shortcuts if existent.
-[ -f "/cwaidev/000GZH/.alias" ] && source "/cwaidev/000GZH/.alias"
-[ -f "/cwai/dev/000GZH/.zsh/fzf-tab.zsh" ] && source "/cwaidev/000GZH/.zsh/fzf-tab.zsh"
+[[ -f "$HOME/.alias" ]] && source "$HOME/.alias"
+[[ -f "/cwaidev/000GZH/.alias" ]] && source "/cwaidev/000GZH/.alias"
+[[ -f "/cwaidev/000GZH/.zsh/fzf-tab.zsh" ]] && source "/cwaidev/000GZH/.zsh/fzf-tab.zsh"
 
-go env -w GOPATH='/cwaidev/000GZH/.gopath'
-go env -w GOPROXY='https://goproxy.cn'
+if (( $+commands[go] )); then
+    export GOPROXY='https://goproxy.cn,direct'
+    [[ -d "/cwaidev/000GZH" ]] && export GOPATH='/cwaidev/000GZH/.gopath'
+fi
 
 export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow'
 export FZF_DEFAULT_OPTS='--ansi --height 40% --layout=reverse --border=double --border-label="╣ FZF ╠" --header="E to edit" --preview="pistol {}" --bind="E:execute(vim {})" --preview-label="┓ ⟪Preview⟫ ┏" --preview-window=right,border-bold --color=border:#7ba46c,label:#7ba46c'
@@ -76,12 +97,16 @@ export FZF_CTRL_T_COMMAND='fd --type f --strip-cwd-prefix --hidden --follow --ex
 export FZF_CTRL_R_OPTS='--height 40% --layout=reverse --border=double --border-label="╣ History ╠" --preview-window=hidden --no-preview'
 export FZF_CTRL_T_OPTS="$FZF_DEFAULT_OPTS"
 export FZF_ALT_C_COMMAND='fd -H --type d . --color=never'
-export FZF_ALT_T_OPTS="$FZF_DEFAULT_OPTS"
+export FZF_ALT_C_OPTS="$FZF_DEFAULT_OPTS"
 
-. "$HOME/.cargo/env"
+[[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
 
 export LUA_LIBRARY="$HOME/tools/luajit/src/libluajit.so"
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/lib"
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}/usr/local/lib"
 
-eval "$(zoxide init zsh)" || echo "zoxide not found!"
-#eval "$(starship init zsh)" || echo "starship not found!"]
+if (( $+commands[zoxide] )); then
+    eval "$(zoxide init zsh)"
+fi
+# if (( $+commands[starship] )); then
+#     eval "$(starship init zsh)"
+# fi

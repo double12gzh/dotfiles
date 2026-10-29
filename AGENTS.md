@@ -17,6 +17,7 @@ zsh/
     .local_aliases.zsh             本地定制化别名与代理切换工具函数（cmds/cmd）
     zinit.zsh / starship.zsh       插件管理（Zinit）与提示符初始化
     ssh_menu.zsh / sshs/hosts/     基于 fzf + awk 的交互式 SSH 登录菜单（私有主机列表被 gitignore）
+    standalone/                    单文件便携版 zshrc（minimal / standalone / ohmyzsh，供直接 scp 到远程裸机使用）
     completion/                    自定义补全脚本
 local/
   .bin/                            个人编写的可执行脚本（通过 Stow 软链至 ~/.bin，如 auto_login、ta、tat、cht、yank）

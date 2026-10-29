@@ -1,4 +1,7 @@
-# Luke's config for the Zoomer Shell
+# Minimal zero-dependency Zsh configuration for remote servers / containers
+# Usage: scp ~/.zsh/standalone/zshrc.minimal user@host:~/.zshrc
+
+typeset -U path PATH fpath FPATH
 
 # Enable colors and change prompt:
 autoload -U colors && colors
@@ -7,10 +10,14 @@ PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magent
 # History in cache directory:
 HISTSIZE=10000
 SAVEHIST=10000
+[[ -d ~/.cache/zsh ]] || mkdir -p ~/.cache/zsh
 HISTFILE=~/.cache/zsh/history
+setopt inc_append_history
+setopt share_history
+setopt hist_ignore_dups
 
 # Basic auto/tab complete:
-autoload -U compinit
+autoload -Uz compinit
 zstyle ':completion:*' menu select
 zmodload zsh/complist
 compinit
@@ -34,13 +41,18 @@ bindkey  "^[[2~"  vi-insert
 bindkey  "^[[3~"  delete-char
 bindkey  "^A"     beginning-of-line
 bindkey  "^E"     end-of-line
-bindkey  "^P"     history-substring-search-up
-bindkey  "^N"     history-substring-search-down
+bindkey  "^P"     up-line-or-search
+bindkey  "^N"     down-line-or-search
 bindkey  "^R"     history-incremental-search-backward
 
-# Edit line in vim with ctrl-e:
+# Edit line in vim with ctrl-o:
 autoload edit-command-line; zle -N edit-command-line
 bindkey '^o' edit-command-line
 
 # Load aliases and shortcuts if existent.
-[ -f "/home/work/alias" ] && source "/home/work/alias"
+if [[ -f "$HOME/.alias" ]]; then
+    source "$HOME/.alias"
+fi
+if [[ -f "/home/work/alias" ]]; then
+    source "/home/work/alias"
+fi
