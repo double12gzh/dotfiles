@@ -1,0 +1,9 @@
+[".config/tmux/.tmux"]
+    type = "git-repo"
+    url = "https://github.com/gpakosz/.tmux.git"
+    refreshPeriod = "168h"
+
+[".config/gotest/gotest-template"]
+    type = "git-repo"
+    url = "https://github.com/piligo/gotest-template.git"
+    refreshPeriod = "168h"

@@ -1,0 +1,10 @@
+{{- $name := "JeffreyGuan" -}}
+{{- $email := "double12gzh@gmail.com" -}}
+{{- if stdinIsATTY -}}
+{{-   $name = promptStringOnce . "name" "Git user.name" $name -}}
+{{-   $email = promptStringOnce . "email" "Git user.email" $email -}}
+{{- end -}}
+
+[data]
+    name = {{ $name | quote }}
+    email = {{ $email | quote }}

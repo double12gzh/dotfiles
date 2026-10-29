@@ -17,7 +17,7 @@ declare -A SUPPORTED_OPERATIONS=(
 	["apps"]="仅安装应用"
 	["nerd-fonts"]="仅检查 nerd fonts"
 	["macos"]="仅配置 macOS 环境"
-	["configs"]="仅链接配置"
+	["configs"]="仅通过 chezmoi 应用配置"
 	["custom"]="仅显示本地定制化配置信息"
 )
 
@@ -28,7 +28,7 @@ declare -A OPERATION_FUNCTIONS=(
 	["apps"]="install_apps"
 	["nerd-fonts"]="check_nerd_fonts"
 	["macos"]="setup_macos"
-	["configs"]="stow_configs"
+	["configs"]="apply_configs"
 	["custom"]="local_custom_configs"
 )
 
@@ -54,27 +54,6 @@ declare -A OPTION_MAP=(
 	["macos"]="-m --macos"
 	["configs"]="-c --configs"
 	["custom"]="-u --custom"
-)
-
-# 定义需要链接的配置
-declare -a stow_configs=(
-	bash
-	batcat
-	conda
-	fdfind
-	git
-	lazygit
-	lf
-	local
-	luarocks
-	iterm2
-	starship
-	ssh
-	tmux
-	tmuxp
-	zsh
-	wezterm
-	gotests
 )
 
 #======================#
@@ -223,33 +202,76 @@ function check_nerd_fonts() {
 	green_echo "✓ Nerd Font已安装"
 }
 
-function stow_configs() {
+function cleanup_legacy_stow_links() {
+	local backup_dir=$1
+	mkdir -p "${backup_dir}/ssh_config_d" "${backup_dir}/zsh_hosts"
+
+	# 备份旧版 Stow 目录软链下的本地私有 SSH 配置与主机列表
+	if [ -d "${HOME}/.ssh/config.d" ]; then
+		find -H "${HOME}/.ssh/config.d" -maxdepth 1 -type f ! -name "example*" -exec cp -p {} "${backup_dir}/ssh_config_d/" \; 2>/dev/null || true
+	fi
+	if [ -d "${SCRIPT_PATH}/ssh/.ssh/config.d" ]; then
+		find -H "${SCRIPT_PATH}/ssh/.ssh/config.d" -maxdepth 1 -type f ! -name "example*" -exec cp -p {} "${backup_dir}/ssh_config_d/" \; 2>/dev/null || true
+	fi
+	if [ -d "${HOME}/.zsh/sshs/hosts" ]; then
+		find -H "${HOME}/.zsh/sshs/hosts" -maxdepth 1 -type f ! -name "example*" -exec cp -p {} "${backup_dir}/zsh_hosts/" \; 2>/dev/null || true
+	fi
+	if [ -d "${SCRIPT_PATH}/zsh/.zsh/sshs/hosts" ]; then
+		find -H "${SCRIPT_PATH}/zsh/.zsh/sshs/hosts" -maxdepth 1 -type f ! -name "example*" -exec cp -p {} "${backup_dir}/zsh_hosts/" \; 2>/dev/null || true
+	fi
+
+	# 清理指向旧版 Stow 仓库的软链接，以便 chezmoi 创建实体目录和文件
+	local link target
+	while IFS= read -r link; do
+		[ -z "$link" ] && continue
+		target=$(readlink "$link" 2>/dev/null || true)
+		if [[ "$target" == *"dotfiles/"* ]]; then
+			yellow_echo "清理旧版 Stow 软链: $link -> $target"
+			rm "$link"
+		fi
+	done < <(
+		find "${HOME}" -maxdepth 1 -type l 2>/dev/null
+		find "${HOME}/.config" "${HOME}/.ssh" "${HOME}/.local/share" -maxdepth 3 -type l 2>/dev/null
+	)
+}
+
+function restore_legacy_local_configs() {
+	local backup_dir=$1
+	if [ -d "${backup_dir}/ssh_config_d" ]; then
+		mkdir -p "${HOME}/.ssh/config.d"
+		find "${backup_dir}/ssh_config_d" -maxdepth 1 -type f -exec cp -np {} "${HOME}/.ssh/config.d/" \; 2>/dev/null || true
+	fi
+	if [ -d "${backup_dir}/zsh_hosts" ]; then
+		mkdir -p "${HOME}/.zsh/sshs/hosts"
+		find "${backup_dir}/zsh_hosts" -maxdepth 1 -type f -exec cp -np {} "${HOME}/.zsh/sshs/hosts/" \; 2>/dev/null || true
+	fi
+	rm -rf "${backup_dir}"
+}
+
+function apply_configs() {
 	local operation=$1
 	blue_echo "----------------------------"
-	blue_echo "$operation: 开始链接配置...   "
+	blue_echo "$operation: 开始通过 chezmoi 应用配置..."
 	blue_echo "----------------------------"
 
-	# 初始化并更新子模块（如 tmux/.config/tmux/.tmux）
-	git -C "${SCRIPT_PATH}" submodule update --init --recursive
-
-	# 预先创建标准目录，避免 stow 将整个 ~/.config 或 ~/.local/share 折叠为目录软链
 	mkdir -p "${HOME}/.config" "${HOME}/.local/bin" "${HOME}/.local/share"
+	export PATH="${HOME}/.local/bin:${PATH}"
 
-	for config in "${stow_configs[@]}"; do
-		echo "正在链接 $config 配置..."
+	if ! command -v chezmoi >/dev/null 2>&1; then
+		yellow_echo "未检测到 chezmoi，正在自动安装至 ${HOME}/.local/bin..."
+		sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "${HOME}/.local/bin"
+	fi
 
-		# 检查配置目录是否存在
-		if [ ! -d "${SCRIPT_PATH}/$config" ]; then
-			yellow_echo "警告: 配置目录 $config 不存在，跳过"
-			continue
-		fi
+	local backup_dir
+	backup_dir=$(mktemp -d)
+	cleanup_legacy_stow_links "${backup_dir}"
 
-		# 实际执行链接操作
-		stow -R -d "${SCRIPT_PATH}" -t "${HOME}" "$config"
-	done
+	chezmoi init --apply --promptDefaults --source "${SCRIPT_PATH}"
+
+	restore_legacy_local_configs "${backup_dir}"
 
 	green_echo "-----------------------------------------"
-	green_echo "所有配置已链接完成。链接目录为 ~/.config/ 和 ~"
+	green_echo "所有配置已通过 chezmoi 同步完成（目标目录: ~）"
 	green_echo "-----------------------------------------"
 }
 

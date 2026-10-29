@@ -1,6 +1,0 @@
-[submodule "tmux/.config/tmux/.tmux"]
-	path = tmux/.config/tmux/.tmux
-	url = https://github.com/double12gzh/.tmux.git
-[submodule "gotests/.config/gotest/gotest-template"]
-	path = gotests/.config/gotest/gotest-template
-	url = https://github.com/double12gzh/gotest-template.git
