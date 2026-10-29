@@ -3,36 +3,34 @@
 set -e
 set -o pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
+
 ######################################################################
 #                           Julia Install                            #
 ######################################################################
-JULIA_DIR=$HOME/tools/julia
-JULIA_SRC_NAME=$HOME/packages/julia.tar.gz
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    JULIA_LINK="https://julialang-s3.julialang.org/bin/mac/aarch64/1.9/julia-1.9.4-macaarch64.tar.gz"
+JULIA_VERSION="1.10.8"
+JULIA_DIR="$TOOLS_DIR/julia"
+JULIA_SRC_NAME="$PACKAGES_DIR/julia-${JULIA_VERSION}-${OS_TYPE}-${ARCH_TYPE}.tar.gz"
+
+if [[ "$OS_TYPE" == "macos" && "$ARCH_TYPE" == "arm64" ]]; then
+    JULIA_LINK="https://julialang-s3.julialang.org/bin/mac/aarch64/1.10/julia-${JULIA_VERSION}-macaarch64.tar.gz"
+elif [[ "$OS_TYPE" == "macos" ]]; then
+    JULIA_LINK="https://julialang-s3.julialang.org/bin/mac/x64/1.10/julia-${JULIA_VERSION}-mac64.tar.gz"
+elif [[ "$ARCH_TYPE" == "arm64" ]]; then
+    JULIA_LINK="https://julialang-s3.julialang.org/bin/linux/aarch64/1.10/julia-${JULIA_VERSION}-linux-aarch64.tar.gz"
 else
-    JULIA_LINK="https://julialangnightlies-s3.julialang.org/bin/linux/x64/julia-latest-linux64.tar.gz"
+    JULIA_LINK="https://julialang-s3.julialang.org/bin/linux/x64/1.10/julia-${JULIA_VERSION}-linux-x86_64.tar.gz"
 fi
-if [[ ! -f "$JULIA_DIR/bin/julia" ]]; then
-    echo "Install Julia"
-    if [[ ! -f $JULIA_SRC_NAME ]]; then
-        echo "Downloading Julia"
-        wget "$JULIA_LINK" -O "$JULIA_SRC_NAME"
-    fi
 
-    if [[ ! -d "$JULIA_DIR" ]]; then
-        echo "Creating Julia directory under tools directory"
-        mkdir -p "$JULIA_DIR"
-        echo "Extracting Julia"
-        tar -xvzf "$JULIA_SRC_NAME" -C "$JULIA_DIR" --strip-components 1
-    fi
+if [[ ! -x "$JULIA_DIR/bin/julia" ]]; then
+    info_install "Julia (${JULIA_VERSION})"
+    download_file "$JULIA_LINK" "$JULIA_SRC_NAME"
+    extract_archive "$JULIA_SRC_NAME" "$JULIA_DIR" 1
 
-    if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<'EOT' >>"$RC_FILE"
-alias julia='$HOME/tools/julia/bin/julia'
+    append_rc_once "tools/julia/bin" <<'EOT'
 export PATH="$PATH:$HOME/tools/julia/bin"
 EOT
-    fi
 else
-    printf "${tty_blue}Julia${tty_reset} is already installed, skip it.\n"
+    info_skip "Julia"
 fi

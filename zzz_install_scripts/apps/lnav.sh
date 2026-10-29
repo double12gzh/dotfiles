@@ -2,34 +2,43 @@
 # shellcheck disable=SC2059,SC2154
 set -e
 set -o pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
 
 ######################################################################
 #                             Lnav Part                              #
 ######################################################################
-LNAV_DIR=$HOME/tools/lnav
-LNAV_SRC_NAME=$HOME/packages/lnav.zip
-LNAV_LINK="https://github.com/tstack/lnav/releases/download/v0.11.1/lnav-0.11.1-x86_64-linux-musl.zip"
-if [[ -z $(command -v lnav) ]]; then
-    echo "Install lnav"
-    if [[ ! -f $LNAV_SRC_NAME ]]; then
-        echo "Downloading lnav and renaming"
-        wget "$LNAV_LINK" -O "$LNAV_SRC_NAME"
-    fi
+LNAV_VERSION="0.12.2"
+LNAV_DIR="$TOOLS_DIR/lnav"
 
-    if [[ ! -d $LNAV_DIR ]]; then
-        echo "Creating lnav directory under tools directory"
-        mkdir -p "$LNAV_DIR"
-        unzip "$LNAV_SRC_NAME" -d "$LNAV_DIR"
-        for f in "$LNAV_DIR"/lnav-*/*; do cp "$f" "$LNAV_DIR"; done
-        rm -r "$LNAV_DIR"/lnav-*
-    fi
+if has_cmd lnav || [[ -x "$LNAV_DIR/lnav" ]]; then
+    info_skip "Lnav"
+    return 0 2>/dev/null || exit 0
+fi
 
-    if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<'EOT' >>"$RC_FILE"
+if [[ "$OS_TYPE" == "macos" ]]; then
+    if has_cmd brew; then
+        info_install "lnav (via Homebrew)"
+        brew install lnav
+        return 0 2>/dev/null || exit 0
+    fi
+    LNAV_ARCH="$([[ "$ARCH_TYPE" == "arm64" ]] && echo "arm64" || echo "x86_64")"
+    LNAV_LINK="https://github.com/tstack/lnav/releases/download/v${LNAV_VERSION}/lnav-${LNAV_VERSION}-os-x-${LNAV_ARCH}.zip"
+else
+    LNAV_ARCH="$([[ "$ARCH_TYPE" == "arm64" ]] && echo "arm64" || echo "x86_64")"
+    LNAV_LINK="https://github.com/tstack/lnav/releases/download/v${LNAV_VERSION}/lnav-${LNAV_VERSION}-linux-musl-${LNAV_ARCH}.zip"
+fi
+
+LNAV_SRC_NAME="$PACKAGES_DIR/lnav-${LNAV_VERSION}-${OS_TYPE}-${ARCH_TYPE}.zip"
+info_install "lnav (${LNAV_VERSION})"
+download_file "$LNAV_LINK" "$LNAV_SRC_NAME"
+mkdir -p "$LNAV_DIR"
+unzip -q -o "$LNAV_SRC_NAME" -d "$LNAV_DIR"
+for f in "$LNAV_DIR"/lnav-*/*; do
+    [[ -e "$f" ]] && mv "$f" "$LNAV_DIR/"
+done
+rm -rf "$LNAV_DIR"/lnav-*
+
+append_rc_once "tools/lnav" <<'EOT'
 export PATH="$PATH:$HOME/tools/lnav"
 EOT
-    fi
-
-else
-    printf "${tty_blue}Lnav${tty_reset} is already installed, skip it.\n"
-fi

@@ -3,48 +3,57 @@
 set -e
 set -o pipefail
 
-# 获取脚本所在目录的绝对路径
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DEFAULT_APPS=(
+    ascii-image-converter
+    batcat
+    btop
+    chezmoi
+    cpufetch
+    delta
+    dua
+    exa
+    fdfind
+    fzf
+    fzy
+    glow
+    jq
+    lazygit
+    lf
+    lnav
+    navi
+    nvim
+    pistol
+    qfc
+    ripgrep
+    starship
+    termpix
+    tmux
+    treesitter
+    ugrep
+    viu
+    xplr
+    zoxide
+    zinit
+)
 
+# 支持按参数指定安装单个或多个应用（如: bash install_app.sh nvim fzf），无参数则安装默认列表
+if [[ $# -gt 0 ]]; then
+    TARGET_APPS=("$@")
+    set --
+else
+    TARGET_APPS=("${DEFAULT_APPS[@]}")
+fi
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/config.sh"
 
-source "${SCRIPT_DIR}/apps/ascii-image-converter.sh"
-source "${SCRIPT_DIR}/apps/batcat.sh"
-source "${SCRIPT_DIR}/apps/btop.sh"
-# source "${SCRIPT_DIR}/apps/chafa.sh"
-source "${SCRIPT_DIR}/apps/cpufetch.sh"
-source "${SCRIPT_DIR}/apps/delta.sh"
-# source "${SCRIPT_DIR}/apps/direnv.sh"
-source "${SCRIPT_DIR}/apps/dua.sh"
-source "${SCRIPT_DIR}/apps/exa.sh"
-source "${SCRIPT_DIR}/apps/fdfind.sh"
-source "${SCRIPT_DIR}/apps/fzf.sh"
-source "${SCRIPT_DIR}/apps/fzy.sh"
-source "${SCRIPT_DIR}/apps/glow.sh"
-source "${SCRIPT_DIR}/apps/jq.sh"
-source "${SCRIPT_DIR}/apps/lazygit.sh"
-source "${SCRIPT_DIR}/apps/lf.sh"
-source "${SCRIPT_DIR}/apps/lnav.sh"
-# source "${SCRIPT_DIR}/apps/magick.sh"
-source "${SCRIPT_DIR}/apps/navi.sh"
-source "${SCRIPT_DIR}/apps/nvim.sh"
-source "${SCRIPT_DIR}/apps/pistol.sh"
-source "${SCRIPT_DIR}/apps/qfc.sh"
-source "${SCRIPT_DIR}/apps/ripgrep.sh"
-# source "${SCRIPT_DIR}/apps/sheldon.sh"
-# source "${SCRIPT_DIR}/apps/silicon.sh"
-source "${SCRIPT_DIR}/apps/starship.sh"
-source "${SCRIPT_DIR}/apps/chezmoi.sh"
-source "${SCRIPT_DIR}/apps/termpix.sh"
-source "${SCRIPT_DIR}/apps/tmux.sh"
-# source "${SCRIPT_DIR}/apps/trashy.sh"
-source "${SCRIPT_DIR}/apps/treesitter.sh"
-source "${SCRIPT_DIR}/apps/ugrep.sh"
-source "${SCRIPT_DIR}/apps/viu.sh"
-source "${SCRIPT_DIR}/apps/xplr.sh"
-source "${SCRIPT_DIR}/apps/zoxide.sh"
-#source "${SCRIPT_DIR}/apps/zplug.sh"
-source "${SCRIPT_DIR}/apps/zinit.sh"
+for app in "${TARGET_APPS[@]}"; do
+    app_script="${SCRIPT_DIR}/apps/${app%.sh}.sh"
+    if [[ -f "$app_script" ]]; then
+        source "$app_script"
+    else
+        warn "App installer not found: $app_script"
+    fi
+done
 
-printf "\n${tty_yellow}====================Script ends====================${tty_reset}\n\n"
-printf "Remember ${tty_yellow}\"source ~/.bashrc or source ~/.zshrc\"${tty_reset} to make \$PATH valid.\n"
+printf "\n${tty_yellow}==================== App Install Complete ====================${tty_reset}\n"

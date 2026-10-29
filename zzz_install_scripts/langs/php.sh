@@ -3,56 +3,50 @@
 set -e
 set -o pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
+
 ######################################################################
 #                        PHP/Composer Install                        #
 ######################################################################
-#NOTE: sudo apt install build-essential autoconf bison re2c libxml2-dev libsqlite3-dev
-PHP_DIR=$HOME/tools/php
+PHP_DIR="$TOOLS_DIR/php"
 PHP_LINK="https://github.com/php/php-src.git"
-if [[ -z "$(command -v php)" ]]; then
-    echo "Install PHP"
 
-    if [[ ! -d "$PHP_DIR" ]]; then
-        echo "Creating php directory under tools directory"
-        mkdir -p "$PHP_DIR"
-        echo "git clone php repo"
-        git clone --depth=1 "$PHP_LINK" "$PHP_DIR"
-        cd "$PHP_DIR"
-        ./buildconf
-        if [[ "$OSTYPE" == "darwin"* ]]; then
-            ./configure --prefix="$PHP_DIR" --with-openssl --with-zlib --with-iconv=$(brew --prefix libiconv)
-        else
-            ./configure --prefix="$PHP_DIR" --with-openssl --with-zlib
+if ! has_cmd php && [[ ! -x "$PHP_DIR/bin/php" ]]; then
+    info_install "PHP & Composer"
+    if [[ ! -d "$PHP_DIR/src" ]]; then
+        git clone --depth=1 "$PHP_LINK" "$PHP_DIR/src"
+    fi
+    (
+        cd "$PHP_DIR/src"
+        ./buildconf --force
+        CONF_OPTS=(--prefix="$PHP_DIR" --with-openssl --with-zlib)
+        if [[ "$OS_TYPE" == "macos" ]] && has_cmd brew && brew --prefix libiconv >/dev/null 2>&1; then
+            CONF_OPTS+=("--with-iconv=$(brew --prefix libiconv)")
         fi
-        make -j4
+        ./configure "${CONF_OPTS[@]}"
+        make -j"$CPU_CORES"
         make install
-    fi
+    )
 
-    # NOTE: sudo apt install zlib1g zlib1g-dev
-    PHP=$PHP_DIR/bin/php
-    EXPECTED_CHECKSUM="$($PHP -r 'copy("https://composer.github.io/installer.sig", "php://stdout");')"
-    "$PHP" -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-    ACTUAL_CHECKSUM="$($PHP -r "echo hash_file('sha384', 'composer-setup.php');")"
+    PHP_BIN="$PHP_DIR/bin/php"
+    (
+        cd "$PACKAGES_DIR"
+        EXPECTED_CHECKSUM="$("$PHP_BIN" -r 'copy("https://composer.github.io/installer.sig", "php://stdout");')"
+        "$PHP_BIN" -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+        ACTUAL_CHECKSUM="$("$PHP_BIN" -r "echo hash_file('sha384', 'composer-setup.php');")"
+        if [[ "$EXPECTED_CHECKSUM" != "$ACTUAL_CHECKSUM" ]]; then
+            rm -f composer-setup.php
+            abort "ERROR: Invalid Composer installer checksum"
+        fi
+        "$PHP_BIN" composer-setup.php --quiet
+        rm -f composer-setup.php
+        mv composer.phar "$PHP_DIR/bin/composer"
+    )
 
-    if [ "$EXPECTED_CHECKSUM" != "$ACTUAL_CHECKSUM" ]; then
-        echo >&2 'ERROR: Invalid installer checksum'
-        rm composer-setup.php
-        exit 1
-    fi
-
-    $PHP composer-setup.php --quiet
-    rm composer-setup.php
-    mv composer.phar "$PHP_DIR/bin/composer"
-
-    if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<'EOT' >>"$RC_FILE"
-alias php='$HOME/tools/php/bin/php'
+    append_rc_once "tools/php/bin" <<'EOT'
 export PATH="$PATH:$HOME/tools/php/bin"
 EOT
-    fi
 else
-    printf "${tty_blue}Php${tty_reset} is already installed, skip it.\n"
-    printf "    ${tty_blue}Composer${tty_reset} is already installed, skip it.\n"
+    info_skip "PHP & Composer"
 fi
-
-cd "$SCRIPT_DIR"

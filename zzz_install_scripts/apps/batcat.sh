@@ -1,14 +1,7 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC2059,SC2154
 set -e
 set -o pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
 
-######################################################################
-#                            Batcat Part                             #
-######################################################################
-if [[ -z $(command -v bat) ]]; then
-    echo "Install batcat"
-    cargo install bat --locked
-else
-    printf "${tty_blue}Batcat${tty_reset} is already installed, skip it.\n"
-fi
+install_cargo_pkg bat bat --locked

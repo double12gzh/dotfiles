@@ -1,14 +1,7 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC2059,SC2154
 set -e
 set -o pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
 
-######################################################################
-#                            Silicon Part                            #
-######################################################################
-if [[ -z $(command -v silicon) ]]; then
-    echo "Install Silicon"
-    cargo install --git https://github.com/aloxaf/silicon
-else
-    printf "${tty_blue}Silicon${tty_reset} is already installed, skip it.\n"
-fi
+install_cargo_pkg silicon silicon --locked

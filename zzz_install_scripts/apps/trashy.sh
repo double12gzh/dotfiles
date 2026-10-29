@@ -1,15 +1,7 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC2059,SC2154
 set -e
 set -o pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
 
-######################################################################
-#                            Trashy Part                             #
-######################################################################
-# Url: https://github.com/oberblastmeister/trashy
-if [[ -z $(command -v trash) ]]; then
-    echo "Install Trashy"
-    cargo install trashy
-else
-    printf "${tty_blue}Trashy${tty_reset} is already installed, skip it.\n"
-fi
+install_cargo_pkg trash trashy --locked

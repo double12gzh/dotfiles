@@ -2,53 +2,40 @@
 # shellcheck disable=SC2059,SC2154
 set -e
 set -o pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
 
 ######################################################################
 #                           Cpufetch Part                            #
 ######################################################################
-CPUFETCH_DIR=$HOME/tools/cpufetch
-if [[ ! -d $CPUFETCH_DIR ]]; then
-    echo "Creating cpufetch directory under tools directory"
-    mkdir -p "$CPUFETCH_DIR"
+CPUFETCH_VERSION="v1.06"
+CPUFETCH_DIR="$TOOLS_DIR/cpufetch"
+
+if has_cmd cpufetch || [[ -x "$CPUFETCH_DIR/cpufetch" ]]; then
+    info_skip "Cpufetch"
+    return 0 2>/dev/null || exit 0
 fi
 
-function install_cpufetch_for_macos() {
-    local src_dir="$CPUFETCH_DIR"_src
-    # 添加trap，确保在函数退出时删除临时目录
-    trap 'rm -rf "$src_dir"; echo "清理临时文件 $src_dir"' EXIT ERR INT TERM
-    
-    git clone https://github.com/Dr-Noob/cpufetch "$src_dir"
-    cd "$src_dir"
-    make
-    cp cpufetch "$CPUFETCH_DIR/cpufetch"
+info_install "Cpufetch"
+mkdir -p "$CPUFETCH_DIR"
+
+if [[ "$OS_TYPE" == "macos" ]]; then
+    # 使用子 Shell 与临时目录隔离编译，避免污染父 Shell 的工作目录与 EXIT trap
+    (
+        tmp_src="$(mktemp -d)"
+        trap 'rm -rf "$tmp_src"' EXIT
+        git clone --depth=1 https://github.com/Dr-Noob/cpufetch "$tmp_src"
+        make -C "$tmp_src" -j"$CPU_CORES"
+        cp "$tmp_src/cpufetch" "$CPUFETCH_DIR/cpufetch"
+        chmod +x "$CPUFETCH_DIR/cpufetch"
+    )
+else
+    CPUFETCH_ARCH="$([[ "$ARCH_TYPE" == "arm64" ]] && echo "arm64" || echo "x86-64")"
+    CPUFETCH_LINK="https://github.com/Dr-Noob/cpufetch/releases/download/${CPUFETCH_VERSION}/cpufetch_${CPUFETCH_ARCH}_linux"
+    download_file "$CPUFETCH_LINK" "$CPUFETCH_DIR/cpufetch"
     chmod +x "$CPUFETCH_DIR/cpufetch"
-    cd ..
-    rm -rf "$src_dir"
-    # 成功完成后移除trap
-    trap - EXIT ERR INT TERM
-}
+fi
 
-function install_cpufetch_for_linux() {
-    CPUFETCH_LINK="https://github.com/Dr-Noob/cpufetch/releases/download/v1.03/cpufetch_x86-64_linux"
-    echo "Download to $HOME/tools/cpufetch directory"
-    wget "$CPUFETCH_LINK" -O "$CPUFETCH_DIR/cpufetch"
-    chmod +x "$CPUFETCH_DIR/cpufetch"
-}
-
-if [[ -z $(command -v cpufetch) ]]; then
-    echo "Install cpufetch"
-
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-        install_cpufetch_for_macos
-    else
-        install_cpufetch_for_linux
-    fi
-
-    if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<'EOT' >>"$RC_FILE"
+append_rc_once "tools/cpufetch" <<'EOT'
 export PATH="$PATH:$HOME/tools/cpufetch"
 EOT
-    fi
-else
-    printf "${tty_blue}Cpufetch${tty_reset} is already installed, skip it.\n"
-fi

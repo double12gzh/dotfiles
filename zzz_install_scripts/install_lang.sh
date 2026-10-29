@@ -3,21 +3,36 @@
 set -e
 set -o pipefail
 
-# Get the directory where the script is located
+DEFAULT_LANGS=(
+    conda
+    golang
+    java
+    julia
+    lua
+    nodejs
+    perl
+    ruby
+    rust
+)
+
+# 支持按参数指定安装单个或多个语言（如: bash install_lang.sh golang rust），无参数则安装默认列表
+if [[ $# -gt 0 ]]; then
+    TARGET_LANGS=("$@")
+    set --
+else
+    TARGET_LANGS=("${DEFAULT_LANGS[@]}")
+fi
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SCRIPT_DIR}/config.sh"
 
-source "$SCRIPT_DIR/config.sh"
+for lang in "${TARGET_LANGS[@]}"; do
+    lang_script="${SCRIPT_DIR}/langs/${lang%.sh}.sh"
+    if [[ -f "$lang_script" ]]; then
+        source "$lang_script"
+    else
+        warn "Language installer not found: $lang_script"
+    fi
+done
 
-source "$SCRIPT_DIR/langs/conda.sh"
-source "$SCRIPT_DIR/langs/golang.sh"
-source "$SCRIPT_DIR/langs/java.sh"
-source "$SCRIPT_DIR/langs/julia.sh"
-source "$SCRIPT_DIR/langs/lua.sh"
-source "$SCRIPT_DIR/langs/nodejs.sh"
-source "$SCRIPT_DIR/langs/perl.sh"
-#source "$SCRIPT_DIR/langs/php.sh"
-source "$SCRIPT_DIR/langs/ruby.sh"
-source "$SCRIPT_DIR/langs/rust.sh"
-
-printf "\n${tty_yellow}====================Script ends====================${tty_reset}\n\n"
-printf "Remember ${tty_yellow}\"source ~/.bashrc or source ~/.zshrc\"${tty_reset} to make \$PATH valid.\n"
+printf "\n${tty_yellow}==================== Language Install Complete ====================${tty_reset}\n"

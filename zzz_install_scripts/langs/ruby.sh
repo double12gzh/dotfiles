@@ -3,41 +3,37 @@
 set -e
 set -o pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
+
 ######################################################################
 #                          Ruby/Gem Install                          #
 ######################################################################
-RUBY_DIR=$HOME/tools/ruby
-RUBY_TAR_DIR=$HOME/tools/ruby/tarball
-RUBY_SRC_NAME=$HOME/packages/ruby.tar.gz
-RUBY_LINK="https://cache.ruby-lang.org/pub/ruby/3.1/ruby-3.1.2.tar.gz"
-if [[ ! -f "$RUBY_DIR/bin/ruby" ]]; then
-    echo "Install Ruby"
-    if [[ ! -f $RUBY_SRC_NAME ]]; then
-        echo "Downloading ruby and renaming"
-        wget $RUBY_LINK -O "$RUBY_SRC_NAME"
-    fi
+RUBY_VERSION="3.3.6"
+RUBY_DIR="$TOOLS_DIR/ruby"
+RUBY_TAR_DIR="$TOOLS_DIR/ruby/tarball"
+RUBY_SRC_NAME="$PACKAGES_DIR/ruby-${RUBY_VERSION}.tar.gz"
+RUBY_LINK="https://cache.ruby-lang.org/pub/ruby/3.3/ruby-${RUBY_VERSION}.tar.gz"
 
-    if [[ ! -d "$RUBY_DIR" ]]; then
-        echo "Creating ruby directory under tools directory"
-        mkdir -p "$RUBY_DIR"
-        mkdir -p "$RUBY_TAR_DIR"
-        echo "Extracting to $HOME/tools/ruby/tarball directory"
-        tar xvf "$RUBY_SRC_NAME" -C "$RUBY_TAR_DIR" --strip-components 1
+if [[ ! -x "$RUBY_DIR/bin/ruby" ]]; then
+    info_install "Ruby (${RUBY_VERSION})"
+    download_file "$RUBY_LINK" "$RUBY_SRC_NAME"
+    extract_archive "$RUBY_SRC_NAME" "$RUBY_TAR_DIR" 1
+    (
         cd "$RUBY_TAR_DIR"
-        # NOTE: sudo apt install openssl libssl-dev
-        ./configure --prefix="$RUBY_DIR" --with-openssl-dir=/etc/ssl
-        make
+        OPENSSL_OPT=()
+        if [[ "$OS_TYPE" == "macos" ]] && has_cmd brew && brew --prefix openssl >/dev/null 2>&1; then
+            OPENSSL_OPT=("--with-openssl-dir=$(brew --prefix openssl)")
+        fi
+        ./configure --prefix="$RUBY_DIR" "${OPENSSL_OPT[@]}"
+        make -j"$CPU_CORES"
         make install
+    )
+    rm -rf "$RUBY_TAR_DIR"
 
-    fi
-
-    if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<'EOT' >>"$RC_FILE"
-alias ruby='$HOME/tools/ruby/bin/ruby'
+    append_rc_once "tools/ruby/bin" <<'EOT'
 export PATH="$PATH:$HOME/tools/ruby/bin"
 EOT
-    fi
 else
-    printf "${tty_blue}Ruby${tty_reset} is already installed, skip it.\n"
-    printf "\t${tty_blue}Gem${tty_reset} is already installed, skip it.\n"
+    info_skip "Ruby & Gem"
 fi

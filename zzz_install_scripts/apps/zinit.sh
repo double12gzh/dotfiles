@@ -2,15 +2,18 @@
 # shellcheck disable=SC2059,SC2154
 set -e
 set -o pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
 
 ######################################################################
 #                            Zinit Part                              #
 ######################################################################
-
 ZINIT_HOME="${HOME}/.local/share/zinit/zinit.git"
+
 if [[ ! -d "$ZINIT_HOME" ]]; then
-    echo "Installing Zinit"
-    git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+    info_install "Zinit"
+    mkdir -p "$(dirname "$ZINIT_HOME")"
+    git clone --depth=1 https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 else
-    echo "$ZINIT_HOME alreay exists, skipped"
+    info_skip "Zinit"
 fi

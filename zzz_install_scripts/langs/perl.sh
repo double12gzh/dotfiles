@@ -3,51 +3,36 @@
 set -e
 set -o pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
+
 ######################################################################
 #                      Perl/Cpan/Cpanm Install                       #
 ######################################################################
-PERL_DIR=$HOME/tools/perl
-PERL_SRC_NAME=$HOME/packages/perl.tar.gz
-PERL_LINK="https://www.cpan.org/src/5.0/perl-5.36.0.tar.gz"
-CPANM_DIR=$HOME/tools/cpanm
+PERL_VERSION="5.38.2"
+PERL_DIR="$TOOLS_DIR/perl"
+PERL_SRC_NAME="$PACKAGES_DIR/perl-${PERL_VERSION}.tar.gz"
+PERL_LINK="https://www.cpan.org/src/5.0/perl-${PERL_VERSION}.tar.gz"
+CPANM_DIR="$TOOLS_DIR/cpanm"
 
-if [[ ! -f "$PERL_DIR/bin/perl" ]]; then
-    echo "Install perl"
-    if [[ ! -f $PERL_SRC_NAME ]]; then
-        echo "Downloading Perl and renaming"
-        wget $PERL_LINK -O "$PERL_SRC_NAME"
-    fi
-
-    if [[ ! -d "$PERL_DIR" ]]; then
-        echo "Creating Perl directory under tools directory"
-        mkdir -p "$PERL_DIR"
-        mkdir -p "$CPANM_DIR"
-        echo "Extracting to $HOME/tools/perl directory"
-        tar xvf "$PERL_SRC_NAME" -C "$PERL_DIR" --strip-components 1
+if [[ ! -x "$PERL_DIR/bin/perl" ]]; then
+    info_install "Perl (${PERL_VERSION}) & cpanm"
+    download_file "$PERL_LINK" "$PERL_SRC_NAME"
+    mkdir -p "$CPANM_DIR"
+    extract_archive "$PERL_SRC_NAME" "$PERL_DIR" 1
+    (
         cd "$PERL_DIR"
         ./Configure -des -Dprefix="$PERL_DIR"
-        make
+        make -j"$CPU_CORES"
         make install
-
-        alias perl="~/tools/perl/bin/perl"
-        echo "Install cpanm"
         export PERL_CPANM_HOME="$CPANM_DIR"
-        curl -L https://cpanmin.us | "$PERL_DIR/bin/perl" - App::cpanminus
-    fi
+        curl -fsSL https://cpanmin.us | "$PERL_DIR/bin/perl" - App::cpanminus
+    )
 
-    if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<'EOT' >>"$RC_FILE"
-alias perl='$HOME/tools/perl/bin/perl'
-alias cpan='$HOME/tools/perl/bin/cpan'
-alias cpanm='$HOME/tools/perl/bin/cpanm'
+    append_rc_once "tools/perl/bin" <<'EOT'
 export PATH="$PATH:$HOME/tools/perl/bin"
 export PERL_CPANM_HOME="$HOME/tools/cpanm"
 EOT
-    fi
 else
-    printf "${tty_blue}Perl${tty_reset} is already installed, skip it.\n"
-    printf "\t${tty_blue}Cpan${tty_reset} is already installed, skip it.\n"
-    printf "\t${tty_blue}Cpanm${tty_reset} is already installed, skip it.\n"
+    info_skip "Perl & Cpanm"
 fi
-
-cd "$SCRIPT_DIR"

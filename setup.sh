@@ -298,6 +298,7 @@ function install_apps() {
 	blue_echo "----------------------------"
 	blue_echo "$operation: 开始安装应用...   "
 	blue_echo "----------------------------"
+	set --
 	source "${SCRIPT_PATH}/zzz_install_scripts/install_app.sh"
 	if [[ $? -eq 0 ]]; then
 		green_echo "应用安装成功"
@@ -311,6 +312,7 @@ function install_langs() {
 	blue_echo "----------------------------"
 	blue_echo "$operation: 开始安装编程语言..."
 	blue_echo "----------------------------"
+	set --
 	source "${SCRIPT_PATH}/zzz_install_scripts/install_lang.sh"
 	if [[ $? -eq 0 ]]; then
 		green_echo "编程语言安装成功"

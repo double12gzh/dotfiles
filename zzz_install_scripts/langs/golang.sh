@@ -3,38 +3,29 @@
 set -e
 set -o pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
+
 ######################################################################
 #                           Golang Install                           #
 ######################################################################
-GO_DIR=$HOME/tools/golang
-GO_SRC_NAME=$HOME/packages/golang.tar.gz
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    GO_LINK="https://go.dev/dl/go1.24.1.darwin-arm64.tar.gz"
-else
-    GO_LINK="https://go.dev/dl/go1.24.1.linux-amd64.tar.gz"
-fi
-# if [[ -z "$(command -v go)" ]] && [[ ! -f "$GO_DIR/bin/go" ]]; then
-if [[ ! -f "$GO_DIR/bin/go" ]]; then
-    echo "Install Golang"
-    if [[ ! -f $GO_SRC_NAME ]]; then
-        echo "Downloading go and renaming"
-        wget $GO_LINK -O "$GO_SRC_NAME"
-    fi
+GO_VERSION="${GO_VERSION:-1.24.1}"
+GO_DIR="$TOOLS_DIR/golang"
+GO_OS="$([[ "$OS_TYPE" == "macos" ]] && echo "darwin" || echo "linux")"
+GO_ARCH="$([[ "$ARCH_TYPE" == "arm64" ]] && echo "arm64" || echo "amd64")"
+GO_SRC_NAME="$PACKAGES_DIR/go${GO_VERSION}.${GO_OS}-${GO_ARCH}.tar.gz"
+GO_LINK="https://go.dev/dl/go${GO_VERSION}.${GO_OS}-${GO_ARCH}.tar.gz"
 
-    if [[ ! -d "$GO_DIR" ]]; then
-        echo "Creating golang directory under tools directory"
-        mkdir -p "$GO_DIR"
-        echo "Extracting to $HOME/tools/golang directory"
-        tar xvf "$GO_SRC_NAME" -C "$GO_DIR" --strip-components 1
-    fi
+if ! has_cmd go && [[ ! -x "$GO_DIR/bin/go" ]]; then
+    info_install "Golang (${GO_VERSION} ${GO_OS}/${GO_ARCH})"
+    download_file "$GO_LINK" "$GO_SRC_NAME"
+    extract_archive "$GO_SRC_NAME" "$GO_DIR" 1
 
-    if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<'EOT' >>"$RC_FILE"
-alias go='$HOME/tools/golang/bin/go'
-export PATH="$PATH:$HOME/tools/golang/bin"
-export PATH="$PATH:$HOME/go/bin"
+    append_rc_once "tools/golang/bin" <<'EOT'
+export PATH="$PATH:$HOME/tools/golang/bin:$HOME/go/bin"
 EOT
-    fi
 else
-    printf "${tty_blue}Golang${tty_reset} is already installed, skip it.\n"
+    info_skip "Golang"
 fi
+
+export PATH="$GO_DIR/bin:$HOME/go/bin:$PATH"

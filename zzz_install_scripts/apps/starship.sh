@@ -1,14 +1,7 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC2059,SC2154
 set -e
 set -o pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
 
-######################################################################
-#                           Starship Part                            #
-######################################################################
-if [[ -z $(command -v starship) ]]; then
-    echo "Install starship"
-    cargo install starship --locked
-else
-    printf "${tty_blue}Starship${tty_reset} is already installed, skip it.\n"
-fi
+install_cargo_pkg starship starship --locked

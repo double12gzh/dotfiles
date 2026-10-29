@@ -3,19 +3,23 @@
 set -e
 set -o pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
+
 ######################################################################
 #                         Rust/Cargo Install                         #
 ######################################################################
-# Use rustup
-if [[ -z "$(command -v cargo)" ]]; then
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+export PATH="$HOME/.cargo/bin:$PATH"
 
-    if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<'EOT' >>"$RC_FILE"
-[ -f $HOME/.cargo/env ] && source "$HOME/.cargo/env"
+if ! has_cmd cargo; then
+    info_install "Rust & Cargo (via rustup)"
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+
+    append_rc_once ".cargo/env" <<'EOT'
+[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
 EOT
-    fi
 else
-    printf "${tty_blue}Rust${tty_reset} is already installed, skip it.\n"
-    printf "\t${tty_blue}Cargo${tty_reset} is already installed, skip it.\n"
+    info_skip "Rust & Cargo"
 fi
+
+export PATH="$HOME/.cargo/bin:$PATH"

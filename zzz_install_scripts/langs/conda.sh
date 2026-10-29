@@ -3,52 +3,56 @@
 set -e
 set -o pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
+
 ######################################################################
-#               Install Anaconda/Miniconda(Python env)               #
+#               Install Miniconda/Anaconda (Python env)              #
 ######################################################################
 
-# Anaconda (INSTALL_ANACONDA=true) or Miniconda (INSTALL_ANACONDA=false)
-INSTALL_ANACONDA=true
+# 默认安装轻量级 Miniconda3；如需完整版 Anaconda 可设置 INSTALL_ANACONDA=true
+INSTALL_ANACONDA="${INSTALL_ANACONDA:-false}"
 
-if [[ $INSTALL_ANACONDA = true ]]; then
-    CONDA_DIR=$HOME/tools/anaconda
-    CONDA_NAME=Anaconda.sh
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-        CONDA_LINK="https://repo.anaconda.com/archive/Anaconda3-2023.09-0-MacOSX-arm64.sh"
+if [[ "$INSTALL_ANACONDA" == "true" ]]; then
+    CONDA_DIR="$TOOLS_DIR/anaconda"
+    CONDA_NAME="Anaconda-${OS_TYPE}-${ARCH_TYPE}.sh"
+    if [[ "$OS_TYPE" == "macos" && "$ARCH_TYPE" == "arm64" ]]; then
+        CONDA_LINK="https://repo.anaconda.com/archive/Anaconda3-2024.10-1-MacOSX-arm64.sh"
+    elif [[ "$OS_TYPE" == "macos" ]]; then
+        CONDA_LINK="https://repo.anaconda.com/archive/Anaconda3-2024.10-1-MacOSX-x86_64.sh"
+    elif [[ "$ARCH_TYPE" == "arm64" ]]; then
+        CONDA_LINK="https://repo.anaconda.com/archive/Anaconda3-2024.10-1-Linux-aarch64.sh"
     else
-        CONDA_LINK="https://repo.anaconda.com/archive/Anaconda3-2022.10-Linux-x86_64.sh"
+        CONDA_LINK="https://repo.anaconda.com/archive/Anaconda3-2024.10-1-Linux-x86_64.sh"
     fi
 else
-    CONDA_DIR=$HOME/tools/miniconda
-    CONDA_NAME=Miniconda.sh
-    if [[ "$OSTYPE" == "darwin"* ]]; then
+    CONDA_DIR="$TOOLS_DIR/miniconda"
+    CONDA_NAME="Miniconda3-${OS_TYPE}-${ARCH_TYPE}.sh"
+    if [[ "$OS_TYPE" == "macos" && "$ARCH_TYPE" == "arm64" ]]; then
         CONDA_LINK="https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh"
+    elif [[ "$OS_TYPE" == "macos" ]]; then
+        CONDA_LINK="https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh"
+    elif [[ "$ARCH_TYPE" == "arm64" ]]; then
+        CONDA_LINK="https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh"
     else
         CONDA_LINK="https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"
     fi
 fi
 
-if [[ ! -d $CONDA_DIR ]]; then
-    echo "Downloading and installing conda"
+if [[ ! -d "$CONDA_DIR" && ! -d "$TOOLS_DIR/anaconda" && ! -d "$TOOLS_DIR/miniconda" ]]; then
+    info_install "Conda ($CONDA_NAME)"
+    download_file "$CONDA_LINK" "$PACKAGES_DIR/$CONDA_NAME"
+    bash "$PACKAGES_DIR/$CONDA_NAME" -b -p "$CONDA_DIR"
 
-    if [[ ! -f "$HOME/packages/$CONDA_NAME" ]]; then
-        curl -Lo "$HOME/packages/$CONDA_NAME" $CONDA_LINK
-    fi
-
-    # Install conda silently
-    bash "$HOME/packages/$CONDA_NAME" -b -p "$CONDA_DIR"
-
-    if [[ $ADD_TO_SYSTEM_PATH = true ]]; then
-        cat <<'EOT' >>"$RC_FILE"
+    append_rc_once "conda initialize" <<EOT
 # >>> conda initialize >>>
-if [ -f $HOME/tools/anaconda/etc/profile.d/conda.sh ]; then
-    . "$HOME/tools/anaconda/etc/profile.d/conda.sh"
+if [ -f "$CONDA_DIR/etc/profile.d/conda.sh" ]; then
+    . "$CONDA_DIR/etc/profile.d/conda.sh"
 else
-    export PATH="$HOME/tools/anaconda/bin:$PATH"
+    export PATH="$CONDA_DIR/bin:\$PATH"
 fi
 # <<< conda initialize <<<
 EOT
-    fi
 else
-    printf "${tty_blue}Conda(Python)${tty_reset} is already installed, skip it.\n"
+    info_skip "Conda(Python)"
 fi

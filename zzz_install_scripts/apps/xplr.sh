@@ -1,14 +1,7 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC2059,SC2154
 set -e
 set -o pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
 
-######################################################################
-#                             Xplr Part                              #
-######################################################################
-if [[ -z $(command -v xplr) ]]; then
-    echo "Install xplr"
-    cargo install xplr --locked
-else
-    printf "${tty_blue}Xplr${tty_reset} is already installed, skip it.\n"
-fi
+install_cargo_pkg xplr xplr --locked

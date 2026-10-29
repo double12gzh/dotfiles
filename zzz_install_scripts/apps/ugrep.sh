@@ -2,31 +2,29 @@
 # shellcheck disable=SC2059,SC2154
 set -e
 set -o pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
 
 ######################################################################
 #                             Ugrep Part                             #
 ######################################################################
-UGREP_DIR=$HOME/tools/ugrep
+UGREP_DIR="$TOOLS_DIR/ugrep"
 UGREP_LINK="https://github.com/Genivia/ugrep.git"
-if [[ -z $(command -v ugrep) ]]; then
-    echo "Install ugrep"
 
-    if [[ ! -d $UGREP_DIR ]]; then
-        echo "Creating ugrep directory under tools directory"
-        mkdir -p "$UGREP_DIR"
-        echo "git clone to $HOME/tools/ugrep directory"
+if ! has_cmd ugrep && [[ ! -x "$UGREP_DIR/bin/ugrep" ]]; then
+    info_install "ugrep"
+    if [[ ! -d "$UGREP_DIR/.git" ]]; then
+        rm -rf "$UGREP_DIR"
         git clone --depth=1 "$UGREP_LINK" "$UGREP_DIR"
-        cd "$UGREP_DIR"
-        # INFO: build options: https://github.com/Genivia/ugrep#other-platforms-step-3-build
-        ./build.sh --enable-hidden --enable-pretty
-        cd "${SCRIPT_DIR}"
     fi
+    (
+        cd "$UGREP_DIR"
+        ./build.sh --enable-hidden --enable-pretty
+    )
 
-    if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<'EOT' >>"$RC_FILE"
+    append_rc_once "tools/ugrep/bin" <<'EOT'
 export PATH="$PATH:$HOME/tools/ugrep/bin"
 EOT
-    fi
 else
-    printf "${tty_blue}Ugrep${tty_reset} is already installed, skip it.\n"
+    info_skip "Ugrep"
 fi

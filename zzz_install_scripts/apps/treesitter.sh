@@ -2,47 +2,30 @@
 # shellcheck disable=SC2059,SC2154
 set -e
 set -o pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
 
 ######################################################################
 #                          Tree-sitter Part                          #
 ######################################################################
-TS_DIR=$HOME/tools/treesitter
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    TS_SRC_NAME=$HOME/packages/tree-sitter-macos-arm64.gz
-    TS_BIN_NAME=tree-sitter-macos-arm64
-    TS_LINK="https://github.com/tree-sitter/tree-sitter/releases/download/v0.25.3/tree-sitter-macos-arm64.gz"
-else
-    TS_SRC_NAME=$HOME/packages/tree-sitter-linux-x64.gz
-    TS_BIN_NAME=tree-sitter-linux-x64
-    TS_LINK="https://github.com/tree-sitter/tree-sitter/releases/download/v0.20.7/tree-sitter-linux-x64.gz"
-fi
+TS_VERSION="v0.25.3"
+TS_DIR="$TOOLS_DIR/treesitter"
+TS_OS="$([[ "$OS_TYPE" == "macos" ]] && echo "macos" || echo "linux")"
+TS_ARCH="$([[ "$ARCH_TYPE" == "arm64" ]] && echo "arm64" || echo "x64")"
+TS_SRC_NAME="$PACKAGES_DIR/tree-sitter-${TS_OS}-${TS_ARCH}.gz"
+TS_LINK="https://github.com/tree-sitter/tree-sitter/releases/download/${TS_VERSION}/tree-sitter-${TS_OS}-${TS_ARCH}.gz"
 
-if [[ -z $(command -v tree-sitter) ]] && [[ ! -f $TS_DIR/tree-sitter ]]; then
-    echo "Install treesitter"
-    if [[ ! -f $TS_SRC_NAME ]]; then
-        echo "Downloading treesitter and renaming"
-        wget "$TS_LINK" -P "$HOME/packages"
-    fi
+if ! has_cmd tree-sitter && [[ ! -x "$TS_DIR/tree-sitter" ]]; then
+    info_install "tree-sitter (${TS_VERSION} ${TS_OS}-${TS_ARCH})"
+    download_file "$TS_LINK" "$TS_SRC_NAME"
+    mkdir -p "$TS_DIR"
+    # 使用 gunzip -c 保留原始 .gz 归档文件不删除
+    gunzip -c "$TS_SRC_NAME" >"$TS_DIR/tree-sitter"
+    chmod u+x "$TS_DIR/tree-sitter"
 
-    if [[ ! -d $TS_DIR ]]; then
-        echo "Creating tree-sitter directory under tools directory"
-        mkdir -p "$TS_DIR"
-        echo "Extracting to $HOME/tools/treesitter directory"
-        gunzip "$TS_SRC_NAME"
-        mv "$HOME/packages/$TS_BIN_NAME" "$TS_DIR/tree-sitter"
-        chmod u+x "$TS_DIR/tree-sitter"
-    fi
-
-    if [[ $ADD_TO_SYSTEM_PATH = true ]] && [[ $USE_BASH_SHELL = true ]]; then
-        echo "export PATH=\"$TS_DIR:\$PATH\"" >>"$HOME/.bashrc"
-        export PATH="$TS_DIR:$PATH"
-    fi
-    if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<'EOT' >>"$RC_FILE"
+    append_rc_once "tools/treesitter" <<'EOT'
 export PATH="$PATH:$HOME/tools/treesitter"
 EOT
-    fi
-
 else
-    printf "${tty_blue}Tree-sitter${tty_reset} is already installed, skip it.\n"
+    info_skip "Tree-sitter"
 fi

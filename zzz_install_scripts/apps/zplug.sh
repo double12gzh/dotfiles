@@ -2,30 +2,17 @@
 # shellcheck disable=SC2059,SC2154
 set -e
 set -o pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
 
 ######################################################################
 #                            Zplug Part                              #
 ######################################################################
+ZPLUG_HOME="$HOME/.zplug"
 
-if [[ -z $(command -v git) ]]; then
-        echo "please install git first"
-        exit 1
+if [[ ! -d "$ZPLUG_HOME" ]]; then
+    info_install "Zplug"
+    git clone --depth=1 https://github.com/zplug/zplug "$ZPLUG_HOME"
+else
+    info_skip "Zplug"
 fi
-
-if [[ -z $(command -v zsh) ]]; then
-        echo "please install zsh"
-        exit 1
-fi
-
-if [[ -z $(command -v awk) ]]; then
-        echo "please install awk"
-        exit 1
-fi
-
-if [ -d "$HOME"/.zplug ]; then
-        echo "skipped"
-        return 0 2>/dev/null || exit 0
-fi
-
-ZPLUG_HOME="$HOME"/.zplug
-git clone https://github.com/zplug/zplug "$ZPLUG_HOME"

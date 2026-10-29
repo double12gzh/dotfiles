@@ -3,103 +3,74 @@
 set -e
 set -o pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
+
 ######################################################################
 #                    Lua/LuaJIT/Luarocks Install                     #
 ######################################################################
-LUA_DIR=$HOME/tools/lua
-LUA_SRC_NAME=$HOME/packages/lua.tar.gz
-LUA_LINK="http://www.lua.org/ftp/lua-5.4.4.tar.gz"
-if [[ ! -f "$LUA_DIR/src/lua" ]]; then
-    echo "Install Lua"
-    if [[ ! -f $LUA_SRC_NAME ]]; then
-        echo "Downloading lua and renaming"
-        wget $LUA_LINK -O "$LUA_SRC_NAME"
-    fi
+LUA_VERSION="5.4.7"
+LUA_DIR="$TOOLS_DIR/lua"
+LUA_SRC_NAME="$PACKAGES_DIR/lua-${LUA_VERSION}.tar.gz"
+LUA_LINK="https://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz"
 
-    if [[ ! -d "$LUA_DIR" ]]; then
-        echo "Creating Lua directory under tools directory"
-        mkdir -p "$LUA_DIR"
-        echo "Extracting to $HOME/tools/lua directory"
-        tar xvf "$LUA_SRC_NAME" -C "$LUA_DIR" --strip-components 1
+if ! has_cmd lua && [[ ! -x "$LUA_DIR/src/lua" ]]; then
+    info_install "Lua (${LUA_VERSION})"
+    download_file "$LUA_LINK" "$LUA_SRC_NAME"
+    extract_archive "$LUA_SRC_NAME" "$LUA_DIR" 1
+    (
         cd "$LUA_DIR"
-        make all test
-    fi
-
-    if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<'EOT' >>"$RC_FILE"
-alias lua='$HOME/tools/lua/src/lua'
+        make -j"$CPU_CORES" all
+        make test
+    )
+    append_rc_once "tools/lua/src" <<'EOT'
 export PATH="$PATH:$HOME/tools/lua/src"
 EOT
-    fi
 else
-    printf "${tty_blue}Lua${tty_reset} is already installed, skip it.\n"
+    info_skip "Lua"
 fi
 
-LUAJIT_DIR=$HOME/tools/luajit
-LUAJIT_SRC_NAME=$HOME/packages/luajit.tar.gz
-#LUAJIT_LINK="https://luajit.org/download/LuaJIT-2.0.5.tar.gz"
-LUAJIT_LINK="https://github.com/LuaJIT/LuaJIT/archive/refs/tags/v2.0.5.tar.gz"
-if [[ ! -f "$LUAJIT_DIR/src/luajit" ]]; then
-    echo "Install LuaJIT"
-    if [[ ! -f $LUAJIT_SRC_NAME ]]; then
-        echo "Downloading LuaJIT and renaming"
-        wget $LUAJIT_LINK -O "$LUAJIT_SRC_NAME"
-    fi
-
-    if [[ ! -d "$LUAJIT_DIR" ]]; then
-        echo "Creating LuaJIT directory under tools directory"
-        mkdir -p "$LUAJIT_DIR"
-        echo "Extracting to $HOME/tools/luajit directory"
-        tar xvf "$LUAJIT_SRC_NAME" -C "$LUAJIT_DIR" --strip-components 1
+LUAJIT_VERSION="2.1"
+LUAJIT_DIR="$TOOLS_DIR/luajit"
+LUAJIT_LINK="https://github.com/LuaJIT/LuaJIT.git"
+if ! has_cmd luajit && [[ ! -x "$LUAJIT_DIR/src/luajit" ]]; then
+    info_install "LuaJIT (${LUAJIT_VERSION})"
+    rm -rf "$LUAJIT_DIR"
+    git clone --depth=1 -b v2.1 "$LUAJIT_LINK" "$LUAJIT_DIR"
+    (
         cd "$LUAJIT_DIR"
-        
-        if [[ "$OSTYPE" == "darwin"* ]]; then
-            export MACOSX_DEPLOYMENT_TARGET=14.2.1
+        if [[ "$OS_TYPE" == "macos" ]]; then
+            export MACOSX_DEPLOYMENT_TARGET
+            MACOSX_DEPLOYMENT_TARGET="$(sw_vers -productVersion | cut -d. -f1-2)"
         fi
-
-        make clean && make
-    fi
-
-    if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<'EOT' >>"$RC_FILE"
-alias luajit='$HOME/tools/luajit/src/luajit'
+        make -j"$CPU_CORES"
+    )
+    append_rc_once "tools/luajit/src" <<'EOT'
 export PATH="$PATH:$HOME/tools/luajit/src"
 export LUA_LIBRARY="$HOME/tools/luajit/src/libluajit.so"
 EOT
-    fi
 else
-    printf "\t${tty_blue}LuaJIT${tty_reset} is already installed, skip it.\n"
+    info_skip "LuaJIT"
 fi
 
-LUAROCKS_DIR=$HOME/tools/luarocks
-LUAROCKS_SRC_NAME=$HOME/packages/luarocks.tar.gz
-LUAROCKS_LINK="https://luarocks.org/releases/luarocks-3.9.1.tar.gz"
-if [[ ! -f "$LUAROCKS_DIR/luarocks" ]]; then
-    echo "Install luarocks"
-    if [[ ! -f $LUAROCKS_SRC_NAME ]]; then
-        echo "Downloading luarocks and renaming"
-        wget $LUAROCKS_LINK -O "$LUAROCKS_SRC_NAME"
-    fi
-
-    if [[ ! -d "$LUAROCKS_DIR" ]]; then
-        echo "Creating luarocks directory under tools directory"
-        mkdir -p "$LUAROCKS_DIR"
-        echo "Extracting to $HOME/tools/luarocks directory"
-        tar xvf "$LUAROCKS_SRC_NAME" -C "$LUAROCKS_DIR" --strip-components 1
+LUAROCKS_VERSION="3.11.1"
+LUAROCKS_DIR="$TOOLS_DIR/luarocks"
+LUAROCKS_SRC_NAME="$PACKAGES_DIR/luarocks-${LUAROCKS_VERSION}.tar.gz"
+LUAROCKS_LINK="https://luarocks.org/releases/luarocks-${LUAROCKS_VERSION}.tar.gz"
+if ! has_cmd luarocks && [[ ! -x "$LUAROCKS_DIR/luarocks" && ! -x "$LUAROCKS_DIR/bin/luarocks" ]]; then
+    info_install "Luarocks (${LUAROCKS_VERSION})"
+    download_file "$LUAROCKS_LINK" "$LUAROCKS_SRC_NAME"
+    extract_archive "$LUAROCKS_SRC_NAME" "$LUAROCKS_DIR" 1
+    (
         cd "$LUAROCKS_DIR"
-        export PATH="$PATH:$HOME/tools/lua/src"
+        export PATH="$LUA_DIR/src:$PATH"
         ./configure --prefix="$LUAROCKS_DIR" --lua-version=5.4 --with-lua-include="$LUA_DIR/src"
-        make
-    fi
-
-    if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<'EOT' >>"$RC_FILE"
-alias luarocks='$HOME/tools/luarocks/luarocks'
-export PATH="$PATH:$HOME/tools/luarocks"
+        make -j"$CPU_CORES"
+        make install
+    )
+    append_rc_once "tools/luarocks" <<'EOT'
+export PATH="$PATH:$HOME/tools/luarocks/bin:$HOME/tools/luarocks"
 EOT
-    fi
 else
-    printf "\t${tty_blue}Luarocks${tty_reset} is already installed, skip it.\n"
+    info_skip "Luarocks"
 fi
-
-cd "$SCRIPT_DIR"

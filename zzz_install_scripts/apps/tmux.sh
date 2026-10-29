@@ -2,49 +2,61 @@
 # shellcheck disable=SC2059,SC2154
 set -e
 set -o pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
 
 ######################################################################
 #                             Tmux Part                              #
 ######################################################################
-# NOTE: sudo apt install libevent-dev
-TMUX_DIR=$HOME/tools/tmux
-TMUX_SRC_NAME=$HOME/packages/tmux.tar.gz
-TMUX_LINK="https://github.com/tmux/tmux/releases/download/3.3a/tmux-3.3a.tar.gz"
-if [[ ! -f $TMUX_DIR/tmux ]]; then
-	echo "Install tmux"
-	if [[ ! -f $TMUX_SRC_NAME ]]; then
-		echo "Downloading tmux and renaming"
-		wget "$TMUX_LINK" -O "$TMUX_SRC_NAME"
-	fi
+TMUX_VERSION="3.5a"
+TMUX_DIR="$TOOLS_DIR/tmux"
+TMUX_SRC_NAME="$PACKAGES_DIR/tmux-${TMUX_VERSION}.tar.gz"
+TMUX_LINK="https://github.com/tmux/tmux/releases/download/${TMUX_VERSION}/tmux-${TMUX_VERSION}.tar.gz"
 
-	if [[ ! -d $TMUX_DIR ]]; then
-		echo "Creating tmux directory under tools directory"
-		mkdir -p "$TMUX_DIR"
-		echo "Extracting to $HOME/tools/tmux directory"
-		tar zxvf "$TMUX_SRC_NAME" -C "$TMUX_DIR" --strip-components 1
-		cd "$TMUX_DIR"
-		./configure --prefix="$TMUX_DIR" --enable-utf8proc \
-			CPPFLAGS="-I/opt/homebrew/Cellar/utf8proc/2.10.0/include" \
-			LDFLAGS="-L/opt/homebrew/Cellar/utf8proc/2.10.0/lib"
-		make
-		make install
-		cd "${SCRIPT_DIR}"
-	fi
+if ! has_cmd tmux && [[ ! -x "$TMUX_DIR/bin/tmux" && ! -x "$TMUX_DIR/tmux" ]]; then
+    info_install "tmux (${TMUX_VERSION})"
+    download_file "$TMUX_LINK" "$TMUX_SRC_NAME"
+    extract_archive "$TMUX_SRC_NAME" "$TMUX_DIR" 1
+    (
+        cd "$TMUX_DIR"
+        CONF_ARGS=(--prefix="$TMUX_DIR")
+        CPPFLAGS_VAL=""
+        LDFLAGS_VAL=""
 
-	if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-		cat <<'EOT' >>"$RC_FILE"
-alias tmux='TERM=tmux-256color ~/tools/tmux/tmux -f ~/.config/tmux/tmux.conf'
-export PATH="$PATH:$HOME/tools/tmux"
+        if [[ "$OS_TYPE" == "macos" ]] && has_cmd brew; then
+            if brew --prefix utf8proc >/dev/null 2>&1; then
+                utf8proc_prefix="$(brew --prefix utf8proc)"
+                CONF_ARGS+=(--enable-utf8proc)
+                CPPFLAGS_VAL+=" -I${utf8proc_prefix}/include"
+                LDFLAGS_VAL+=" -L${utf8proc_prefix}/lib"
+            fi
+            if brew --prefix libevent >/dev/null 2>&1; then
+                libevent_prefix="$(brew --prefix libevent)"
+                CPPFLAGS_VAL+=" -I${libevent_prefix}/include"
+                LDFLAGS_VAL+=" -L${libevent_prefix}/lib"
+            fi
+            if brew --prefix ncurses >/dev/null 2>&1; then
+                ncurses_prefix="$(brew --prefix ncurses)"
+                CPPFLAGS_VAL+=" -I${ncurses_prefix}/include"
+                LDFLAGS_VAL+=" -L${ncurses_prefix}/lib"
+            fi
+        fi
+
+        ./configure "${CONF_ARGS[@]}" \
+            ${CPPFLAGS_VAL:+CPPFLAGS="${CPPFLAGS_VAL# }"} \
+            ${LDFLAGS_VAL:+LDFLAGS="${LDFLAGS_VAL# }"}
+        make -j"$CPU_CORES"
+        make install
+    )
+
+    append_rc_once "tools/tmux/bin" <<'EOT'
+export PATH="$PATH:$HOME/tools/tmux/bin:$HOME/tools/tmux"
 EOT
-	fi
-
-	echo "Installing tpm"
-	if [[ ! -d ~/.tmux/plugins/tpm ]]; then
-		git clone --depth=1 https://github.com/tmux-plugins/tpm \
-			~/.tmux/plugins/tpm
-		# NOTE: `prefix` + `I` to install plugins via tpm.
-	fi
-
 else
-	printf "${tty_blue}Tmux${tty_reset} is already installed, skip it.\n"
+    info_skip "Tmux"
+fi
+
+if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
+    info_install "tmux plugin manager (tpm)"
+    git clone --depth=1 https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
 fi

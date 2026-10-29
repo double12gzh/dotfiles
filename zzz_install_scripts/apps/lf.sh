@@ -1,20 +1,11 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC2059,SC2154
 set -e
 set -o pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
 
-######################################################################
-#                              Lf Part                               #
-######################################################################
-if [[ -z $(command -v lf) ]]; then
-    echo "Install lf"
-    env CGO_ENABLED=0 go install -ldflags="-s -w" github.com/gokcehan/lf@latest
+install_go_pkg lf github.com/gokcehan/lf@latest nocgo
 
-    if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<'EOT' >>"$RC_FILE"
-[ -f ~/.config/lf/icon.sh ] && source "$HOME/.config/lf/icon.sh"
+append_rc_once ".config/lf/icon.sh" <<'EOT'
+[ -f "$HOME/.config/lf/icon.sh" ] && source "$HOME/.config/lf/icon.sh"
 EOT
-    fi
-else
-    printf "${tty_blue}Lf${tty_reset} is already installed, skip it.\n"
-fi

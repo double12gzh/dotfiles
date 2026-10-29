@@ -23,7 +23,11 @@ export PERL_CPANM_HOME="$HOME/tools/cpanm"
 [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 
 # Conda base environment variables & PATH
-export CONDA_PREFIX="$HOME/tools/anaconda"
+if [[ -d "$HOME/tools/miniconda" ]]; then
+    export CONDA_PREFIX="$HOME/tools/miniconda"
+elif [[ -d "$HOME/tools/anaconda" ]]; then
+    export CONDA_PREFIX="$HOME/tools/anaconda"
+fi
 
 # Prepend existing tool directories to PATH
 for _tool_dir in \
@@ -33,6 +37,7 @@ for _tool_dir in \
     "$HOME/tools/julia/bin" \
     "$HOME/tools/lua/src" \
     "$HOME/tools/luajit/src" \
+    "$HOME/tools/luarocks/bin" \
     "$HOME/tools/luarocks" \
     "$HOME/tools/nodejs/bin" \
     "$HOME/tools/perl/bin" \
@@ -47,11 +52,12 @@ for _tool_dir in \
     "$HOME/tools/jq" \
     "$HOME/tools/lnav" \
     "$HOME/tools/nvim/bin" \
-    "$HOME/tools/stow/bin" \
+    "$HOME/tools/tmux/bin" \
     "$HOME/tools/tmux" \
     "$HOME/tools/treesitter" \
     "$HOME/tools/ugrep/bin" \
     "$HOME/tools/qfc/bin" \
+    "$HOME/tools/miniconda/bin" \
     "$HOME/tools/anaconda/bin"
 do
     [[ -d "$_tool_dir" ]] && path=("$_tool_dir" $path)

@@ -2,28 +2,24 @@
 # shellcheck disable=SC2059,SC2154
 set -e
 set -o pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
 
 ######################################################################
 #                              Qfc Part                              #
 ######################################################################
-QFC_DIR=$HOME/tools/qfc
+QFC_DIR="$TOOLS_DIR/qfc"
 QFC_LINK="https://github.com/pindexis/qfc.git"
 
-if [[ ! -d $QFC_DIR ]]; then
-    echo "Install qfc"
-    echo "Creating qfc directory under tools directory"
-    mkdir -p "$QFC_DIR"
+if [[ ! -d "$QFC_DIR" ]]; then
+    info_install "qfc"
     git clone --depth=1 "$QFC_LINK" "$QFC_DIR"
 
-    if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<'EOT' >>"$RC_FILE"
-# Init qfc
-[[ -s $HOME/tools/qfc/bin/qfc.sh ]] && source "$HOME/tools/qfc/bin/qfc.sh"
+    append_rc_once "tools/qfc/bin/qfc.sh" <<'EOT'
+[[ -s "$HOME/tools/qfc/bin/qfc.sh" ]] && source "$HOME/tools/qfc/bin/qfc.sh"
 qfc_quick_command 'cd' '\C-b' 'cd $0'
 qfc_quick_command 'nvim' '\C-p' 'nvim $0'
 EOT
-    fi
-
 else
-    printf "${tty_blue}Qfc${tty_reset} is already installed, skip it.\n"
+    info_skip "Qfc"
 fi

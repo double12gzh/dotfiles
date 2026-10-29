@@ -1,14 +1,7 @@
 #!/usr/bin/env bash
-# shellcheck disable=SC2059,SC2154
 set -e
 set -o pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
 
-######################################################################
-#                            Termpix Part                            #
-######################################################################
-if [[ -z $(command -v termpix) ]]; then
-    echo "Install Termpix"
-    cargo install --git https://github.com/mmacedoeu/termpix
-else
-    printf "${tty_blue}Termpix${tty_reset} is already installed, skip it.\n"
-fi
+install_cargo_pkg termpix termpix --git https://github.com/mmacedoeu/termpix

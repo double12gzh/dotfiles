@@ -3,39 +3,29 @@
 set -e
 set -o pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
+
 ######################################################################
 #                            Node Install                            #
 ######################################################################
-NODE_DIR=$HOME/tools/nodejs
-NODE_SRC_NAME=$HOME/packages/nodejs.tar.gz
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    NODE_LINK="https://nodejs.org/dist/v16.16.0/node-v16.16.0-darwin-arm64.tar.xz"
-else
-    NODE_LINK="https://nodejs.org/dist/v16.16.0/node-v16.16.0-linux-x64.tar.xz"
-fi
-if [[ ! -f "$NODE_DIR/bin/node" ]]; then
-    echo "Install Node.js"
-    if [[ ! -f $NODE_SRC_NAME ]]; then
-        echo "Downloading Node.js and renaming"
-        wget $NODE_LINK -O "$NODE_SRC_NAME"
-    fi
+NODE_VERSION="${NODE_VERSION:-v22.14.0}"
+NODE_DIR="$TOOLS_DIR/nodejs"
+NODE_OS="$([[ "$OS_TYPE" == "macos" ]] && echo "darwin" || echo "linux")"
+NODE_ARCH="$([[ "$ARCH_TYPE" == "arm64" ]] && echo "arm64" || echo "x64")"
+NODE_EXT="$([[ "$OS_TYPE" == "macos" ]] && echo "tar.gz" || echo "tar.xz")"
+NODE_SRC_NAME="$PACKAGES_DIR/node-${NODE_VERSION}-${NODE_OS}-${NODE_ARCH}.${NODE_EXT}"
+NODE_LINK="https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-${NODE_OS}-${NODE_ARCH}.${NODE_EXT}"
 
-    if [[ ! -d "$NODE_DIR" ]]; then
-        echo "Creating Node.js directory under tools directory"
-        mkdir -p "$NODE_DIR"
-        echo "Extracting to $HOME/tools/nodejs directory"
-        tar xvf "$NODE_SRC_NAME" -C "$NODE_DIR" --strip-components 1
-    fi
+if ! has_cmd node && [[ ! -x "$NODE_DIR/bin/node" ]]; then
+    info_install "Node.js (${NODE_VERSION} ${NODE_OS}/${NODE_ARCH})"
+    download_file "$NODE_LINK" "$NODE_SRC_NAME"
+    extract_archive "$NODE_SRC_NAME" "$NODE_DIR" 1
+    "$NODE_DIR/bin/npm" config set fund false || true
 
-    if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<'EOT' >>"$RC_FILE"
-alias node='$HOME/tools/nodejs/bin/node'
-alias npm='$HOME/tools/nodejs/bin/npm'
-alias npx='$HOME/tools/nodejs/bin/npx'
+    append_rc_once "tools/nodejs/bin" <<'EOT'
 export PATH="$PATH:$HOME/tools/nodejs/bin"
 EOT
-    fi
 else
-    "$NODE_DIR/bin/npm" config set fund false
-    printf "${tty_blue}Nodejs${tty_reset} is already installed, skip it.\n"
+    info_skip "Node.js"
 fi

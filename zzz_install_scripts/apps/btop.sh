@@ -2,39 +2,37 @@
 # shellcheck disable=SC2059,SC2154
 set -e
 set -o pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
 
 ######################################################################
 #                            Btop++ Part                             #
 ######################################################################
-if [[ "$OSTYPE" == "darwin"* ]]; then
-    printf "${tty_blue}Btop++${tty_reset} is not supported on macOS, skip it.\n"
-    return 0
-else
-    BTOP_DIR=$HOME/tools/btop
-    BTOP_SRC_NAME=$HOME/packages/btop.tbz
-    BTOP_LINK="https://github.com/aristocratos/btop/releases/download/v1.2.13/btop-x86_64-linux-musl.tbz"
+BTOP_VERSION="v1.4.0"
+BTOP_DIR="$TOOLS_DIR/btop"
+
+if has_cmd btop || [[ -x "$BTOP_DIR/bin/btop" ]]; then
+    info_skip "Btop++"
+    return 0 2>/dev/null || exit 0
 fi
 
-if [[ -z $(command -v btop) ]]; then
-    echo "Install btop"
-    if [[ ! -f $BTOP_SRC_NAME ]]; then
-        echo "Downloading btop and renaming"
-        wget $BTOP_LINK -O "$BTOP_SRC_NAME"
+if [[ "$OS_TYPE" == "macos" ]]; then
+    if has_cmd brew; then
+        info_install "Btop++ (via Homebrew)"
+        brew install btop
+    else
+        info_skip "Btop++ (macOS without Homebrew)"
     fi
+else
+    BTOP_ARCH="$([[ "$ARCH_TYPE" == "arm64" ]] && echo "aarch64" || echo "x86_64")"
+    BTOP_SRC_NAME="$PACKAGES_DIR/btop-${BTOP_VERSION}-${BTOP_ARCH}.tbz"
+    BTOP_LINK="https://github.com/aristocratos/btop/releases/download/${BTOP_VERSION}/btop-${BTOP_ARCH}-linux-musl.tbz"
 
-    if [[ ! -d $BTOP_DIR ]]; then
-        # echo "Creating btop directory under tools directory"
-        # mkdir -p "$BTOP_DIR"
-        echo "Extracting to $HOME/tools/btop directory"
-        tar xjvf "$BTOP_SRC_NAME" -C "$HOME/tools"
-    fi
+    info_install "Btop++ (${BTOP_VERSION} linux-${BTOP_ARCH})"
+    download_file "$BTOP_LINK" "$BTOP_SRC_NAME"
+    extract_archive "$BTOP_SRC_NAME" "$BTOP_DIR" 1
 
-    if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<'EOT' >>"$RC_FILE"
+    append_rc_once "tools/btop/bin" <<'EOT'
 export PATH="$PATH:$HOME/tools/btop/bin"
 EOT
-    fi
-
-else
-    printf "${tty_blue}Btop++${tty_reset} is already installed, skip it.\n"
 fi

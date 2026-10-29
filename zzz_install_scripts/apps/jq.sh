@@ -2,35 +2,27 @@
 # shellcheck disable=SC2059,SC2154
 set -e
 set -o pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
 
 ######################################################################
 #                              Jq Part                               #
 ######################################################################
-JQ_DIR=$HOME/tools/jq
-JQ_LINK="https://github.com/stedolan/jq.git"
-if [[ -z $(command -v jq) ]]; then
-    echo "Install jq"
+JQ_VERSION="jq-1.7.1"
+JQ_DIR="$TOOLS_DIR/jq"
+JQ_OS="$([[ "$OS_TYPE" == "macos" ]] && echo "macos" || echo "linux")"
+JQ_ARCH="$([[ "$ARCH_TYPE" == "arm64" ]] && echo "arm64" || echo "amd64")"
+JQ_LINK="https://github.com/jqlang/jq/releases/download/${JQ_VERSION}/jq-${JQ_OS}-${JQ_ARCH}"
 
-    if [[ ! -d $JQ_DIR ]]; then
-        echo "Creating jq directory under tools directory"
-        mkdir -p "$JQ_DIR"
-        echo "git clone to $HOME/tools/jq directory"
-        cd "$HOME/tools"
-        git clone "$JQ_LINK" --depth=1
-        cd "$JQ_DIR"
-        git submodule update --init # if building from git to get oniguruma
-        autoreconf -fi              # if building from git
-        ./configure --with-oniguruma=builtin --disable-maintainer-mode
-        make -j8
-        make check
-        cd "${SCRIPT_DIR}"
-    fi
+if ! has_cmd jq && [[ ! -x "$JQ_DIR/jq" ]]; then
+    info_install "jq (${JQ_VERSION} ${JQ_OS}-${JQ_ARCH})"
+    mkdir -p "$JQ_DIR"
+    download_file "$JQ_LINK" "$JQ_DIR/jq"
+    chmod +x "$JQ_DIR/jq"
 
-    if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<'EOT' >>"$RC_FILE"
+    append_rc_once "tools/jq" <<'EOT'
 export PATH="$PATH:$HOME/tools/jq"
 EOT
-    fi
 else
-    printf "${tty_blue}Jq${tty_reset} is already installed, skip it.\n"
+    info_skip "Jq"
 fi

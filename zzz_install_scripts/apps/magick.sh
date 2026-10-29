@@ -2,35 +2,33 @@
 # shellcheck disable=SC2059,SC2154
 set -e
 set -o pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "${SCRIPT_DIR}/config.sh"
 
 ######################################################################
 #                          ImageMagick Part                          #
 ######################################################################
-MAGICK_DIR=$HOME/tools/magick
-MAGICK_LINK="https://github.com/ImageMagick/ImageMagick"
-MAGICK_MAN="$MAN_PATH/magick"
-if [[ -z $(command -v magick) ]]; then
-    echo "Install ImageMagick"
+MAGICK_DIR="$TOOLS_DIR/magick"
+MAGICK_LINK="https://github.com/ImageMagick/ImageMagick.git"
 
-    if [[ ! -d $MAGICK_DIR ]]; then
-        echo "Creating magick directory under tools directory"
-        mkdir -p "$MAGICK_DIR"
-        echo "git clone to $HOME/tools/magick directory"
-        git clone --depth=1 "$MAGICK_LINK" "$MAGICK_DIR"
-        cd "$MAGICK_DIR"
-        ./configure --prefix="$MAGICK_DIR" --with-modules
-        make
-        make install
-        cd "${SCRIPT_DIR}"
+if ! has_cmd magick && [[ ! -x "$MAGICK_DIR/bin/magick" ]]; then
+    info_install "ImageMagick"
+    if [[ ! -d "$MAGICK_DIR/src" ]]; then
+        git clone --depth=1 "$MAGICK_LINK" "$MAGICK_DIR/src"
     fi
+    (
+        cd "$MAGICK_DIR/src"
+        ./configure --prefix="$MAGICK_DIR" --with-modules
+        make -j"$CPU_CORES"
+        make install
+    )
+    rm -rf "$MAGICK_DIR/src"
 
-    if [[ "$ADD_TO_SYSTEM_PATH" = true ]]; then
-        cat <<'EOT' >>"$RC_FILE"
+    append_rc_once "tools/magick/bin" <<'EOT'
 export PATH="$PATH:$HOME/tools/magick/bin"
 export MAGICK_HOME="$HOME/tools/magick"
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$MAGICK_HOME/lib"
 EOT
-    fi
 else
-    printf "${tty_blue}ImageMagick${tty_reset} is already installed, skip it.\n"
+    info_skip "ImageMagick"
 fi
