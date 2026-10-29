@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -e
+
+mkdir -p "${HOME}/.config/gotest/gotest-template"
+cp -Rf "{{ .chezmoi.workingTree }}/zzz_mixed_config/gotest-template/." "${HOME}/.config/gotest/gotest-template/"
